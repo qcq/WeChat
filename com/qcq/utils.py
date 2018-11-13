@@ -27,4 +27,4 @@ if __name__ == '__main__':
                     if 'com.qcq' in line:
                         line = 'from ' + line.split('.')[-1]
                     f_write.write(line)
-            #with open(os.path.basename(file))
+            # with open(os.path.basename(file))

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018Äê11ÔÂ13ÈÕ
+Created on 2018ï¿½ï¿½11ï¿½ï¿½13ï¿½ï¿½
 
 @author: chuanqin
 '''
@@ -13,7 +13,7 @@ class Handle(object):
         try:
             data = web.input()
             if len(data) == 0:
-                return u"hello, baby. are you there, I have to say I love you, I am very glad you are here with me for a whole life. It is my honer to have you in my life, in my hug.\n the greatest thing in this world is - hug you in my chest, and kiss you. ±¦±¦ÎÒ°®Äã¡£"
+                return u"hello, baby. are you there, I have to say I love you, I am very glad you are here with me for a whole life. It is my honer to have you in my life, in my hug.\n the greatest thing in this world is - hug you in my chest, and kiss you. ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ã¡£"
             signature = data.signature
             timestamp = data.timestamp
             nonce = data.nonce
@@ -32,3 +32,21 @@ class Handle(object):
                 return ""
         except Exception, Argument:
             return Argument
+        
+    def POST(self):
+        try:
+            webData = web.data()
+            print "Handle Post webdata is ", webData
+            #åå°æ‰“æ—¥å¿—
+            recMsg = receive.parse_xml(webData)
+            if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+                toUser = recMsg.FromUserName
+                fromUser = recMsg.ToUserName
+                content = "test"
+                replyMsg = reply.TextMsg(toUser, fromUser, content)
+                return replyMsg.send()
+            else:
+                print "æš‚ä¸”ä¸å¤„ç†"
+                return "success"
+        except Exception, Argment:
+            return Argment
