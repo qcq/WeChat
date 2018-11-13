@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018��11��13��
+Created on 2018年11月13日
 
 @author: chuanqin
 '''
@@ -37,7 +37,7 @@ class Handle(object):
         except Exception, Argument:
             print 'Exception happened:', Argument
             return Argument
-        
+
     def POST(self):
         try:
             webData = web.data()
@@ -62,4 +62,4 @@ class Handle(object):
         except Exception, Argment:
             print 'Exception happened:', Argment
             return Argment
-        
+

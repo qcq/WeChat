@@ -18,8 +18,8 @@ if __name__ == '__main__':
         for file in files:
             if str(file).upper().endswith('PY'):
                 full_files.append(os.path.join(os.path.abspath(root), file))
-    print 'will copy the files:', full_files, " to ", os.path.abspath(path)          
-                
+    print 'will copy the files:', full_files, " to ", os.path.abspath(path)
+
     for file in full_files:
         with open(file, 'r') as f_read:
             with open(os.path.join(path, os.path.basename(file)), 'w') as f_write:

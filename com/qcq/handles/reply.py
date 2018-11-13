@@ -1,5 +1,10 @@
-# -*- coding: utf-8 -*-
-# filename: reply.py
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+'''
+Created on 2018年11月13日
+
+@author: chuanqin
+'''
 
 import time
 
@@ -12,7 +17,7 @@ class Msg(object):
     def send(self):
         return "success"
 
-    
+
 class TextMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, content):
@@ -34,7 +39,7 @@ class TextMsg(Msg):
         """
         return XmlForm.format(**self.__dict)
 
-    
+
 class ImageMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, mediaId):

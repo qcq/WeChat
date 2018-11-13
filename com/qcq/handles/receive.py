@@ -1,5 +1,10 @@
-# -*- coding: utf-8 -*-
-# filename: receive.py
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+'''
+Created on 2018年11月13日
+
+@author: chuanqin
+'''
 
 import xml.etree.ElementTree as ET
 
@@ -14,7 +19,7 @@ def parse_xml(web_data):
     elif msg_type == 'image':
         return ImageMsg(xmlData)
 
-    
+
 class Msg(object):
 
     def __init__(self, xmlData):
@@ -24,14 +29,14 @@ class Msg(object):
         self.MsgType = xmlData.find('MsgType').text
         self.MsgId = xmlData.find('MsgId').text
 
-        
+
 class TextMsg(Msg):
 
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
         self.Content = xmlData.find('Content').text.encode("utf-8")
 
-        
+
 class ImageMsg(Msg):
 
     def __init__(self, xmlData):
