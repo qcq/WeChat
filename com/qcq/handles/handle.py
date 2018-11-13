@@ -7,8 +7,11 @@ Created on 2018��11��13��
 '''
 import hashlib
 import web
+import com.qcq.handles.receive
+import com.qcq.handles.reply
 
 class Handle(object):
+
     def GET(self):
         try:
             data = web.input()
@@ -31,13 +34,14 @@ class Handle(object):
             else:
                 return ""
         except Exception, Argument:
+            print 'Exception happened:', Argument
             return Argument
         
     def POST(self):
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData
-            #后台打日志
+            # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
                 toUser = recMsg.FromUserName

@@ -18,13 +18,14 @@ if __name__ == '__main__':
         for file in files:
             if str(file).upper().endswith('PY'):
                 full_files.append(os.path.join(os.path.abspath(root), file))
-                print full_files
+    print 'will copy the files:', full_files, " to ", os.path.abspath(path)          
                 
     for file in full_files:
         with open(file, 'r') as f_read:
             with open(os.path.join(path, os.path.basename(file)), 'w') as f_write:
+                print 'will copy ', file, ' to ', os.path.join(path, os.path.basename(file))
                 for line in f_read:
                     if 'com.qcq' in line:
-                        line = 'from ' + line.split('.')[-1]
+                        line = line.split(' ')[0] + line.split('.')[-1]
                     f_write.write(line)
             # with open(os.path.basename(file))
