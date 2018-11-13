@@ -29,7 +29,8 @@ class Basic:
     def get_access_token(self):
         # if self.__leftTime < 10:
             self.__real_get_access_token()
-            return self.__accessToken
+            print 'access_token', self.__accessToken
+            print 'expires_in', self.__leftTime
 
     def run(self):
         while(True):
@@ -40,4 +41,4 @@ class Basic:
                 self.__real_get_access_token()
 
 
-print Basic().get_access_token()
+Basic().get_access_token()

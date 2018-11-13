@@ -28,7 +28,7 @@ class TextMsg(Msg):
         self.__dict['Content'] = content
 
     def send(self):
-        XmlForm = """
+        XmlForm = u"""
         <xml>
         <ToUserName><![CDATA[{ToUserName}]]></ToUserName>
         <FromUserName><![CDATA[{FromUserName}]]></FromUserName>
@@ -50,7 +50,7 @@ class ImageMsg(Msg):
         self.__dict['MediaId'] = mediaId
 
     def send(self):
-        XmlForm = """
+        XmlForm = u"""
         <xml>
         <ToUserName><![CDATA[{ToUserName}]]></ToUserName>
         <FromUserName><![CDATA[{FromUserName}]]></FromUserName>
