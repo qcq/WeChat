@@ -26,6 +26,6 @@ if __name__ == '__main__':
                 print 'will copy ', file, ' to ', os.path.join(path, os.path.basename(file))
                 for line in f_read:
                     if 'com.qcq' in line:
-                        line = line.split(' ')[0] + line.split('.')[-1]
+                        line = line.split(' ')[0] + ' ' + line.split('.')[-1]
                     f_write.write(line)
             # with open(os.path.basename(file))

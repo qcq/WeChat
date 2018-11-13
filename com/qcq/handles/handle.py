@@ -10,6 +10,7 @@ import web
 import com.qcq.handles.receive
 import com.qcq.handles.reply
 
+
 class Handle(object):
 
     def GET(self):
@@ -40,17 +41,25 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            print "Handle Post webdata is ", webData
-            # 后台打日志
+            print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
-            if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+            if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
-                content = "test"
-                replyMsg = reply.TextMsg(toUser, fromUser, content)
-                return replyMsg.send()
+                if recMsg.MsgType == 'text':
+                    content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
+                    replyMsg = reply.TextMsg(toUser, fromUser, content)
+                    return replyMsg.send()
+                if recMsg.MsgType == 'image':
+                    mediaId = recMsg.MediaId
+                    replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
+                    return replyMsg.send()
+                else:
+                    return reply.Msg().send()
             else:
                 print "暂且不处理"
-                return "success"
+                return reply.Msg().send()
         except Exception, Argment:
+            print 'Exception happened:', Argment
             return Argment
+        
