@@ -24,7 +24,7 @@ class Msg(object):
 class TextMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, content):
-        Msg.__init__(toUserName, fromUserName)
+        Msg.__init__(self, toUserName, fromUserName)
         self.__dict['Content'] = content
 
     def send(self):
@@ -43,7 +43,7 @@ class TextMsg(Msg):
 class ImageMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, mediaId):
-        Msg.__init__(toUserName, fromUserName)
+        Msg.__init__(self, toUserName, fromUserName)
         self.__dict['MediaId'] = mediaId
 
     def send(self):
