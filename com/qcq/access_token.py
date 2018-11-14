@@ -32,7 +32,6 @@ class Basic:
         print 'access_token', self.__accessToken
         print 'expires_in', self.__leftTime
         return self.__accessToken
-            
 
     def run(self):
         while(True):

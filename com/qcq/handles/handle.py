@@ -9,6 +9,9 @@ import hashlib
 import web
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
+import com.qcq.const.media_id as media_id
+import com.qcq.const.message as message
+import traceback
 
 
 class Handle(object):
@@ -24,10 +27,10 @@ class Handle(object):
             echostr = data.echostr
             token = "qcq"
 
-            list = [token, timestamp, nonce]
-            list.sort()
+            verifyList = [token, timestamp, nonce]
+            verifyList.sort()
             sha1 = hashlib.sha1()
-            map(sha1.update, list)
+            map(sha1.update, verifyList)
             hashcode = sha1.hexdigest()
             print "handle/GET func: hashcode, signature: ", hashcode, signature
             if hashcode == signature:
@@ -35,7 +38,7 @@ class Handle(object):
             else:
                 return ""
         except Exception, Argument:
-            print 'Exception happened:', Argument
+            print 'Exception happened:', traceback.print_exc()
             return Argument
 
     def POST(self):
@@ -52,15 +55,14 @@ class Handle(object):
                     mediaId = recMsg.MediaId
                     return reply.ImageMsg(toUser, fromUser, mediaId).send()
                 if recMsg.MsgType == 'event':
-                    content = u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
-                    return reply.TextMsg(toUser, fromUser, content).send()
+                    return reply.TextMsg(toUser, fromUser, message.subscription_content).send()
                 else:
                     return reply.Msg(toUser, fromUser).send()
             else:
                 print "暂且不处理"
                 return reply.Msg(toUser, fromUser).send()
         except Exception, Argment:
-            print 'Exception happened:', Argment
+            print 'Exception happened:', traceback.print_exc()
             return Argment
 
     def __dealTextMessage__(self, recMsg):
@@ -68,9 +70,7 @@ class Handle(object):
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
         if u'你' in receiveContent:
-            mediaId = u'us79WMrDF_ujGvrA5fvMnAlawfw27AWsngXo07WQIuJqdiSApFfACo4Gi3HWHqSR'
-            return reply.ImageMsg(toUser, fromUser, mediaId)
+            return reply.ImageMsg(toUser, fromUser, media_id.media_id_me)
         else:
-            content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
-            return reply.TextMsg(toUser, fromUser, content)
+            return reply.TextMsg(toUser, fromUser, message.default_content)
 

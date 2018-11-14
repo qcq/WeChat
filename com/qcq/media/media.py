@@ -28,7 +28,7 @@ class Media(object):
         request = urllib2.Request(postUrl, postData, postHeaders)
         urlResp = urllib2.urlopen(request)
         print urlResp.read()
-        
+
     def get(self, accessToken, mediaId):
         postUrl = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s" % (accessToken, mediaId)
         urlResp = urllib2.urlopen(postUrl)
@@ -38,9 +38,9 @@ class Media(object):
             jsonDict = json.loads(urlResp.read())
             print jsonDict
         else:
-            buffer = urlResp.read()   #素材的二进制
+            mediaBuffer = urlResp.read()  # 素材的二进制
             mediaFile = file("test_media.jpg", "wb")
-            mediaFile.write(buffer)
+            mediaFile.write(mediaBuffer)
             print "get successful"
 
 

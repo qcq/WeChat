@@ -8,9 +8,12 @@ Created on 2018年11月13日
 import urllib
 from com.qcq.access_token import Basic
 
+
 class Menu(object):
+
     def __init__(self):
         pass
+
     def create(self, postData, accessToken):
         postUrl = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % accessToken
         if isinstance(postData, unicode):
@@ -28,11 +31,12 @@ class Menu(object):
         urlResp = urllib.urlopen(url=postUrl)
         print urlResp.read()
 
-    #获取自定义菜单配置接口
+    # 获取自定义菜单配置接口
     def get_current_selfmenu_info(self, accessToken):
         postUrl = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=%s" % accessToken
         urlResp = urllib.urlopen(url=postUrl)
         print urlResp.read()
+
 
 if __name__ == '__main__':
     myMenu = Menu()
@@ -75,5 +79,5 @@ if __name__ == '__main__':
     }
     """
     accessToken = Basic().get_access_token()
-    #myMenu.delete(accessToken)
+    # myMenu.delete(accessToken)
     myMenu.create(postJson, accessToken)

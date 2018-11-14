@@ -59,10 +59,12 @@ class ImageMsg(Msg):
         self.MsgId = xmlData.find('MsgId').text
         self.PicUrl = xmlData.find('PicUrl').text
         self.MediaId = xmlData.find('MediaId').text
-        
+
+
 class EventMsg(Msg):
+
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
         self.Event = xmlData.find('Event').text
         self.Eventkey = xmlData.find('EventKey').text
-        
+

@@ -13,28 +13,32 @@ from poster.streaminghttp import register_openers
 
 from com.qcq.access_token import Basic
 
+
 class Material(object):
+
     def __init__(self):
         register_openers()
-    #上传图文
+
+    # 上传图文
     def add_news(self, accessToken, news):
         postUrl = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=%s" % accessToken
         urlResp = urllib2.urlopen(postUrl, news)
         print urlResp.read()
-    
-    #上传
+
+    # 上传
     def uplaod(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
         fileName = "hello"
         param = {'media': openFile, 'filename': fileName}
-        #param = {'media': openFile}
+        # param = {'media': openFile}
         postData, postHeaders = poster.encode.multipart_encode(param)
 
         postUrl = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%s&type=%s" % (accessToken, mediaType)
         request = urllib2.Request(postUrl, postData, postHeaders)
         urlResp = urllib2.urlopen(request)
         print urlResp.read()
-    #下载
+
+    # 下载
     def get(self, accessToken, mediaId):
         postUrl = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=%s" % accessToken
         postData = "{ \"media_id\": \"%s\" }" % mediaId
@@ -44,18 +48,19 @@ class Material(object):
             jsonDict = json.loads(urlResp.read())
             print jsonDict
         else:
-            buffer = urlResp.read()  # 素材的二进制
+            materialBuffer = urlResp.read()  # 素材的二进制
             mediaFile = file("test_media.jpg", "wb")
-            mediaFile.write(buffer)
+            mediaFile.write(materialBuffer)
             print "get successful"
-    #删除
+
+    # 删除
     def delete(self, accessToken, mediaId):
         postUrl = "https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=%s" % accessToken
         postData = "{ \"media_id\": \"%s\" }" % mediaId
         urlResp = urllib2.urlopen(postUrl, postData)
         print urlResp.read()
 
-    #获取素材列表
+    # 获取素材列表
     def batch_get(self, accessToken, mediaType, offset=0, count=20):
         postUrl = ("https://api.weixin.qq.com/cgi-bin/material"
                "/batchget_material?access_token=%s" % accessToken)
@@ -68,7 +73,7 @@ class Material(object):
 if __name__ == '__main__':
     myMaterial = Material()
     accessToken = Basic().get_access_token()
-    news =(
+    news = (
     {
         "articles":
         [
@@ -83,11 +88,11 @@ if __name__ == '__main__':
             }
         ]
     })
-    #news 是个dict类型，可通过下面方式修改内容
-    #news['articles'][0]['title'] = u"测试".encode('utf-8')
-    #print news['articles'][0]['title']
+    # news 是个dict类型，可通过下面方式修改内容
+    # news['articles'][0]['title'] = u"测试".encode('utf-8')
+    # print news['articles'][0]['title']
     news = json.dumps(news, ensure_ascii=False)
     myMaterial.add_news(accessToken, news)
-    
+
     mediaType = "news"
     myMaterial.batch_get(accessToken, mediaType)

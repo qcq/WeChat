@@ -14,18 +14,18 @@ if __name__ == '__main__':
         sys.exit()
     path = sys.argv[1]
     full_files = []
-    for root, dir, files in os.walk("."):
-        for file in files:
-            if str(file).upper().endswith('PY'):
-                full_files.append(os.path.join(os.path.abspath(root), file))
+    for root, directory, files in os.walk("."):
+        for fileName in files:
+            if str(fileName).upper().endswith('PY'):
+                full_files.append(os.path.join(os.path.abspath(root), fileName))
     print 'will copy the files:', full_files, " to ", os.path.abspath(path)
 
-    for file in full_files:
-        with open(file, 'r') as f_read:
-            with open(os.path.join(path, os.path.basename(file)), 'w') as f_write:
-                print 'will copy ', file, ' to ', os.path.join(path, os.path.basename(file))
+    for fileName in full_files:
+        with open(fileName, 'r') as f_read:
+            with open(os.path.join(path, os.path.basename(fileName)), 'w') as f_write:
+                print 'will copy ', fileName, ' to ', os.path.join(path, os.path.basename(fileName))
                 for line in f_read:
                     if 'com.qcq' in line:
                         line = line.split(' ')[0] + ' ' + line.split('.')[-1]
                     f_write.write(line)
-            # with open(os.path.basename(file))
+            # with open(os.path.basename(fileName))
