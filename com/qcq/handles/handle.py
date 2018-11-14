@@ -69,8 +69,10 @@ class Handle(object):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
-        if u'你' in receiveContent:
+        if u'你' in receiveContent or u'我' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_me)
+        elif u'结婚' in receiveContent:
+            return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
 
