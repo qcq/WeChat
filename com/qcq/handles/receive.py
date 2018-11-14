@@ -50,9 +50,6 @@ class TextMsg(Msg):
         Msg.__init__(self, xmlData)
         self.MsgId = xmlData.find('MsgId').text
         self.Content = xmlData.find('Content').text.encode("utf-8")
-        
-    def getContent(self):
-        return self.Content
 
 
 class ImageMsg(Msg):

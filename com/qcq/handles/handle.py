@@ -50,7 +50,7 @@ class Handle(object):
                     return self.__dealTextMessage__(recMsg).send()
                 if recMsg.MsgType == 'image':
                     mediaId = recMsg.MediaId
-                    reply.ImageMsg(toUser, fromUser, mediaId).send()
+                    return reply.ImageMsg(toUser, fromUser, mediaId).send()
                 if recMsg.MsgType == 'event':
                     return u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
                 else:
@@ -65,12 +65,12 @@ class Handle(object):
     def __dealTextMessage__(self, recMsg):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
-        receiveContent = recMsg.getContent()
+        receiveContent = recMsg.Content
         if u'你' in receiveContent:
             mediaId = u'us79WMrDF_ujGvrA5fvMnAlawfw27AWsngXo07WQIuJqdiSApFfACo4Gi3HWHqSR'
-            reply.ImageMsg(toUser, fromUser, mediaId)
+            return reply.ImageMsg(toUser, fromUser, mediaId)
         else:
             content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
-            reply.TextMsg(toUser, fromUser, content)
+            return reply.TextMsg(toUser, fromUser, content)
             
 
