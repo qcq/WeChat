@@ -7,8 +7,8 @@ Created on 2018年11月13日
 '''
 import hashlib
 import web
-import com.qcq.handles.receive
-import com.qcq.handles.reply
+import com.qcq.handles.receive as receive
+import com.qcq.handles.reply as reply
 
 
 class Handle(object):
@@ -61,16 +61,15 @@ class Handle(object):
         except Exception, Argment:
             print 'Exception happened:', Argment
             return Argment
-        
+
     def __dealTextMessage__(self, recMsg):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
-        if u'你' in receiveContent:
+        if '你' in receiveContent:
             mediaId = u'us79WMrDF_ujGvrA5fvMnAlawfw27AWsngXo07WQIuJqdiSApFfACo4Gi3HWHqSR'
             return reply.ImageMsg(toUser, fromUser, mediaId)
         else:
             content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
             return reply.TextMsg(toUser, fromUser, content)
-            
 
