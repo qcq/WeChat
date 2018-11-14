@@ -54,6 +54,8 @@ class Handle(object):
                     mediaId = recMsg.MediaId
                     replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
                     return replyMsg.send()
+                if recMsg.MsgType == 'subscribe':
+                    return u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
                 else:
                     return reply.Msg().send()
             else:
