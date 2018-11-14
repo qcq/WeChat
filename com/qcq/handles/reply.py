@@ -12,10 +12,10 @@ import time
 class Msg(object):
 
     def __init__(self, toUserName, fromUserName):
-        self.__dict = dict()
-        self.__dict['ToUserName'] = toUserName
-        self.__dict['FromUserName'] = fromUserName
-        self.__dict['CreateTime'] = int(time.time())
+        self.dict = dict()
+        self.dict['ToUserName'] = toUserName
+        self.dict['FromUserName'] = fromUserName
+        self.dict['CreateTime'] = int(time.time())
 
     def send(self):
         return "success"
@@ -25,7 +25,7 @@ class TextMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, content):
         Msg.__init__(self, toUserName, fromUserName)
-        self.__dict['Content'] = content
+        self.dict['Content'] = content
 
     def send(self):
         XmlForm = u"""
@@ -37,14 +37,14 @@ class TextMsg(Msg):
         <Content><![CDATA[{Content}]]></Content>
         </xml>
         """
-        return XmlForm.format(**self.__dict)
+        return XmlForm.format(**self.dict)
 
 
 class ImageMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, mediaId):
         Msg.__init__(self, toUserName, fromUserName)
-        self.__dict['MediaId'] = mediaId
+        self.dict['MediaId'] = mediaId
 
     def send(self):
         XmlForm = u"""
@@ -58,4 +58,4 @@ class ImageMsg(Msg):
         </Image>
         </xml>
         """
-        return XmlForm.format(**self.__dict)
+        return XmlForm.format(**self.dict)
