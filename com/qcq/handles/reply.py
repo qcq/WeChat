@@ -11,8 +11,11 @@ import time
 
 class Msg(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, toUserName, fromUserName):
+        self.__dict = dict()
+        self.__dict['ToUserName'] = toUserName
+        self.__dict['FromUserName'] = fromUserName
+        self.__dict['CreateTime'] = int(time.time())
 
     def send(self):
         return "success"
@@ -21,10 +24,7 @@ class Msg(object):
 class TextMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, content):
-        self.__dict = dict()
-        self.__dict['ToUserName'] = toUserName
-        self.__dict['FromUserName'] = fromUserName
-        self.__dict['CreateTime'] = int(time.time())
+        Msg.__init__(toUserName, fromUserName)
         self.__dict['Content'] = content
 
     def send(self):
@@ -43,10 +43,7 @@ class TextMsg(Msg):
 class ImageMsg(Msg):
 
     def __init__(self, toUserName, fromUserName, mediaId):
-        self.__dict = dict()
-        self.__dict['ToUserName'] = toUserName
-        self.__dict['FromUserName'] = fromUserName
-        self.__dict['CreateTime'] = int(time.time())
+        Msg.__init__(toUserName, fromUserName)
         self.__dict['MediaId'] = mediaId
 
     def send(self):

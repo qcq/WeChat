@@ -47,21 +47,30 @@ class Handle(object):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if recMsg.MsgType == 'text':
-                    content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
-                    replyMsg = reply.TextMsg(toUser, fromUser, content)
-                    return replyMsg.send()
+                    return self.__dealTextMessage__(recMsg).send()
                 if recMsg.MsgType == 'image':
                     mediaId = recMsg.MediaId
-                    replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
-                    return replyMsg.send()
-                if recMsg.MsgType == 'subscribe':
+                    reply.ImageMsg(toUser, fromUser, mediaId).send()
+                if recMsg.MsgType == 'event':
                     return u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
                 else:
-                    return reply.Msg().send()
+                    return reply.Msg(toUser, fromUser).send()
             else:
                 print "暂且不处理"
-                return reply.Msg().send()
+                return reply.Msg(toUser, fromUser).send()
         except Exception, Argment:
             print 'Exception happened:', Argment
             return Argment
+        
+    def __dealTextMessage__(self, recMsg):
+        toUser = recMsg.FromUserName
+        fromUser = recMsg.ToUserName
+        receiveContent = recMsg.getContent()
+        if u'你' in receiveContent:
+            mediaId = u'us79WMrDF_ujGvrA5fvMnAlawfw27AWsngXo07WQIuJqdiSApFfACo4Gi3HWHqSR'
+            reply.ImageMsg(toUser, fromUser, mediaId)
+        else:
+            content = u"你好，我是你的老朋友，这是我开发的公众号。准备提供电子书服务，希望你喜欢。"
+            reply.TextMsg(toUser, fromUser, content)
+            
 
