@@ -66,7 +66,7 @@ class Handle(object):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
-        if '你' in receiveContent:
+        if u'你' in receiveContent:
             mediaId = u'us79WMrDF_ujGvrA5fvMnAlawfw27AWsngXo07WQIuJqdiSApFfACo4Gi3HWHqSR'
             return reply.ImageMsg(toUser, fromUser, mediaId)
         else:
