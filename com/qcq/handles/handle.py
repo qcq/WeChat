@@ -52,7 +52,8 @@ class Handle(object):
                     mediaId = recMsg.MediaId
                     return reply.ImageMsg(toUser, fromUser, mediaId).send()
                 if recMsg.MsgType == 'event':
-                    return u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
+                    content = u'欢迎你关注我的公众号，你一定是我的老朋友，我有酒你有故事吗。'
+                    return reply.TextMsg(toUser, fromUser, content).send()
                 else:
                     return reply.Msg(toUser, fromUser).send()
             else:
