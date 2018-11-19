@@ -74,6 +74,8 @@ class Handle(object):
         if u'你' in receiveContent or u'我' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_me)
         elif u'结婚' in receiveContent:
+            return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
+        elif u'风景' in receiveContent:
             self.__tryToUploadImage(media_id.married_image_path)
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         else:
