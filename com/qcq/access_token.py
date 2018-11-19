@@ -42,4 +42,4 @@ class Basic:
                 self.__real_get_access_token()
 
 
-Basic().get_access_token()
+#Basic().get_access_token()
