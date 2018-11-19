@@ -5,8 +5,6 @@ Created on 2018年11月13日
 
 @author: chuanqin
 '''
-
-from com.qcq.access_token import Basic
 import urllib2
 import poster.encode
 import json
@@ -43,7 +41,7 @@ class Media(object):
             mediaFile.write(mediaBuffer)
             print "get successful"
 
-
+'''
 if __name__ == '__main__':
     myMedia = Media()
     accessToken = Basic().get_access_token()
@@ -53,3 +51,4 @@ if __name__ == '__main__':
     # try get the uploaded images
     mediaId = "2ZsPnDj9XIQlGfws31MUfR5Iuz-rcn7F6LkX3NRCsw7nDpg2268e-dbGB67WWM-N"
     myMedia.get(accessToken, mediaId)
+'''
