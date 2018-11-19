@@ -11,6 +11,8 @@ import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
+import com.qcq.media as media
+import com.qcq.access_token as Basic
 import traceback
 
 
@@ -72,7 +74,12 @@ class Handle(object):
         if u'你' in receiveContent or u'我' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_me)
         elif u'结婚' in receiveContent:
+            self.__tryToUploadImage(media_id.married_image_path)
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
-
+    def __tryToUploadImage(self, path)
+        myMedia = media.Media()
+        accessToken = Basic().get_access_token()
+        mediaType = "image"
+        print myMedia.uplaod(accessToken, path, mediaType)
