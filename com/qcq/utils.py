@@ -16,7 +16,7 @@ if __name__ == '__main__':
     full_files = []
     for root, directory, files in os.walk("."):
         for fileName in files:
-            if str(fileName).upper().endswith('PY'):
+            if str(fileName).upper().endswith('PY') or str(fileName).upper().endswith('JPG'):
                 full_files.append(os.path.join(os.path.abspath(root), fileName))
     print 'will copy the files:', full_files, " to ", os.path.abspath(path)
 
