@@ -48,12 +48,12 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            print "Handle Post webdata is ", webData  # 后台打日志
             # dealing with repeat deal with message
             if webData not in dealing_message:
                 dealing_message.append(webData)
             else:
                 return
+            print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
@@ -70,6 +70,7 @@ class Handle(object):
             else:
                 print "暂且不处理"
                 return reply.Msg(toUser, fromUser).send()
+            dealing_message.remove(webData)
         except Exception, Argment:
             print 'Exception happened:', traceback.print_exc()
             return Argment
@@ -84,7 +85,7 @@ class Handle(object):
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         elif u'风景' in receiveContent:
             self.__tryToUploadImage(media_id.married_image_path)
-            return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
+            return reply.ImageMsg(toUser, fromUser, self.__tryToUploadImage(media_id.married_image_path))
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
         
