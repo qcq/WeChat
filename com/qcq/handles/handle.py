@@ -85,4 +85,4 @@ class Handle(object):
         myMedia = media.Media()
         accessToken = access_token.Basic().get_access_token()
         mediaType = "image"
-        print myMedia.uplaod(accessToken, path, mediaType)
+        print 'media_id is:', myMedia.uplaod(accessToken, path, mediaType)['media_id']
