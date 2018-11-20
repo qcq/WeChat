@@ -14,7 +14,9 @@ import com.qcq.const.message as message
 import com.qcq.media.media as media
 import com.qcq.access_token as access_token
 import traceback
+import json
 
+dealing_message = []
 
 class Handle(object):
 
@@ -47,6 +49,11 @@ class Handle(object):
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
+            # dealing with repeat deal with message
+            if webData not in dealing_message:
+                dealing_message.append(webData)
+            else:
+                return
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
@@ -85,4 +92,4 @@ class Handle(object):
         myMedia = media.Media()
         accessToken = access_token.Basic().get_access_token()
         mediaType = "image"
-        print 'media_id is:', myMedia.uplaod(accessToken, path, mediaType)['media_id']
+        return json.loads(myMedia.uplaod(accessToken, path, mediaType))['media_id']
