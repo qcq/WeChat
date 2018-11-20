@@ -26,10 +26,11 @@ This is my own **Official Account** for server side program. which main purpose 
 ## Encountered Problem
 1. because Tencent need the account to be verified to get more privilege to use more professional API(need money, I hate it), which limit the function of this official account. take upload media as example, with privilege can upload matrials in forever mode, without this the upload media can only keep 3 days for it.
 
-   operation:
+   *operation:*
 
-   1. when get the picture, first to upload, then get the media_id, then give back the user wanted picture, but failed with the reason of take too much time, which cause **The Official Account is temporarily unavailable. Try again later.**
-   2. have to try the second way, start a thread in background with a cycle to upload media, then update corresponding media_id which list in code, then can solve this question.
+   1. when get the picture, first to upload, then get the media_id, then give back the user wanted picture, but failed with the reason of take too much time, which cause **The Official Account is temporarily unavailable. Try again later.** display on Official Account.
+   2. The reason of above issue --- Official Account will request in timeout of 5s, if server not response, Tencent will sent 3-request in sequence, which not in interval of 5s again. if not reponse with these 3 request, **The Official Account is temporarily unavailable. Try again later. ** will be display in Official Account, So code should reponse "success" for Tencent's request.
+   3. have to try the second way, start a thread in background with a cycle to upload media, then update corresponding media_id which list in code, then can solve this question.
 
 ## The work under doing
 
