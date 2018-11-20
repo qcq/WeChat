@@ -11,7 +11,7 @@ import json
 import poster.encode
 from poster.streaminghttp import register_openers
 
-from com.qcq.access_token import Basic
+from com.qcq.access_token import Token
 
 
 class Material(object):
@@ -72,7 +72,7 @@ class Material(object):
 
 if __name__ == '__main__':
     myMaterial = Material()
-    accessToken = Basic().get_access_token()
+    accessToken = Token().get_access_token()
     news = (
     {
         "articles":

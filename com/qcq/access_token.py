@@ -7,11 +7,13 @@ Created on 2018年11月13日
 '''
 
 import urllib
-import time
 import json
+import threading
+import time
 
+accessToken = ''
 
-class Basic:
+class Token(threading.Thread):
 
     def __init__(self):
         self.__accessToken = ''
@@ -23,15 +25,8 @@ class Basic:
         postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(str(urlResp.read()))
-        self.__accessToken = urlResp['access_token']
+        accessToken = urlResp['access_token']
         self.__leftTime = urlResp['expires_in']
-
-    def get_access_token(self):
-        # if self.__leftTime < 10:
-        self.__real_get_access_token()
-        print 'access_token', self.__accessToken
-        print 'expires_in', self.__leftTime
-        return self.__accessToken
 
     def run(self):
         while(True):
@@ -39,7 +34,10 @@ class Basic:
                 time.sleep(2)
                 self.__leftTime -= 2
             else:
+                rLock = threading.RLock()  #RLock对象
                 self.__real_get_access_token()
+                print 'trying update the token:', accessToken, ' with time left:', self.__leftTime
+                rLock.acquire()
 
 
-#Basic().get_access_token()
+#Token().get_access_token()

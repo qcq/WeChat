@@ -91,6 +91,5 @@ class Handle(object):
         
     def __tryToUploadImage(self, path):
         myMedia = media.Media()
-        accessToken = access_token.Basic().get_access_token()
         mediaType = "image"
-        return json.loads(myMedia.uplaod(accessToken, path, mediaType))['media_id']
+        return json.loads(myMedia.uplaod(access_token.accessToken, path, mediaType))['media_id']
