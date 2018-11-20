@@ -84,8 +84,8 @@ class Handle(object):
         elif u'结婚' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         elif u'风景' in receiveContent:
-            self.__tryToUploadImage(media_id.married_image_path)
-            return reply.ImageMsg(toUser, fromUser, self.__tryToUploadImage(media_id.married_image_path))
+            media_id = self.__tryToUploadImage(media_id.married_image_path)
+            return reply.ImageMsg(toUser, fromUser, media_id)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
         
