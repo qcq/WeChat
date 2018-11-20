@@ -18,7 +18,20 @@ This is my own **Official Account** for server side program. which main purpose 
 4. to the direction of micro-service architecture evolution.
 
 
-## note:
+## Note:
 1. because I am new person to this area, so reference the below link code and doc.
    https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1472017492_58YV5
 2. if you really interested in my account**杂感123**, please follow it, and take an eye on this site's change.
+
+## Encountered Problem
+1. because Tencent need the account to be verified to get more privilege to use more professional API(need money, I hate it), which limit the function of this official account. take upload media as example, with privilege can upload matrials in forever mode, without this the upload media can only keep 3 days for it.
+
+   operation:
+
+   1. when get the picture, first to upload, then get the media_id, then give back the user wanted picture, but failed with the reason of take too much time, which cause **The Official Account is temporarily unavailable. Try again later.**
+   2. have to try the second way, start a thread in background with a cycle to upload media, then update corresponding media_id which list in code, then can solve this question.
+
+## The work under doing
+
+1. set get_access_token as one single thread, which as single service to supply the **access_token**.
+2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures.

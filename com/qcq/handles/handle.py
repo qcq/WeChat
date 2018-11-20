@@ -48,16 +48,16 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            # dealing with repeat deal with message
-            if webData not in dealing_message:
-                dealing_message.append(webData)
-            else:
-                return
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
+                # dealing with repeat deal with message
+                if webData not in dealing_message:
+                    dealing_message.append(webData)
+                else:
+                    return reply.Msg(toUser, fromUser).send()
                 if recMsg.MsgType == 'text':
                     return self.__dealTextMessage__(recMsg).send()
                 if recMsg.MsgType == 'image':
@@ -84,8 +84,8 @@ class Handle(object):
         elif u'结婚' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         elif u'风景' in receiveContent:
-            media_id = self.__tryToUploadImage(media_id.married_image_path)
-            return reply.ImageMsg(toUser, fromUser, media_id)
+            media_id_temp = self.__tryToUploadImage(media_id.married_image_path)
+            return reply.ImageMsg(toUser, fromUser, media_id_temp)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
         
