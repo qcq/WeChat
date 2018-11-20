@@ -14,12 +14,14 @@ import time
 accessToken = ''
 
 class Token(threading.Thread):
-
+    
     def __init__(self):
+        threading.Thread.__init__(self)
         self.__accessToken = ''
         self.__leftTime = 0
 
     def __real_get_access_token(self):
+        global accessToken
         appId = "wxc8e1042108b2b99b"
         appSecret = "90fb2ccd466038eb5ddb996473893658"
         postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
@@ -30,6 +32,7 @@ class Token(threading.Thread):
 
     def run(self):
         while(True):
+            global accessToken
             if self.__leftTime > 10:
                 time.sleep(2)
                 self.__leftTime -= 2
