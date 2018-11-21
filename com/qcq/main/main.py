@@ -17,6 +17,6 @@ urls = (
 if __name__ == '__main__':
     t = access_token.Token()
     t.start()
-    t.join()
     app = web.application(urls, globals())
     app.run()
+    t.join()
