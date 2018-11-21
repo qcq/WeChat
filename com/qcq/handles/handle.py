@@ -18,6 +18,7 @@ import json
 
 dealing_message = []
 
+
 class Handle(object):
 
     def GET(self):
@@ -88,7 +89,7 @@ class Handle(object):
             return reply.ImageMsg(toUser, fromUser, media_id_temp)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
-        
+
     def __tryToUploadImage(self, path):
         myMedia = media.Media()
         mediaType = "image"

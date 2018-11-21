@@ -13,8 +13,9 @@ import time
 
 accessToken = ''
 
+
 class Token(threading.Thread):
-    
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.__accessToken = ''
@@ -37,11 +38,11 @@ class Token(threading.Thread):
                 time.sleep(2)
                 self.__leftTime -= 2
             else:
-                rLock = threading.RLock()  #RLock对象
+                rLock = threading.RLock()  # RLock对象
                 rLock.acquire()
-                self.__real_get_access_token()
                 print 'trying update the token:', accessToken, ' with time left:', self.__leftTime
+                self.__real_get_access_token()
+                print 'update the token succeed:', accessToken, ' with time left:', self.__leftTime
                 rLock.release()
 
-
-#Token().get_access_token()
+# Token().get_access_token()
