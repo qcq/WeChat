@@ -15,7 +15,8 @@ This is my own **Official Account** for server side program. which main purpose 
 1. need add log system which can indicate the issue.
 2. add web spider to grab the e-book from other web site(outer site).
 3. add docker, which can support redis or leveldb or mysql to store the data. 
-4. to the direction of micro-service architecture evolution.
+4. to the direction of **micro-service architecture** evolution. https://linux.cn/article-7584-1.html
+5. need db as a bridge to communicte between threads, in current situation can use simple *shared data* to communicate with each other, should consider communicate **by DB or micro-service**.  
 
 
 ## Note:
@@ -34,5 +35,15 @@ This is my own **Official Account** for server side program. which main purpose 
 
 ## The work under doing
 
-1. set get_access_token as one single thread, which as single service to supply the **access_token**.
-2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures.
+1. set get_access_token as one single thread, which as single service to supply the **access_token**. *Done*
+2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures. *Ready To Do*
+
+## Related Technologies
+
+1. **Flask**
+2. **Mysql**
+3. **Redis**
+4. **MessageQueue**, such as **RabbitMQ**
+5. **multi-thread** or **multi-process**
+6. **Restful-API**
+7. **Micro-service**
