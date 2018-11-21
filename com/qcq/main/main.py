@@ -31,6 +31,5 @@ if __name__ == '__main__':
         t.start()
         app = web.application(urls, globals())
         app.run()
-        t.join()
     except Exception, exc:
         print exc
