@@ -10,7 +10,7 @@ import sys
 import web
 
 render = web.template.render(os.path.dirname(sys.argv[0]) + '../templates/')
-db = web.database(dbn='mysql', user='root', pw='root', db='ebook')
+db = web.database(dbn='postgres', user='postgres', pw='root', db='ebook')
 
 class Index:
     def GET(self):
