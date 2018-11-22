@@ -10,8 +10,12 @@ import sys
 import web
 
 render = web.template.render(os.path.dirname(sys.argv[0]) + '../templates/')
+db = web.database(dbn='mysql', user='root', pw='root', db='ebook')
 
 class Index:
     def GET(self):
-        i = web.input(name=None)
-        return render.index(i.name)
+        webData = web.input(name=None)
+        if webData:
+            return render.index(webData.name)
+        else:
+            return render.index(db.select('todo'))
