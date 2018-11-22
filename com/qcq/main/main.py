@@ -9,6 +9,7 @@ Created on 2018年11月13日
 import web
 import sys
 from com.qcq.handles.handle import Handle
+from com.qcq.handles.index import Index
 import com.qcq.access_token as access_token
 import signal
 
@@ -20,6 +21,7 @@ def quit(signum, frame):
 
 urls = (
     '/wx', 'Handle',
+    '/' 'Index'
 )
 
 if __name__ == '__main__':
