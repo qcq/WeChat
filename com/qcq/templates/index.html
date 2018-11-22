@@ -1,9 +1,9 @@
-$def with (name)
+$def with (name, todos)
 
 $if name:
     <h1>I just wanted to say <em>hello</em> to $name.</h1>
 $else:
     <ul>
-	$for todo in name:
+	$for todo in todos:
 	    <li id="t$todo.id">$todo.title</li>
 	</ul>
