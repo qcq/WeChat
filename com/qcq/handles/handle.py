@@ -87,6 +87,8 @@ class Handle(object):
         elif u'风景' in receiveContent:
             media_id_temp = self.__tryToUploadImage(media_id.married_image_path)
             return reply.ImageMsg(toUser, fromUser, media_id_temp)
+        elif u'链接' in receiveContent:
+            return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
 
