@@ -21,7 +21,7 @@ def quit(signum, frame):
 
 urls = (
     '/wx', 'Handle',
-    '/' 'Index'
+    '/', 'Index'
 )
 
 if __name__ == '__main__':
