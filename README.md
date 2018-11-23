@@ -12,7 +12,7 @@ This is my own **Official Account** for server side program. which main purpose 
 
 ## The Task under plan
 
-1. need add log system which can indicate the issue.
+1. need add log system which can indicate the issue.[logging](https://www.cnblogs.com/yyds/p/6901864.html)
 2. add web spider to grab the e-book from other web site(outer site).
 3. add docker, which can support redis or leveldb or mysql to store the data. **done by docker with postgres**
 4. to the direction of **micro-service architecture** evolution. https://linux.cn/article-7584-1.html

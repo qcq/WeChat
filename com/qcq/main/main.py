@@ -8,6 +8,7 @@ Created on 2018年11月13日
 
 import signal
 import sys
+import logging
 
 import com.qcq.access_token as access_token
 from com.qcq.handles.add import Add
@@ -15,6 +16,10 @@ from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index
 import web
 
+
+LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
+DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
+LOG_FILE_NAME = r'/home/chuanqin/log.txt'
 
 def quit(signum, frame):
     print 'You are in the process of shutting down the server.'
@@ -29,12 +34,16 @@ urls = (
 
 if __name__ == '__main__':
     try:
+        logging.basicConfig(filename='my.log', \
+            level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT, filename=LOG_FILE_NAME)
         signal.signal(signal.SIGINT, quit)
         signal.signal(signal.SIGTERM, quit)
         t = access_token.Token()
         t.setDaemon(True)
         t.start()
+        logging.info("server's get access token thread is runing in Daemon mode.")
         app = web.application(urls, globals())
+        logging.info("server is ready to provide the service.")
         app.run()
     except Exception, exc:
         print exc
