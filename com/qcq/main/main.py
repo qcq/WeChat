@@ -21,8 +21,8 @@ def quit(signum, frame):
 
 
 urls = (
-    '/', 'Index'
-    '/add', 'Add'
+    '/', 'Index',
+    '/add', 'Add',
     '/wx', 'Handle',
 )
 
