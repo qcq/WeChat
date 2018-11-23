@@ -10,6 +10,7 @@ import web
 import sys
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index
+from com.qcq.handles.add import Add
 import com.qcq.access_token as access_token
 import signal
 
@@ -20,8 +21,9 @@ def quit(signum, frame):
 
 
 urls = (
-    '/wx', 'Handle',
     '/', 'Index'
+    '/add', 'Add'
+    '/wx', 'Handle',
 )
 
 if __name__ == '__main__':

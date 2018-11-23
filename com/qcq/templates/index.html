@@ -7,3 +7,8 @@ $else:
 	$for todo in todos:
 	    <li id="t$todo.id">$todo.title</li>
 	</ul>
+	<form method="post" action="add">
+		<p>
+			<input type="text" name="title" /> <input type="submit" value="Add" />
+		</p>
+	</form>
