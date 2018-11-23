@@ -10,7 +10,7 @@ import web
 import com.qcq.const.webconst as webconst
 
 
-class add:
+class Add:
 
     def POST(self):
         i = web.input()
