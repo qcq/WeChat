@@ -8,6 +8,7 @@ Created on 2018年11月13日
 import hashlib
 import json
 import traceback
+import logging
 
 import com.qcq.access_token as access_token
 import com.qcq.const.media_id as media_id
@@ -51,7 +52,7 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            print "Handle Post webdata is ", webData  # 后台打日志
+            logging.info('%s%s'%("Handle Post webdata is ", webData))
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName

@@ -34,8 +34,7 @@ urls = (
 
 if __name__ == '__main__':
     try:
-        logging.basicConfig(filename='my.log', \
-            level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT, filename=LOG_FILE_NAME)
+        logging.basicConfig(filename=LOG_FILE_NAME, level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT)
         signal.signal(signal.SIGINT, quit)
         signal.signal(signal.SIGTERM, quit)
         t = access_token.Token()
