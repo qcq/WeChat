@@ -7,8 +7,8 @@ Created on 2018年11月13日
 '''
 import hashlib
 import json
-import traceback
 import logging
+import traceback
 
 import com.qcq.access_token as access_token
 import com.qcq.const.media_id as media_id
@@ -17,7 +17,6 @@ import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 import com.qcq.media.media as media
 import web
-
 
 dealing_message = []
 
@@ -52,7 +51,7 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            logging.info('%s%s'%("Handle Post webdata is ", webData))
+            logging.info('%s%s' % ("Handle Post webdata is ", webData))
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName

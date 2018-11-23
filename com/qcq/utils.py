@@ -13,7 +13,6 @@ if not should add this whole project in PATH evn.
 import shutil
 import sys, os
 
-
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'please input where do you want to copy these files.'

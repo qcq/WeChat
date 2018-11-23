@@ -7,10 +7,10 @@ Created on 2018年11月13日
 '''
 
 import json
+import logging
 import threading
 import time
 import urllib
-
 
 accessToken = ''
 
@@ -42,8 +42,10 @@ class Token(threading.Thread):
                 rLock = threading.RLock()  # RLock对象
                 rLock.acquire()
                 print 'trying update the token:', accessToken, ' with time left:', self.__leftTime
+                logging.info('%s%s%s%s' % ('trying update the token:', accessToken, ' with time left:', self.__leftTime))
                 self.__real_get_access_token()
                 print 'update the token succeed:', accessToken, ' with time left:', self.__leftTime
+                logging.info('%s%s%s%s' % ('update the token succeed:', accessToken, ' with time left:', self.__leftTime))
                 rLock.release()
 
 # Token().get_access_token()
