@@ -6,15 +6,17 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 import hashlib
-import web
-import com.qcq.handles.receive as receive
-import com.qcq.handles.reply as reply
+import json
+import traceback
+
+import com.qcq.access_token as access_token
 import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
+import com.qcq.handles.receive as receive
+import com.qcq.handles.reply as reply
 import com.qcq.media.media as media
-import com.qcq.access_token as access_token
-import traceback
-import json
+import web
+
 
 dealing_message = []
 

@@ -6,12 +6,12 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
-import urllib2
 import json
-import poster.encode
-from poster.streaminghttp import register_openers
 
 from com.qcq.access_token import Token
+import poster.encode
+from poster.streaminghttp import register_openers
+import urllib2
 
 
 class Material(object):

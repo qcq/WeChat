@@ -10,8 +10,9 @@ if not should add this whole project in PATH evn.
 @author: chuanqin
 '''
 
-import sys, os
 import shutil
+import sys, os
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

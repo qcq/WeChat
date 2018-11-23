@@ -6,8 +6,8 @@ Created on Nov 23, 2018
 @author: qinchuanqing
 '''
 
-import web
 import com.qcq.const.webconst as webconst
+import web
 
 
 class Add:

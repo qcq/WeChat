@@ -6,13 +6,14 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
-import web
+import signal
 import sys
+
+import com.qcq.access_token as access_token
+from com.qcq.handles.add import Add
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index
-from com.qcq.handles.add import Add
-import com.qcq.access_token as access_token
-import signal
+import web
 
 
 def quit(signum, frame):

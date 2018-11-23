@@ -6,10 +6,11 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
-import urllib
 import json
 import threading
 import time
+import urllib
+
 
 accessToken = ''
 
