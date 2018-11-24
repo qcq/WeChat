@@ -10,13 +10,14 @@ import json
 import logging
 import traceback
 
+import web
+
 import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
 import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 import com.qcq.media.media as media
-import web
 
 dealing_message = []
 
@@ -88,14 +89,9 @@ class Handle(object):
         elif u'结婚' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_married)
         elif u'风景' in receiveContent:
-            media_id_temp = self.__tryToUploadImage(media_id.married_image_path)
+            media_id_temp = media_id.getPictureByName('married')['media_id']
             return reply.ImageMsg(toUser, fromUser, media_id_temp)
         elif u'链接' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
-
-    def __tryToUploadImage(self, path):
-        myMedia = media.Media()
-        mediaType = "image"
-        return json.loads(myMedia.uplaod(webconst.accessToken, path, mediaType))['media_id']

@@ -6,6 +6,7 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 import json
+import logging
 import threading
 import time
 import urllib2
@@ -22,9 +23,9 @@ class Media(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         register_openers()
+        self.__leftTime = 1
 
-    # 上传图片
-    def uplaod(self, accessToken, filePath, mediaType):
+    def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
         param = {'media': openFile}
         postData, postHeaders = poster.encode.multipart_encode(param)
@@ -51,10 +52,17 @@ class Media(threading.Thread):
     def run(self):
         while(True):
             if webconst.accessToken:
-                for item in media_id.picturesData:
-                    result = self.upload(webconst.accessToken, item['path'], 'image')
-                    print result
-                time.sleep(10)
+                if self.__leftTime > 0:
+                    time.sleep(60)
+                    self.__leftTime -= 60
+                else:
+                    for item in media_id.picturesData:
+                        result = json.loads(self.upload(webconst.accessToken, item['path'], 'image'))
+                        item['mdia_id'] = result['media_id']
+                        item['created_at'] = result['created_at']
+                        print 'upload image', item['path'], result
+                        logging.info('upload image', item['path'], result)
+                        self.__leftTime = 3 * 24 * 60 * 60
             else:
                 time.sleep(1)
 
