@@ -86,7 +86,7 @@ class Handle(object):
         receiveContent = recMsg.Content
         media_id_temp = media_id.getPictureByName(receiveContent)
         if media_id_temp:
-            return reply.ImageMsg(toUser, fromUser, media_id_temp)
+            return reply.ImageMsg(toUser, fromUser, media_id_temp['media_id'])
         if u'你' in receiveContent or u'我' in receiveContent:
             return reply.ImageMsg(toUser, fromUser, media_id.media_id_me)
         elif u'结婚' in receiveContent:
