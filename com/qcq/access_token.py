@@ -11,9 +11,7 @@ import logging
 import threading
 import time
 import urllib
-
-
-accessToken = ''
+import com.qcq.const.webconst as webconst 
 
 
 class Token(threading.Thread):
@@ -23,30 +21,30 @@ class Token(threading.Thread):
         self.__accessToken = ''
         self.__leftTime = 0
 
-    def __real_get_access_token(self):
-        global accessToken
+    def __realGetAccessToken(self):
+        global webconst.accessToken
         appId = "wxc8e1042108b2b99b"
         appSecret = "90fb2ccd466038eb5ddb996473893658"
         postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(str(urlResp.read()))
-        accessToken = urlResp['access_token']
+        webconst.accessToken = urlResp['access_token']
         self.__leftTime = urlResp['expires_in']
 
     def run(self):
         while(True):
-            global accessToken
+            global webconst.accessToken
             if self.__leftTime > 10:
                 time.sleep(2)
                 self.__leftTime -= 2
             else:
                 rLock = threading.RLock()  # RLock对象
                 rLock.acquire()
-                print 'trying update the token:', accessToken, ' with time left:', self.__leftTime
-                logging.info('%s%s%s%s' % ('trying update the token:', accessToken, ' with time left:', self.__leftTime))
-                self.__real_get_access_token()
-                print 'update the token succeed:', accessToken, ' with time left:', self.__leftTime
-                logging.info('%s%s%s%s' % ('update the token succeed:', accessToken, ' with time left:', self.__leftTime))
+                print 'trying update the token:', webconst.accessToken, ' with time left:', self.__leftTime
+                logging.info('%s%s%s%s' % ('trying update the token:', webconst.accessToken, ' with time left:', self.__leftTime))
+                self.__realGetAccessToken()
+                print 'update the token succeed:', webconst.accessToken, ' with time left:', self.__leftTime
+                logging.info('%s%s%s%s' % ('update the token succeed:', webconst.accessToken, ' with time left:', self.__leftTime))
                 rLock.release()
 
 # Token().get_access_token()

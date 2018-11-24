@@ -10,14 +10,13 @@ import json
 import logging
 import traceback
 
-import com.qcq.access_token as access_token
 import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
+import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 import com.qcq.media.media as media
 import web
-
 
 dealing_message = []
 
@@ -99,4 +98,4 @@ class Handle(object):
     def __tryToUploadImage(self, path):
         myMedia = media.Media()
         mediaType = "image"
-        return json.loads(myMedia.uplaod(access_token.accessToken, path, mediaType))['media_id']
+        return json.loads(myMedia.uplaod(webconst.accessToken, path, mediaType))['media_id']

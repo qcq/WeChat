@@ -6,15 +6,17 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 import json
+import threading
 
 import poster.encode
 from poster.streaminghttp import register_openers
 import urllib2
 
 
-class Media(object):
+class Media(threading.Thread):
 
     def __init__(self):
+        threading.Thread.__init__(self)
         register_openers()
 
     # 上传图片
