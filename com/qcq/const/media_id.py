@@ -16,7 +16,7 @@ married_image_path = r"./pictures/married.jpg"
 picturesPath = os.path.dirname(sys.argv[0]) + '../pictures/'
 
 picturesData = []
-for picture in utils.findFilesEndsWith('JPG'):
+for picture in utils.findFilesEndsWith(picturesPath, 'JPG'):
     temp = {}
     name = os.path.basename(picture).split('.')[0]
     temp['name'] = name
