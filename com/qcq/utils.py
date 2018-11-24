@@ -13,6 +13,22 @@ if not should add this whole project in PATH evn.
 import shutil
 import sys, os
 
+
+def findFilesEndsWith(suffix):
+    sourceFiles = []
+    for root, directory, files in os.walk("."):
+        for fileName in files:
+            if str(fileName).upper().endswith(suffix):
+                sourceFiles.append(os.path.join(os.path.abspath(root), fileName))
+    return sourceFiles
+
+
+def copyFilesToDst(files, dst):
+    for fileName in files:
+        print 'copying', fileName, 'to', path
+        shutil.copy2(fileName, dst)
+
+
 def countSourceCodeLine(files):
     counter = {}
     for file in files:
@@ -21,7 +37,7 @@ def countSourceCodeLine(files):
             comment = False
             for line in f:
                 line = line.strip()
-                if line != '':
+                if line and not line.startswith('#'):
                     if comment and line != r"'''":
                         continue
                     if not comment and line == r"'''" :
@@ -31,47 +47,37 @@ def countSourceCodeLine(files):
                         comment = False
                         continue
                     counter[file] += 1
-    
+
     source_file_code = 0
     for file_name, line_numbers in counter.items():
         print file_name, 'contains', line_numbers, 'line codes'
         source_file_code += line_numbers
     print 'This project contains', source_file_code, 'line codes.'
-                    
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'please input where do you want to copy these files.'
         sys.exit()
     path = sys.argv[1]
-    sourceFiles = []
-    pictureFiles = []
-    for root, directory, files in os.walk("."):
-        for fileName in files:
-            if str(fileName).upper().endswith('PY'):
-                sourceFiles.append(os.path.join(os.path.abspath(root), fileName))
-            if str(fileName).upper().endswith('JPG'):
-                pictureFiles.append(os.path.join(os.path.abspath(root), fileName))
+    sourceFiles = findFilesEndsWith('PY')
+    pictureFiles = findFilesEndsWith('JPG')
     print 'will copy the files:', sourceFiles, " to ", os.path.abspath(path)
     '''
     put the python source code to sys.argv[1] path.
     '''
-    for fileName in sourceFiles:
-        print 'copying', fileName, 'to', path
-        shutil.copy2(fileName, path)
+    copyFilesToDst(sourceFiles, path)
 
     '''
     put the jpg file to sys.argv[1]/pictures path
     '''
-    picture_path = os.path.join(os.path.abspath(path), 'pictures')
-    if os.path.exists(picture_path):
-        print picture_path, 'exist, will delete it first.'
-        shutil.rmtree(picture_path, ignore_errors=True)
+    picturePath = os.path.join(os.path.abspath(path), 'pictures')
+    if os.path.exists(picturePath):
+        print picturePath, 'exist, will delete it first.'
+        shutil.rmtree(picturePath, ignore_errors = True)
     os.mkdir(os.path.join(os.path.abspath(path), 'pictures'))
-    print 'create folder', picture_path
-    print 'will copy the files:', pictureFiles, " to ", os.path.abspath(picture_path)
-    for fileName in pictureFiles:
-        print 'copying', fileName, 'to', path
-        shutil.copy2(fileName, picture_path)
-    
+    print 'create folder', picturePath
+    print 'will copy the files:', pictureFiles, " to ", os.path.abspath(picturePath)
+    copyFilesToDst(pictureFiles, picturePath)
+
     countSourceCodeLine(sourceFiles)

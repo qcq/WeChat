@@ -11,10 +11,8 @@ import signal
 import sys
 
 import com.qcq.access_token as access_token
-from com.qcq.handles.add import Add
-from com.qcq.handles.handle import Handle
-from com.qcq.handles.index import Index
 import web
+
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
@@ -34,7 +32,7 @@ urls = (
 
 if __name__ == '__main__':
     try:
-        logging.basicConfig(filename=LOG_FILE_NAME, level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT)
+        logging.basicConfig(filename = LOG_FILE_NAME, level = logging.INFO, format = LOG_FORMAT, datefmt = DATE_FORMAT)
         signal.signal(signal.SIGINT, quit)
         signal.signal(signal.SIGTERM, quit)
         t = access_token.Token()

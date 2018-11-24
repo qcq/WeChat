@@ -18,6 +18,7 @@ import com.qcq.handles.reply as reply
 import com.qcq.media.media as media
 import web
 
+
 dealing_message = []
 
 
@@ -76,7 +77,7 @@ class Handle(object):
             dealing_message.remove(webData)
         except Exception, Argment:
             print 'Exception happened:', traceback.print_exc()
-            logging.warn('Exception happened:%s'%traceback.print_exc(), exc_info=True, stack_info=True)
+            logging.warn('Exception happened:%s' % traceback.print_exc(), exc_info = True, stack_info = True)
             return Argment
 
     def __dealTextMessage__(self, recMsg):
