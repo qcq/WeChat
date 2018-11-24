@@ -10,9 +10,13 @@ import logging
 import signal
 import sys
 
-import com.qcq.access_token as access_token
 import web
 
+import com.qcq.access_token as access_token
+from com.qcq.handles.add import Add
+from com.qcq.handles.handle import Handle
+from com.qcq.handles.index import Index
+import com.qcq.media.media as media
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
@@ -39,8 +43,13 @@ if __name__ == '__main__':
         t.setDaemon(True)
         t.start()
         logging.info("server's get access token thread is runing in Daemon mode.")
+        uploadPicture = media.Media()
+        uploadPicture.setDaemon(True)
+        uploadPicture.start()
+        logging.info("server is running to upload pictures to tencent.")
         app = web.application(urls, globals())
         logging.info("server is ready to provide the service.")
+
         app.run()
     except Exception, exc:
         print exc

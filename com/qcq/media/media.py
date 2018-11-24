@@ -7,10 +7,14 @@ Created on 2018年11月13日
 '''
 import json
 import threading
+import time
+import urllib2
 
 import poster.encode
 from poster.streaminghttp import register_openers
-import urllib2
+
+import com.qcq.const.media_id as media_id
+import com.qcq.const.webconst as webconst
 
 
 class Media(threading.Thread):
@@ -43,6 +47,16 @@ class Media(threading.Thread):
             mediaFile = file("test_media.jpg", "wb")
             mediaFile.write(mediaBuffer)
             print "get successful"
+
+    def run(self):
+        while(True):
+            if webconst.accessToken:
+                for item in media_id.picturesData:
+                    result = self.upload(webconst.accessToken, item['path'], 'image')
+                    print result
+                time.sleep(10)
+            else:
+                time.sleep(1)
 
 '''
 if __name__ == '__main__':

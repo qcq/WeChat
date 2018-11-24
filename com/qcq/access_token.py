@@ -11,7 +11,7 @@ import logging
 import threading
 import time
 import urllib
-import com.qcq.const.webconst as webconst 
+import com.qcq.const.webconst as webconst
 
 
 class Token(threading.Thread):
@@ -22,7 +22,6 @@ class Token(threading.Thread):
         self.__leftTime = 0
 
     def __realGetAccessToken(self):
-        global webconst.accessToken
         appId = "wxc8e1042108b2b99b"
         appSecret = "90fb2ccd466038eb5ddb996473893658"
         postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
@@ -33,7 +32,6 @@ class Token(threading.Thread):
 
     def run(self):
         while(True):
-            global webconst.accessToken
             if self.__leftTime > 10:
                 time.sleep(2)
                 self.__leftTime -= 2
