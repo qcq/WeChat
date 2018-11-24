@@ -61,19 +61,7 @@ class Media(threading.Thread):
                         item['mdia_id'] = result['media_id']
                         item['created_at'] = result['created_at']
                         print 'upload image', item['path'], result
-                        logging.info('upload image', item['path'], result)
+                        logging.info("%s %s %" % ('upload image', item['path'], result))
                         self.__leftTime = 3 * 24 * 60 * 60
             else:
                 time.sleep(1)
-
-'''
-if __name__ == '__main__':
-    myMedia = Media()
-    accessToken = Basic().get_access_token()
-    filePath = "D:/code/mpGuide/media/test.jpg"  # 请安实际填写
-    mediaType = "image"
-    myMedia.uplaod(accessToken, filePath, mediaType)
-    # try get the uploaded images
-    mediaId = "2ZsPnDj9XIQlGfws31MUfR5Iuz-rcn7F6LkX3NRCsw7nDpg2268e-dbGB67WWM-N"
-    myMedia.get(accessToken, mediaId)
-'''
