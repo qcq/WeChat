@@ -23,7 +23,7 @@ class Media(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         register_openers()
-        self.__leftTime = 1
+        self.__leftTime = 0
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")

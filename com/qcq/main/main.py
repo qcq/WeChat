@@ -15,7 +15,7 @@ import web
 import com.qcq.access_token as access_token
 from com.qcq.handles.add import Add
 from com.qcq.handles.handle import Handle
-from com.qcq.handles.index import Index
+from com.qcq.handles.index import Index, Delete
 import com.qcq.media.media as media
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
@@ -32,6 +32,7 @@ urls = (
     '/', 'Index',
     '/add', 'Add',
     '/wx', 'Handle',
+    '/del/(\d+)', 'Delete'
 )
 
 if __name__ == '__main__':

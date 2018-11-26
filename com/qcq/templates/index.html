@@ -1,14 +1,21 @@
-$def with (name, todos)
+$def with (todos, form)
 
-$if name:
-    <h1>I just wanted to say <em>hello</em> to $name.</h1>
-$else:
-    <ul>
-	$for todo in todos:
-	    <li id="t$todo.id">$todo.title</li>
-	</ul>
-	<form method="post" action="add">
-		<p>
-			<input type="text" name="title" /> <input type="submit" value="Add" />
-		</p>
-	</form>
+<table>
+    <tr>
+        <th>What to do ?</th>
+        <th></th>
+    </tr>
+$for todo in todos:
+    <tr>
+        <td>$todo.title</td>
+        <td>
+            <form action="/del/$todo.id" method="post">
+                <input type="submit" value="Delete"/>
+            </form>
+        </td>
+    </tr>    
+</table>  
+
+<form action="" method="post">
+$:form.render()
+</form>

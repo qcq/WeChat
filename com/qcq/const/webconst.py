@@ -10,7 +10,15 @@ import sys
 
 import web
 
-render = web.template.render(os.path.dirname(sys.argv[0]) + '../templates/')
-db = web.database(dbn = 'postgres', user = 'postgres', host = "172.17.0.4", pw = 'root', db = 'ebook')
-
+render = web.template.render(os.path.dirname(sys.argv[0]) + '../templates/', base = 'base')
+db = web.database(dbn = 'postgres', user = 'postgres', host = "172.17.0.2", pw = 'root', db = 'ebook')
 accessToken = ''
+
+def get_todos():
+    return db.select('todo', order='id')
+
+def new_todo(text):
+    db.insert('todo', title=text)
+
+def del_todo(id):
+    db.delete('todo', where="id=$id", vars=locals())
