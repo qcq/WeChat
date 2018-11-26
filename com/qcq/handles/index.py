@@ -13,8 +13,8 @@ import web
 class Index:
 
     form = web.form.Form(
-        web.form.Textbox('title', web.form.notnull, 
-            description="I need to:"),
+        web.form.Textbox('title', web.form.notnull,
+            description = "I need to:"),
         web.form.Button('Add todo'),
     )
 
@@ -34,9 +34,8 @@ class Index:
         raise web.seeother('/')
 
 
-
 class Delete:
-    
+
     def POST(self, id):
         """ Delete based on ID """
         id = int(id)

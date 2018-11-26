@@ -18,7 +18,7 @@ def findFilesEndsWith(path, suffix):
     sourceFiles = []
     for root, directory, files in os.walk(path):
         for fileName in files:
-            if str(fileName).upper().endswith(suffix):
+            if fileName.upper().endswith(suffix):
                 sourceFiles.append(os.path.join(os.path.abspath(root), fileName))
     return sourceFiles
 
@@ -60,8 +60,8 @@ if __name__ == '__main__':
         print 'please input where do you want to copy these files.'
         sys.exit()
     path = sys.argv[1]
-    sourceFiles = findFilesEndsWith('.', u'PY')
-    pictureFiles = findFilesEndsWith('.', u'JPG')
+    sourceFiles = findFilesEndsWith(u'.', u'PY')
+    pictureFiles = findFilesEndsWith(u'.', u'JPG')
     print 'will copy the files:', sourceFiles, " to ", os.path.abspath(path)
     '''
     put the python source code to sys.argv[1] path.
