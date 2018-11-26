@@ -23,7 +23,7 @@ DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FILE_NAME = r'/home/chuanqin/log.txt'
 
 
-def shotdown(signum, frame):
+def shutdown(signum, frame):
     print 'You are in the process of shutting down the server.', signum, frame
     logging.info('The system is going down by the ctrl+c signal.')
     sys.exit()
@@ -39,8 +39,8 @@ urls = (
 if __name__ == '__main__':
     try:
         logging.basicConfig(filename = LOG_FILE_NAME, level = logging.INFO, format = LOG_FORMAT, datefmt = DATE_FORMAT)
-        signal.signal(signal.SIGINT, quit)
-        signal.signal(signal.SIGTERM, quit)
+        signal.signal(signal.SIGINT, shutdown)
+        signal.signal(signal.SIGTERM, shutdown)
         t = access_token.Token()
         t.setDaemon(True)
         t.start()
