@@ -56,6 +56,23 @@ class Media(threading.Thread):
                     time.sleep(60)
                     self.__leftTime -= 60
                 else:
+                    '''
+                    for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
+                        temp = {}
+                        name = os.path.basename(picture).split('.')[0]
+                        temp[u'name'] = name
+                        temp[u'path'] = picture
+                        temp[u'media_id'] = u''
+                        picturesData.append(temp)
+                    # TODO, need to inser the item in database, if exist, should update them,
+                    then logic should be:
+                    1. query whether item exist:
+                        if not, db.insert
+                        else :
+                            if time is in effect range, just continue
+                            else db.update the item.
+                    2 need consider the transaction operation here.
+                    '''
                     for item in media_id.picturesData:
                         result = json.loads(self.upload(webconst.accessToken, item[u'path'], u'image'), encoding = 'utf-8')
                         item[u'media_id'] = result[u'media_id']
