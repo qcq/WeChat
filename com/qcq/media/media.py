@@ -57,9 +57,9 @@ class Media(threading.Thread):
                     self.__leftTime -= 60
                 else:
                     for item in media_id.picturesData:
-                        result = json.loads(self.upload(webconst.accessToken, item['path'], 'image'), encoding = 'utf-8')
-                        item['media_id'] = result['media_id']
-                        item['created_at'] = result['created_at']
+                        result = json.loads(self.upload(webconst.accessToken, item[u'path'], u'image'), encoding = 'utf-8')
+                        item[u'media_id'] = result[u'media_id']
+                        item[u'created_at'] = result[u'created_at']
                         print 'upload image', item, result
                         logging.info("%s %s %s" % ('upload image', item, result))
                         self.__leftTime = 3 * 24 * 60 * 60

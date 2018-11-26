@@ -19,13 +19,13 @@ picturesData = []
 for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
     temp = {}
     name = os.path.basename(picture).split('.')[0]
-    temp['name'] = name
-    temp['path'] = picture
-    temp['media_id'] = ''
+    temp[u'name'] = name
+    temp[u'path'] = picture
+    temp[u'media_id'] = u''
     picturesData.append(temp)
 
 
 def getPictureByName(name):
     for item in picturesData:
-        if item['name'] == name:
+        if item[u'name'] == name:
             return item
