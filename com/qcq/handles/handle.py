@@ -6,7 +6,6 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 import hashlib
-import json
 import logging
 import traceback
 
@@ -14,10 +13,8 @@ import web
 
 import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
-import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
-import com.qcq.media.media as media
 
 dealing_message = []
 

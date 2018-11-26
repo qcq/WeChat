@@ -23,8 +23,9 @@ DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FILE_NAME = r'/home/chuanqin/log.txt'
 
 
-def quit(signum, frame):
-    print 'You are in the process of shutting down the server.'
+def shotdown(signum, frame):
+    print 'You are in the process of shutting down the server.', signum, frame
+    logging.info('The system is going down by the ctrl+c signal.')
     sys.exit()
 
 
@@ -43,7 +44,7 @@ if __name__ == '__main__':
         t = access_token.Token()
         t.setDaemon(True)
         t.start()
-        logging.info("server's get access token thread is runing in Daemon mode.")
+        logging.info("server's get access token thread is running in Daemon mode.")
         uploadPicture = media.Media()
         uploadPicture.setDaemon(True)
         uploadPicture.start()
