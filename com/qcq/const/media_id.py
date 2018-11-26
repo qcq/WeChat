@@ -19,9 +19,9 @@ picturesData = []
 for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
     temp = {}
     name = os.path.basename(picture).split('.')[0]
-    temp[u'name'] = name
-    temp[u'path'] = picture
-    temp[u'media_id'] = u''
+    temp['name'] = name
+    temp['path'] = picture
+    temp['media_id'] = ''
     picturesData.append(temp)
 
 
