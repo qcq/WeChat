@@ -7,6 +7,8 @@ Created on 2018年11月13日
 '''
 import json
 import logging
+import os
+import sys
 import threading
 import time
 import urllib2
@@ -16,6 +18,7 @@ from poster.streaminghttp import register_openers
 
 import com.qcq.const.media_id as media_id
 import com.qcq.const.webconst as webconst
+import com.qcq.utils as utils
 
 
 class Media(threading.Thread):
@@ -24,6 +27,17 @@ class Media(threading.Thread):
         threading.Thread.__init__(self)
         register_openers()
         self.__leftTime = 0
+        self.__picturesPath = u"%s%s" % (os.path.dirname(sys.argv[0]), u'../pictures/')
+
+    def __getPictureFiles(self):
+        picturesData = []
+        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
+            temp = {}
+            name = os.path.basename(picture).split('.')[0]
+            temp[u'name'] = name
+            temp[u'path'] = picture
+            temp[u'media_id'] = u''
+            picturesData.append(temp)
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
@@ -56,6 +70,8 @@ class Media(threading.Thread):
                     time.sleep(60)
                     self.__leftTime -= 60
                 else:
+                    for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
+                        name = os.path.basename(picture).split('.')[0]
                     '''
                     for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
                         temp = {}

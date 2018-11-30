@@ -84,6 +84,8 @@ class Handle(object):
         media_id_temp = media_id.getPictureByName(receiveContent)
         if media_id_temp:
             return reply.ImageMsg(toUser, fromUser, media_id_temp['media_id'])
+        elif u'在吗' in receiveContent:
+            return reply.TextMsg(toUser, fromUser, u'我在这里一直等你。')
         elif u'链接' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
         else:
