@@ -94,6 +94,6 @@ class Media(threading.Thread):
                     self.__leftTime -= 60
                 else:
                     self.__updateDatabase()
-                self.__leftTime = 60 * 60
+                    self.__leftTime = 60 * 60
             else:
                 time.sleep(5)
