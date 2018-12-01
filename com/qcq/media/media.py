@@ -84,7 +84,7 @@ class Media(threading.Thread):
                         path = picture, media_id = result[u'media_id'], \
                         created_at = result[u'created_at'], created = datetime.datetime.utcnow())
                     logging.info('insert item %s in database in %s' % \
-                        (picture, datetime.datetime.ctime()))
+                        (picture, datetime.datetime.utcnow()))
 
     def run(self):
         while(True):
