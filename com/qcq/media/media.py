@@ -65,8 +65,8 @@ class Media(threading.Thread):
                 if selectResult :
                     timeLapses = (datetime.datetime.utcnow() - selectResult[0]['created']).seconds
                     if timeLapses >= 3 * 24 * 60 * 60:
-                        logging.info('updating the %s because of 3 days will \
-                            cause picture unavailable%s' % (picture, datetime.datetime.utcnow()))
+                        logging.info('updating the %s because of 3 days will' + \
+                            'cause picture unavailable%s' % (picture, datetime.datetime.utcnow()))
                         result = json.loads(self.upload(webconst.accessToken, \
                             picture, u'image'), encoding = 'utf-8')
                         webconst.db.update('picture', where = "name=%s" % \
@@ -74,8 +74,8 @@ class Media(threading.Thread):
                             created_at = result[u'created_at'], created = \
                             datetime.datetime.utcnow())
                     else:
-                        logging.info('database already has effect info, no need \
-                            to update the database. time Lapses %s/%s seconds.' \
+                        logging.info('database already has effect info, no need ' + \
+                            'to update the database. time Lapses %s/%s seconds.' \
                             % (timeLapses, 3 * 24 * 60 * 60))
                 else :
                     result = json.loads(self.upload(webconst.accessToken, \

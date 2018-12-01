@@ -16,7 +16,7 @@ This is my own **Official Account** for server side program. which main purpose 
 2. add web spider to grab the e-book from other web site(outer site).
 3. add docker, which can support redis or leveldb or mysql to store the data. **done by docker with postgres**
 4. to the direction of **micro-service architecture** evolution. https://linux.cn/article-7584-1.html
-5. need db as a bridge to communicte between threads, in current situation can use simple *shared data* to communicate with each other, should consider communicate **by DB or micro-service**.  
+5. need db as a bridge to communicte between threads, in current situation can use simple *shared data* to communicate with each other, should consider communicate **by DB or micro-service**.  in current stage, alreadt implements the code to store the data to database partly,
 6. in final stage, I am considering packge whole project in one docker image, which can listening incoming message and reponse with outside, behind it exist others container service like database service .etc which can evolute to micro-service platform.
 
 ## Encountered Problem
@@ -34,7 +34,8 @@ This is my own **Official Account** for server side program. which main purpose 
 ## The work under doing
 
 1. set get_access_token as one single thread, which as single service to supply the **access_token**. *Done*
-2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures. *Ready To Do*.
+2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures. *Done*.
+3. store the media data list in 2 into database. *Done.*
 
 ## Related Technologies
 
