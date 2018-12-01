@@ -81,9 +81,9 @@ class Handle(object):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
-        media_id_temp = webconst.getPictureByName(receiveContent)[0]
+        media_id_temp = webconst.getPictureByName(receiveContent)
         if media_id_temp:
-            return reply.ImageMsg(toUser, fromUser, media_id_temp[u'media_id'])
+            return reply.ImageMsg(toUser, fromUser, media_id_temp[0][u'media_id'])
         elif u'在吗' in receiveContent:
             return reply.TextMsg(toUser, fromUser, u'我在这里一直等你。')
         elif u'链接' in receiveContent:
