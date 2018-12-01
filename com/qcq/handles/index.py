@@ -6,8 +6,9 @@ Created on 2018��11��22��
 @author: chuanqin
 '''
 
-import com.qcq.const.webconst as webconst
 import web
+
+import com.qcq.const.webconst as webconst
 
 
 class Index:

@@ -56,6 +56,36 @@ class Media(threading.Thread):
             mediaFile.write(mediaBuffer)
             print "get successful"
 
+    def __updateDatabase(self):
+        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
+            pictureName = os.path.basename(picture).split('.')[0]
+            with webconst.db.transaction():
+                myvar = dict(name = pictureName)
+                selectResult = webconst.db.select('pictures', myvar, where = "name=$name")
+                if selectResult :
+                    timeLapses = (datetime.datetime.utcnow() - selectResult[0]['created']).seconds
+                    if timeLapses >= 3 * 24 * 60 * 60:
+                        logging.info('updating the %s because of 3 days will \
+                            cause picture unavailable%s' % picture, datetime.datetime.utcnow())
+                        result = json.loads(self.upload(webconst.accessToken, \
+                            picture, u'image'), encoding = 'utf-8')
+                        webconst.db.update('picture', where = "name=%s" % \
+                            (pictureName), media_id = result[u'media_id'], \
+                            created_at = result[u'created_at'], created = \
+                            datetime.datetime.utcnow())
+                    else:
+                        logging.info('database already has effect info, no need \
+                            to update the database. time Lapses %s/%s seconds.' \
+                            % timeLapses, 3 * 24 * 60 * 60)
+                else :
+                    result = json.loads(self.upload(webconst.accessToken, \
+                        picture, u'image'), encoding = 'utf-8')
+                    webconst.db.insert('pictures', name = pictureName, \
+                        path = picture, media_id = result[u'media_id'], \
+                        created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                    logging.info('insert item %s in database in %s', \
+                        picture, datetime.datetime.ctime())
+
     def run(self):
         while(True):
             if webconst.accessToken:
@@ -63,21 +93,7 @@ class Media(threading.Thread):
                     time.sleep(60)
                     self.__leftTime -= 60
                 else:
-                    for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
-                        pictureName = os.path.basename(picture).split('.')[0]
-                        with webconst.db.transaction():
-                            selectResult = webconst.db.select('pictures', where = "name=%s" % (pictureName))
-                            if selectResult :
-                                if (datetime.datetime.utcnow() - selectResult[0]['created']).seconds >= 3 * 24 * 60 * 60:
-                                    logging.info('should update the database because of 3 days will cause picture unavailable%s' % datetime.datetime.utcnow())
-                                    result = json.loads(self.upload(webconst.accessToken, picture[u'path'], u'image'), encoding = 'utf-8')
-                                    webconst.db.update('picture', where = "name=%s" % (pictureName), media_id = result[u'media_id'], \
-                                                       created_at = result[u'created_at'], created = datetime.datetime.utcnow())
-                                else:
-                                    logging.info('database already has effect info, no need to update the database.')
-                            else :
-                                webconst.db.insert('pictures', name = pictureName, path = picture, media_id = result[u'media_id'], \
-                                                   created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                    self.__updateDatabase()
                 self.__leftTime = 60 * 60
             else:
                 time.sleep(5)

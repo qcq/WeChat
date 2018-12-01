@@ -28,4 +28,4 @@ def del_todo(id):
 
 
 def getPictureByName(name):
-    return db.select('todo', where = "name=$name")
+    return db.select('pictures', where = "name=$name", vars = locals())
