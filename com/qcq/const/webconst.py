@@ -25,3 +25,7 @@ def new_todo(text):
 
 def del_todo(id):
     db.delete('todo', where = "id=$id", vars = locals())
+
+
+def getPictureByName(name):
+    return db.select('todo', where = "name=$name")

@@ -5,6 +5,9 @@ Created on 2018年11月13日
 
 @author: chuanqin
 '''
+from __future__ import with_statement
+
+import datetime
 import json
 import logging
 import os
@@ -28,16 +31,6 @@ class Media(threading.Thread):
         register_openers()
         self.__leftTime = 0
         self.__picturesPath = u"%s%s" % (os.path.dirname(sys.argv[0]), u'../pictures/')
-
-    def __getPictureFiles(self):
-        picturesData = []
-        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
-            temp = {}
-            name = os.path.basename(picture).split('.')[0]
-            temp[u'name'] = name
-            temp[u'path'] = picture
-            temp[u'media_id'] = u''
-            picturesData.append(temp)
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
@@ -71,30 +64,20 @@ class Media(threading.Thread):
                     self.__leftTime -= 60
                 else:
                     for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
-                        name = os.path.basename(picture).split('.')[0]
-                    '''
-                    for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
-                        temp = {}
-                        name = os.path.basename(picture).split('.')[0]
-                        temp[u'name'] = name
-                        temp[u'path'] = picture
-                        temp[u'media_id'] = u''
-                        picturesData.append(temp)
-                    # TODO, need to inser the item in database, if exist, should update them,
-                    then logic should be:
-                    1. query whether item exist:
-                        if not, db.insert
-                        else :
-                            if time is in effect range, just continue
-                            else db.update the item.
-                    2 need consider the transaction operation here.
-                    '''
-                    for item in media_id.picturesData:
-                        result = json.loads(self.upload(webconst.accessToken, item[u'path'], u'image'), encoding = 'utf-8')
-                        item[u'media_id'] = result[u'media_id']
-                        item[u'created_at'] = result[u'created_at']
-                        print 'upload image', item, result
-                        logging.info("%s %s %s" % ('upload image', item, result))
-                        self.__leftTime = 3 * 24 * 60 * 60
+                        pictureName = os.path.basename(picture).split('.')[0]
+                        with webconst.db.transaction():
+                            selectResult = webconst.db.select('pictures', where = "name=%s" % (pictureName))
+                            if selectResult :
+                                if (datetime.datetime.utcnow() - selectResult[0]['created']).seconds >= 3 * 24 * 60 * 60:
+                                    logging.info('should update the database because of 3 days will cause picture unavailable%s' % datetime.datetime.utcnow())
+                                    result = json.loads(self.upload(webconst.accessToken, picture[u'path'], u'image'), encoding = 'utf-8')
+                                    webconst.db.update('picture', where = "name=%s" % (pictureName), media_id = result[u'media_id'], \
+                                                       created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                                else:
+                                    logging.info('database already has effect info, no need to update the database.')
+                            else :
+                                webconst.db.insert('pictures', name = pictureName, path = picture, media_id = result[u'media_id'], \
+                                                   created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                self.__leftTime = 60 * 60
             else:
-                time.sleep(1)
+                time.sleep(5)

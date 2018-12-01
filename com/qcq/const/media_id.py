@@ -24,8 +24,3 @@ for picture in utils.findFilesEndsWith(picturesPath, u'JPG'):
     temp[u'media_id'] = u''
     picturesData.append(temp)
 
-
-def getPictureByName(name):
-    for item in picturesData:
-        if item[u'name'] == name:
-            return item

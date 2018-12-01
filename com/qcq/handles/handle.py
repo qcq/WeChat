@@ -11,8 +11,8 @@ import traceback
 
 import web
 
-import com.qcq.const.media_id as media_id
 import com.qcq.const.message as message
+import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 
@@ -81,7 +81,7 @@ class Handle(object):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
-        media_id_temp = media_id.getPictureByName(receiveContent)
+        media_id_temp = webconst.getPictureByName(receiveContent)[0][u'media_id']
         if media_id_temp:
             return reply.ImageMsg(toUser, fromUser, media_id_temp['media_id'])
         elif u'在吗' in receiveContent:
