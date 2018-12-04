@@ -33,7 +33,12 @@ urls = (
     '/', 'Index',
     '/add', 'Add',
     '/wx', 'Handle',
-    '/del/(\d+)', 'Delete'
+    '/del/(\d+)', 'Delete',
+    '/blog', 'blog.Index',
+    '/blog_view/(\d+)', 'blog.View',
+    '/blog_new', 'blog.New',
+    '/blog_delete/(\d+)', 'blog.Delete',
+    '/blog_edit/(\d+)', 'blog.Edit',
 )
 
 if __name__ == '__main__':
