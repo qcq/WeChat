@@ -9,6 +9,7 @@ Created on 2018年11月13日
 import logging
 import signal
 import sys
+import traceback
 
 import web
 
@@ -64,4 +65,4 @@ if __name__ == '__main__':
 
         app.run()
     except Exception, exc:
-        print exc
+        print exc, traceback.print_exc()

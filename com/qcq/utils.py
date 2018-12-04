@@ -31,9 +31,9 @@ def copyFilesToDst(files, dst):
 
 def countSourceCodeLine(files):
     counter = {}
-    for file in files:
-        with open(file, 'r') as f:
-            counter[file] = 0
+    for fileName in files:
+        with open(fileName, 'r') as f:
+            counter[fileName] = 0
             comment = False
             for line in f:
                 line = line.strip()
@@ -46,7 +46,7 @@ def countSourceCodeLine(files):
                     if comment and line == r"'''":
                         comment = False
                         continue
-                    counter[file] += 1
+                    counter[fileName] += 1
 
     source_file_code = 0
     for file_name, line_numbers in counter.items():

@@ -36,7 +36,7 @@ This is my own **Official Account** for server side program. which main purpose 
 1. set get_access_token as one single thread, which as single service to supply the **access_token**. *Done*
 2. set another thread which in backgroud to upload the media in fixture cycle, then update the corresponing media_id of pictures. *Done*.
 3. store the media data list in 2 into database. *Done.*
-4. need the mail system which can email out from email server, such as *163*.
+4. need the mail system which can email out from email server, such as *163*. *Done.*
 5. need spider script, which work in dameon mode to grab the e-book.
 
 ## Related Technologies
