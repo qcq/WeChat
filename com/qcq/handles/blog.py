@@ -24,7 +24,7 @@ class Index:
     def GET(self):
         """ Show page """
         posts = model.get_posts()
-        return renderOfBlog.index(posts)
+        return renderOfBlog.blog_index(posts)
 
 
 class View:
@@ -32,7 +32,7 @@ class View:
     def GET(self, id):
         """ View single post """
         post = model.get_post(int(id))
-        return renderOfBlog.view(post)
+        return renderOfBlog.blog_view(post)
 
 
 class New:
@@ -49,12 +49,12 @@ class New:
 
     def GET(self):
         form = self.form()
-        return renderOfBlog.new(form)
+        return renderOfBlog.blog_new(form)
 
     def POST(self):
         form = self.form()
         if not form.validates():
-            return renderOfBlog.new(form)
+            return renderOfBlog.blog_new(form)
         model.new_post(form.d.title, form.d.content)
         raise web.seeother('/blog')
 
@@ -72,13 +72,13 @@ class Edit:
         post = model.get_post(int(id))
         form = New.form()
         form.fill(post)
-        return renderOfBlog.edit(post, form)
+        return renderOfBlog.blog_edit(post, form)
 
 
     def POST(self, id):
         form = New.form()
         post = model.get_post(int(id))
         if not form.validates():
-            return renderOfBlog.edit(post, form)
+            return renderOfBlog.blog_edit(post, form)
         model.update_post(int(id), form.d.title, form.d.content)
         raise web.seeother('/blog')
