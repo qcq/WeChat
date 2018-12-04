@@ -2,11 +2,11 @@ import psycopg2
 
 # sql.py
 try:
-    connection = psycopg2.connect(user = "postgres",
-                                  password = "root",
-                                  host = "172.17.0.2",
-                                  port = "5432",
-                                  database = "postgres")
+    connection = psycopg2.connect(user="postgres",
+                                  password="root",
+                                  host="172.17.0.2",
+                                  port="5432",
+                                  database="postgres")
 
     cursor = connection.cursor()
     # Print PostgreSQL Connection properties

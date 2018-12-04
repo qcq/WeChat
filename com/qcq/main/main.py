@@ -23,7 +23,6 @@ from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import Delete as blogDelete
 from com.qcq.handles.blog import Edit as blogEdit
 
-
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FILE_NAME = r'/home/chuanqin/log.txt'
@@ -49,7 +48,7 @@ urls = (
 
 if __name__ == '__main__':
     try:
-        logging.basicConfig(filename = LOG_FILE_NAME, level = logging.INFO, format = LOG_FORMAT, datefmt = DATE_FORMAT)
+        logging.basicConfig(filename=LOG_FILE_NAME, level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT)
         signal.signal(signal.SIGINT, shutdown)
         signal.signal(signal.SIGTERM, shutdown)
         t = access_token.Token()

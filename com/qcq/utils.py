@@ -74,7 +74,7 @@ if __name__ == '__main__':
     picturePath = os.path.join(os.path.abspath(path), 'pictures')
     if os.path.exists(picturePath):
         print picturePath, 'exist, will delete it first.'
-        shutil.rmtree(picturePath, ignore_errors = True)
+        shutil.rmtree(picturePath, ignore_errors=True)
     os.mkdir(os.path.join(os.path.abspath(path), 'pictures'))
     print 'create folder', picturePath
     print 'will copy the files:', pictureFiles, " to ", os.path.abspath(picturePath)

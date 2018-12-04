@@ -15,5 +15,5 @@ class Add:
 
     def POST(self):
         i = web.input()
-        webconst.db.insert('todo', title = i.title)
+        webconst.db.insert('todo', title=i.title)
         raise web.seeother('/')

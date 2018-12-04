@@ -11,13 +11,12 @@ import sys
 import web
 import com.qcq.const.model as model
 
-
-### Templates
+# ## Templates
 t_globals = {
     'datestr': web.datestr
 }
 
-renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../templates/', base = 'blog_base', globals=t_globals)
+renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../templates/', base='blog_base', globals=t_globals)
 
 
 class Index:
@@ -39,10 +38,10 @@ class View:
 class New:
 
     form = web.form.Form(
-        web.form.Textbox('title', web.form.notnull, 
+        web.form.Textbox('title', web.form.notnull,
             size=30,
             description="Post title:"),
-        web.form.Textarea('content', web.form.notnull, 
+        web.form.Textarea('content', web.form.notnull,
             rows=30, cols=80,
             description="Post content:"),
         web.form.Button('Post entry'),
@@ -74,7 +73,6 @@ class Edit:
         form = New.form()
         form.fill(post)
         return renderOfBlog.blog_edit(post, form)
-
 
     def POST(self, id):
         form = New.form()
