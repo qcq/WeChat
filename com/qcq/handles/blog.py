@@ -17,7 +17,7 @@ t_globals = {
     'datestr': web.datestr
 }
 
-renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '../templates/', base = 'blog_base', globals=t_globals)
+renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../templates/', base = 'blog_base', globals=t_globals)
 
 
 class Index:

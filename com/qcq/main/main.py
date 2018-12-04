@@ -17,7 +17,11 @@ from com.qcq.handles.add import Add
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index, Delete
 import com.qcq.media.media as media
-import com.qcq.handles.blog as blog
+from com.qcq.handles.blog import Index as blogIndex
+from com.qcq.handles.blog import View as blogView
+from com.qcq.handles.blog import New as blogNew
+from com.qcq.handles.blog import Delete as blogDelete
+from com.qcq.handles.blog import Edit as blogEdit
 
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
@@ -36,11 +40,11 @@ urls = (
     '/add', 'Add',
     '/wx', 'Handle',
     '/del/(\d+)', 'Delete',
-    '/blog', 'blog.Index',
-    '/blog_view/(\d+)', 'blog.View',
-    '/blog_new', 'blog.New',
-    '/blog_delete/(\d+)', 'blog.Delete',
-    '/blog_edit/(\d+)', 'blog.Edit',
+    '/blog', 'blogIndex',
+    '/blog_view/(\d+)', 'blogView',
+    '/blog_new', 'blogNew',
+    '/blog_delete/(\d+)', 'blogDelete',
+    '/blog_edit/(\d+)', 'blogEdit',
 )
 
 if __name__ == '__main__':
