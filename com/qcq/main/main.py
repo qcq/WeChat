@@ -17,6 +17,7 @@ from com.qcq.handles.add import Add
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index, Delete
 import com.qcq.media.media as media
+import com.qcq.handles.blog as blog
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
