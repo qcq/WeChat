@@ -60,9 +60,10 @@ class Media(threading.Thread):
             pictureName = os.path.basename(picture).split('.')[0]
             with webconst.db.transaction():
                 myvar = dict(name = pictureName)
-                selectResult = webconst.db.select('pictures', myvar, where = "name=$name")
+                selectResult = list(webconst.db.select('pictures', myvar, where = "name=$name"))
                 if selectResult :
-                    timeLapses = (datetime.datetime.utcnow() - selectResult[0]['created']).seconds
+                    timeLapses = datetime.datetime.utcnow() - selectResult[0]['created']
+                    timeLapses = timeLapses.days * 24 * 60 * 60 + timeLapses.seconds
                     if timeLapses >= 3 * 24 * 60 * 60:
                         logging.info('updating the %s because of 3 days will'
                             'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
