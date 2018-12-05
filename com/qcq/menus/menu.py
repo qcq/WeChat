@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018�?11�?13�?
+Created on 2018年11月13日
 
 @author: chuanqin
 '''
@@ -30,7 +30,7 @@ class Menu(object):
         urlResp = urllib.urlopen(url=postUrl)
         print urlResp.read()
 
-    # 获取自定义菜单配置接�?
+    # 获取自定义菜单配置接�?
     def get_current_selfmenu_info(self, accessToken):
         postUrl = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=%s" % accessToken
         urlResp = urllib.urlopen(url=postUrl)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         [
             {
                 "type": "click",
-                "name": "�?发指�?",
+                "name": "�?发指�?",
                 "key":  "mpGuide"
             },
             {
@@ -65,7 +65,7 @@ if __name__ == '__main__':
                     },
                     {
                         "type": "view",
-                        "name": "返回码说�?",
+                        "name": "返回码说�?",
                         "url": "http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433747234&token=&lang=zh_CN"
                     }
                 ]

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018�?11�?13�?
+Created on 2018年11月13日
 
 @author: chuanqin
 '''
@@ -70,7 +70,7 @@ class Handle(object):
                 else:
                     return reply.Msg(toUser, fromUser).send()
             else:
-                print "暂且不处�?"
+                print u"暂且不处理"
                 return reply.Msg(toUser, fromUser).send()
             dealing_message.remove(webData)
         except Exception, Argment:
@@ -87,7 +87,7 @@ class Handle(object):
         if media_id_temp:
             return reply.ImageMsg(toUser, fromUser, media_id_temp[0][u'media_id'])
         elif u'在吗' in receiveContent:
-            return reply.TextMsg(toUser, fromUser, u'我在这里�?直等你�??')
+            return reply.TextMsg(toUser, fromUser, u'我在这里一直等你来。')
         elif u'链接' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
         else:

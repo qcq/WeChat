@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018Âπ?11Êú?13Âè?
+Created on 2018Âπ¥11Êúà13Êó•
 
 This util file is in nearing abandoned, this script used for to put the whole
 project source file into one folder path to executed.
@@ -10,9 +10,9 @@ if not should add this whole project in PATH evn.
 @author: chuanqin
 '''
 
+import os
 import shutil
 import sys
-import os
 
 
 def findFilesEndsWith(path, suffix):
