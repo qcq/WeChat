@@ -9,7 +9,9 @@ Created on 2018年12月4日
 #===============================================================================
 # below original code comes from the link:https://blog.csdn.net/gpf951101/article/details/78909233
 # great thanks to this great man. I modify the code to suit my own project.
-# also reference for attachment of email https://github.com/rootzhongfengshan/python_practical/blob/master/SentMail/SentMailWithAttachment.py
+# also reference for attachment of email
+# https://github.com/rootzhongfengshan/python_practical/blob/master/SentMail/SentMailWithAttachment.py
+# also write one blog of own->https://blog.csdn.net/u011233383/article/details/84794295
 #===============================================================================
 
 import smtplib
@@ -18,12 +20,13 @@ import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from com.qcq.config.config import settings
+from com.qcq.const.message import email_default_signature
 
 
 def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=465):
     username = settings.get(u'email section', u'email user')
     passwd = settings.get(u'email section', u'email password')
-    content = '<h1>' + content + '</h1><p>WeChat Official account QCQ.</p>' 
+    content = '<h1>' + content + '</h1><p>' + email_default_signature + '.</p>' 
     msg = MIMEText(content, 'html')
     
     message = MIMEMultipart()
