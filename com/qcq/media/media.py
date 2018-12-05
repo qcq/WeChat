@@ -65,11 +65,11 @@ class Media(threading.Thread):
                     timeLapses = datetime.datetime.utcnow() - selectResult[0]['created']
                     timeLapses = timeLapses.days * 24 * 60 * 60 + timeLapses.seconds
                     if timeLapses >= 3 * 24 * 60 * 60:
-                        logging.info('updating the %s because of 3 days will'
+                        logging.info('updating the %s because of 3 days will '
                             'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
                         result = json.loads(self.upload(webconst.accessToken, \
                             picture, u'image'), encoding = 'utf-8')
-                        webconst.db.update('picture', where = "name=%s" % \
+                        webconst.db.update('pictures', where = "name=%s" % \
                             (pictureName), media_id = result[u'media_id'], \
                             created_at = result[u'created_at'], created = \
                             datetime.datetime.utcnow())
