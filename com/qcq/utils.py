@@ -11,7 +11,8 @@ if not should add this whole project in PATH evn.
 '''
 
 import shutil
-import sys, os
+import sys
+import os
 
 
 def findFilesEndsWith(path, suffix):
@@ -19,7 +20,8 @@ def findFilesEndsWith(path, suffix):
     for root, directory, files in os.walk(path):
         for fileName in files:
             if fileName.upper().endswith(suffix):
-                sourceFiles.append(os.path.join(os.path.abspath(root), fileName))
+                sourceFiles.append(os.path.join(
+                    os.path.abspath(root), fileName))
     return sourceFiles
 
 
@@ -40,7 +42,7 @@ def countSourceCodeLine(files):
                 if line and not line.startswith('#'):
                     if comment and line != r"'''":
                         continue
-                    if not comment and line == r"'''" :
+                    if not comment and line == r"'''":
                         comment = True
                         continue
                     if comment and line == r"'''":

@@ -15,7 +15,7 @@ class Index:
 
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
-            description="I need to:"),
+                         description="I need to:"),
         web.form.Button('Add todo'),
     )
 

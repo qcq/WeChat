@@ -1,5 +1,6 @@
 import psycopg2
 
+
 # sql.py
 try:
     connection = psycopg2.connect(user="postgres",
@@ -16,11 +17,11 @@ try:
     cursor.execute("SELECT version();")
     record = cursor.fetchone()
     print("You are connected to - ", record, "\n")
-except (Exception, psycopg2.Error) as error :
+except (Exception, psycopg2.Error) as error:
     print ("Error while connecting to PostgreSQL", error)
 finally:
     # closing database connection.
-        if(connection):
-            cursor.close()
-            connection.close()
-            print("PostgreSQL connection is closed")
+    if(connection):
+        cursor.close()
+        connection.close()
+        print("PostgreSQL connection is closed")

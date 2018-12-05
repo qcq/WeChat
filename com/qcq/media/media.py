@@ -16,8 +16,8 @@ import threading
 import time
 import urllib2
 
-import poster.encode
 from poster.streaminghttp import register_openers
+import poster.encode
 
 import com.qcq.const.webconst as webconst
 import com.qcq.utils as utils
@@ -29,20 +29,23 @@ class Media(threading.Thread):
         threading.Thread.__init__(self)
         register_openers()
         self.__leftTime = 0
-        self.__picturesPath = u"%s%s" % (os.path.dirname(sys.argv[0]), u'../pictures/')
+        self.__picturesPath = u"%s%s" % (
+            os.path.dirname(sys.argv[0]), u'../pictures/')
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
         param = {'media': openFile}
         postData, postHeaders = poster.encode.multipart_encode(param)
 
-        postUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s" % (accessToken, mediaType)
+        postUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s" % (
+            accessToken, mediaType)
         request = urllib2.Request(postUrl, postData, postHeaders)
         urlResp = urllib2.urlopen(request)
         return urlResp.read()
 
     def get(self, accessToken, mediaId):
-        postUrl = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s" % (accessToken, mediaId)
+        postUrl = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s" % (
+            accessToken, mediaId)
         urlResp = urllib2.urlopen(postUrl)
 
         headers = urlResp.info().__dict__['headers']
@@ -60,30 +63,31 @@ class Media(threading.Thread):
             pictureName = os.path.basename(picture).split('.')[0]
             with webconst.db.transaction():
                 myvar = dict(name=pictureName)
-                selectResult = list(webconst.db.select('pictures', myvar, where="name=$name"))
-                if selectResult :
-                    timeLapses = datetime.datetime.utcnow() - selectResult[0]['created']
+                selectResult = list(webconst.db.select(
+                    'pictures', myvar, where="name=$name"))
+                if selectResult:
+                    timeLapses = datetime.datetime.utcnow() - \
+                        selectResult[0]['created']
                     timeLapses = timeLapses.days * 24 * 60 * 60 + timeLapses.seconds
                     if timeLapses >= 3 * 24 * 60 * 60:
                         logging.info('updating the %s because of 3 days will '
-                            'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
-                        result = json.loads(self.upload(webconst.accessToken, \
-                            picture, u'image'), encoding='utf-8')
-                        webconst.db.update('pictures', where="name=$name", vars=myvar, media_id=result[u'media_id'], \
-                            created_at=result[u'created_at'], created=\
-                            datetime.datetime.utcnow())
+                                     'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
+                        result = json.loads(self.upload(webconst.accessToken,
+                                                        picture, u'image'), encoding='utf-8')
+                        webconst.db.update('pictures', where="name=$name", vars=myvar, media_id=result[u'media_id'],
+                                           created_at=result[u'created_at'], created=datetime.datetime.utcnow())
                     else:
                         logging.info('database already has %s info, no need '
-                            'to update the database. time Lapses %s/%s seconds.'
-                            % (pictureName, timeLapses, 3 * 24 * 60 * 60))
-                else :
-                    result = json.loads(self.upload(webconst.accessToken, \
-                        picture, u'image'), encoding='utf-8')
-                    webconst.db.insert('pictures', name=pictureName, \
-                        path=picture, media_id=result[u'media_id'], \
-                        created_at=result[u'created_at'], created=datetime.datetime.utcnow())
+                                     'to update the database. time Lapses %s/%s seconds.'
+                                     % (pictureName, timeLapses, 3 * 24 * 60 * 60))
+                else:
+                    result = json.loads(self.upload(webconst.accessToken,
+                                                    picture, u'image'), encoding='utf-8')
+                    webconst.db.insert('pictures', name=pictureName,
+                                       path=picture, media_id=result[u'media_id'],
+                                       created_at=result[u'created_at'], created=datetime.datetime.utcnow())
                     logging.info('insert item %s in database in %s'
-                        % (pictureName, datetime.datetime.utcnow()))
+                                 % (pictureName, datetime.datetime.utcnow()))
 
     def run(self):
         while(True):

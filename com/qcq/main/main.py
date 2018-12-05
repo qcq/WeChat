@@ -6,6 +6,7 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
+from logging import FileHandler
 import logging
 import signal
 import sys
@@ -13,17 +14,17 @@ import traceback
 
 import web
 
-import com.qcq.access_token as access_token
 from com.qcq.handles.add import Add
-from com.qcq.handles.handle import Handle
-from com.qcq.handles.index import Index, Delete
-import com.qcq.media.media as media
-from com.qcq.handles.blog import Index as blogIndex
-from com.qcq.handles.blog import View as blogView
-from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import Delete as blogDelete
 from com.qcq.handles.blog import Edit as blogEdit
-from logging import FileHandler
+from com.qcq.handles.blog import Index as blogIndex
+from com.qcq.handles.blog import New as blogNew
+from com.qcq.handles.blog import View as blogView
+from com.qcq.handles.handle import Handle
+from com.qcq.handles.index import Index, Delete
+import com.qcq.access_token as access_token
+import com.qcq.media.media as media
+
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
@@ -69,7 +70,8 @@ if __name__ == '__main__':
         t = access_token.Token()
         t.setDaemon(True)
         t.start()
-        logging.info("server's get access token thread is running in Daemon mode.")
+        logging.info(
+            "server's get access token thread is running in Daemon mode.")
         uploadPicture = media.Media()
         uploadPicture.setDaemon(True)
         uploadPicture.start()

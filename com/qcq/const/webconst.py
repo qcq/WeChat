@@ -10,8 +10,11 @@ import sys
 
 import web
 
-render = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../templates/', base='base')
-db = web.database(dbn='postgres', user='postgres', host="172.17.0.2", pw='root', db='ebook')
+
+render = web.template.render(os.path.dirname(
+    os.path.abspath(sys.argv[0])) + '/../templates/', base='base')
+db = web.database(dbn='postgres', user='postgres',
+                  host="172.17.0.2", pw='root', db='ebook')
 accessToken = ''
 
 

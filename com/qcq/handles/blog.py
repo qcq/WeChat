@@ -8,15 +8,19 @@ Created on 2018��12��4��
 """ Basic blog using webpy 0.3 """
 import os
 import sys
+
 import web
+
 import com.qcq.const.model as model
+
 
 # ## Templates
 t_globals = {
     'datestr': web.datestr
 }
 
-renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../templates/', base='blog_base', globals=t_globals)
+renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(
+    sys.argv[0])) + '/../templates/', base='blog_base', globals=t_globals)
 
 
 class Index:
@@ -28,7 +32,7 @@ class Index:
 
 
 class View:
-    
+
     def GET(self, id):
         """ View single post """
         post = model.get_post(int(id))
@@ -39,11 +43,11 @@ class New:
 
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
-            size=30,
-            description="Post title:"),
+                         size=30,
+                         description="Post title:"),
         web.form.Textarea('content', web.form.notnull,
-            rows=30, cols=80,
-            description="Post content:"),
+                          rows=30, cols=80,
+                          description="Post content:"),
         web.form.Button('Post entry'),
     )
 
@@ -60,7 +64,7 @@ class New:
 
 
 class Delete:
-    
+
     def POST(self, id):
         model.del_post(int(id))
         raise web.seeother('/blog')

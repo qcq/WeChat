@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018å¹´11æœˆ13æ—¥
+Created on 2018å¹?11æœ?13æ—?
 
 @author: chuanqin
 '''
@@ -11,8 +11,9 @@ import logging
 import threading
 import time
 import urllib
-import com.qcq.const.webconst as webconst
+
 from com.qcq.config.config import settings
+import com.qcq.const.webconst as webconst
 
 
 class Token(threading.Thread):
@@ -25,7 +26,8 @@ class Token(threading.Thread):
     def __realGetAccessToken(self):
         appId = settings.get(u'wx', 'appId')
         appSecret = settings.get(u'wx', 'appSecret')
-        postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
+        postUrl = (
+            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(str(urlResp.read()))
         webconst.accessToken = urlResp['access_token']
@@ -40,10 +42,12 @@ class Token(threading.Thread):
                 rLock = threading.RLock()  # RLockå¯¹è±¡
                 rLock.acquire()
                 print 'trying update the token:', webconst.accessToken, ' with time left:', self.__leftTime
-                logging.info('%s%s%s%s' % ('trying update the token:', webconst.accessToken, ' with time left:', self.__leftTime))
+                logging.info('%s%s%s%s' % ('trying update the token:',
+                                           webconst.accessToken, ' with time left:', self.__leftTime))
                 self.__realGetAccessToken()
                 print 'update the token succeed:', webconst.accessToken, ' with time left:', self.__leftTime
-                logging.info('%s%s%s%s' % ('update the token succeed:', webconst.accessToken, ' with time left:', self.__leftTime))
+                logging.info('%s%s%s%s' % ('update the token succeed:',
+                                           webconst.accessToken, ' with time left:', self.__leftTime))
                 rLock.release()
 
 # Token().get_access_token()

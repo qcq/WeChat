@@ -67,4 +67,3 @@ class EventMsg(Msg):
         Msg.__init__(self, xmlData)
         self.Event = xmlData.find('Event').text
         self.Eventkey = xmlData.find('EventKey').text
-

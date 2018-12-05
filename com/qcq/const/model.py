@@ -5,7 +5,9 @@ Created on 2018��12��4��
 
 @author: chuanqin
 '''
-import web, datetime
+import web
+import datetime
+
 import com.qcq.const.webconst as webconst
 
 
@@ -21,7 +23,8 @@ def get_post(id):
 
 
 def new_post(title, text):
-    webconst.db.insert('entries', title=title, content=text, posted_on=datetime.datetime.utcnow())
+    webconst.db.insert('entries', title=title, content=text,
+                       posted_on=datetime.datetime.utcnow())
 
 
 def del_post(id):
@@ -30,4 +33,4 @@ def del_post(id):
 
 def update_post(id, title, text):
     webconst.db.update('entries', where="id=$id", vars=locals(),
-        title=title, content=text)
+                       title=title, content=text)
