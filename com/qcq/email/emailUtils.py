@@ -23,7 +23,7 @@ from com.qcq.config.config import settings
 def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=465):
     username = settings.get(u'email section', u'email user')
     passwd = settings.get(u'email section', u'email password')
-    content = '<h1>'+content+'</h1><p>WeChat Official account QCQ.</p>' 
+    content = '<h1>' + content + '</h1><p>WeChat Official account QCQ.</p>' 
     msg = MIMEText(content, 'html')
     
     message = MIMEMultipart()
@@ -41,10 +41,10 @@ def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=
         smtp = smtplib.SMTP_SSL(mail_host, port=port)
         logging.info('Begin Login... %s' % (username))
         smtp.login(username, passwd)
-        logging.info('Begin Send... to %s'% (':'.join(recv)))
+        logging.info('Begin Send... to %s' % (':'.join(recv)))
         smtp.sendmail(username, recv, message.as_string())
         smtp.quit()
         logging.info('email send success.')
     except Exception, exc:
         print exc, traceback.print_exc()
-        logging.error('try to sent email with %s Failed need more check.'%(username))
+        logging.error('try to sent email with %s Failed need more check.' % (username))

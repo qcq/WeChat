@@ -48,6 +48,7 @@ urls = (
     '/blog_edit/(\d+)', 'blogEdit',
 )
 
+
 def __setLogger():
     logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
     rootLogger = logging.getLogger()
@@ -58,6 +59,7 @@ def __setLogger():
     consoleHandler = logging.StreamHandler(sys.stdout)
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
+
 
 if __name__ == '__main__':
     __setLogger()

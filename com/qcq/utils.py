@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018å¹´11æœˆ13å·
+Created on 2018å¹?11æœ?13å?
 
 This util file is in nearing abandoned, this script used for to put the whole
 project source file into one folder path to executed.

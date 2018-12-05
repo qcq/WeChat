@@ -61,7 +61,7 @@ class Material(object):
         print urlResp.read()
 
     # 获取素材列表
-    def batch_get(self, accessToken, mediaType, offset = 0, count = 20):
+    def batch_get(self, accessToken, mediaType, offset=0, count=20):
         postUrl = ("https://api.weixin.qq.com/cgi-bin/material"
                "/batchget_material?access_token=%s" % accessToken)
         postData = ("{ \"type\": \"%s\", \"offset\": %d, \"count\": %d }"
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # news 是个dict类型，可通过下面方式修改内容
     # news['articles'][0]['title'] = u"测试".encode('utf-8')
     # print news['articles'][0]['title']
-    news = json.dumps(news, ensure_ascii = False)
+    news = json.dumps(news, ensure_ascii=False)
     myMaterial.add_news(accessToken, news)
 
     mediaType = "news"
