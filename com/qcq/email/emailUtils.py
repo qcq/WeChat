@@ -13,6 +13,7 @@ Created on 2018年12月4日
 #===============================================================================
 
 import smtplib
+import logging
 import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -36,13 +37,14 @@ def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=
         attachment["Content-Disposition"] = 'attachment; filename="' + fileName + '"'
         message.attach(attachment)
     try:
-        print 'Begin Connect...'
+        logging.info('Begin Connect...')
         smtp = smtplib.SMTP_SSL(mail_host, port=port)
-        print 'Begin Login...'
+        logging.info('Begin Login...', username)
         smtp.login(username, passwd)
-        print 'Begin Send...'
+        logging.info('Begin Send...', ' to ', ':'.join(recv))
         smtp.sendmail(username, recv, message.as_string())
         smtp.quit()
-        print('email send success.')
+        logging.info('email send success.')
     except Exception, exc:
         print exc, traceback.print_exc()
+        logging.error('try to sent email with ', username, ' Failed need more check.')
