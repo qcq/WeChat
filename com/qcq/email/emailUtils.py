@@ -39,12 +39,12 @@ def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=
     try:
         logging.info('Begin Connect...')
         smtp = smtplib.SMTP_SSL(mail_host, port=port)
-        logging.info('Begin Login...', username)
+        logging.info('Begin Login... %s' % (username))
         smtp.login(username, passwd)
-        logging.info('Begin Send...', ' to ', ':'.join(recv))
+        logging.info('Begin Send... to %s'% (':'.join(recv)))
         smtp.sendmail(username, recv, message.as_string())
         smtp.quit()
         logging.info('email send success.')
     except Exception, exc:
         print exc, traceback.print_exc()
-        logging.error('try to sent email with ', username, ' Failed need more check.')
+        logging.error('try to sent email with %s Failed need more check.'%(username))

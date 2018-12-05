@@ -19,7 +19,6 @@ import urllib2
 import poster.encode
 from poster.streaminghttp import register_openers
 
-import com.qcq.const.media_id as media_id
 import com.qcq.const.webconst as webconst
 import com.qcq.utils as utils
 
@@ -65,7 +64,7 @@ class Media(threading.Thread):
                 if selectResult :
                     timeLapses = (datetime.datetime.utcnow() - selectResult[0]['created']).seconds
                     if timeLapses >= 3 * 24 * 60 * 60:
-                        logging.info('updating the %s because of 3 days will' + \
+                        logging.info('updating the %s because of 3 days will'
                             'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
                         result = json.loads(self.upload(webconst.accessToken, \
                             picture, u'image'), encoding = 'utf-8')
@@ -74,8 +73,8 @@ class Media(threading.Thread):
                             created_at = result[u'created_at'], created = \
                             datetime.datetime.utcnow())
                     else:
-                        logging.info('database already has %s info, no need ' + \
-                            'to update the database. time Lapses %s/%s seconds.' \
+                        logging.info('database already has %s info, no need '
+                            'to update the database. time Lapses %s/%s seconds.'
                             % (pictureName, timeLapses, 3 * 24 * 60 * 60))
                 else :
                     result = json.loads(self.upload(webconst.accessToken, \
@@ -83,8 +82,8 @@ class Media(threading.Thread):
                     webconst.db.insert('pictures', name = pictureName, \
                         path = picture, media_id = result[u'media_id'], \
                         created_at = result[u'created_at'], created = datetime.datetime.utcnow())
-                    logging.info('insert item %s in database in %s' % \
-                        (pictureName, datetime.datetime.utcnow()))
+                    logging.info('insert item %s in database in %s'
+                        %(pictureName, datetime.datetime.utcnow()))
 
     def run(self):
         while(True):
