@@ -23,6 +23,7 @@ from com.qcq.handles.blog import View as blogView
 from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import Delete as blogDelete
 from com.qcq.handles.blog import Edit as blogEdit
+from logging import FileHandler
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
@@ -47,9 +48,20 @@ urls = (
     '/blog_edit/(\d+)', 'blogEdit',
 )
 
+def __setLogger():
+    logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
+    rootLogger = logging.getLogger()
+    rootLogger.setLevel(logging.INFO)
+    fileHandler = logging.FileHandler(LOG_FILE_NAME)
+    fileHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(fileHandler)
+    consoleHandler = logging.StreamHandler(sys.stdout)
+    consoleHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(consoleHandler)
+
 if __name__ == '__main__':
+    __setLogger()
     try:
-        logging.basicConfig(filename=LOG_FILE_NAME, level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT)
         signal.signal(signal.SIGINT, shutdown)
         signal.signal(signal.SIGTERM, shutdown)
         t = access_token.Token()
