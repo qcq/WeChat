@@ -16,7 +16,6 @@ import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
 
-
 dealing_message = []
 
 
@@ -26,7 +25,10 @@ class Handle(object):
         try:
             data = web.input()
             if len(data) == 0:
-                return u"hello, baby. are you there, I have to say I love you, I am very glad you are here with me for a whole life. It is my honer to have you in my life, in my hug.\n the greatest thing in this world is - hug you in my chest, and kiss you."
+                return u"hello, baby. are you there, I have to say I love you,"
+            " I am very glad you are here with me for a whole life."
+            " It is my honer to have you in my life, in my hug.\n "
+            "the greatest thing in this world is - hug you in my chest, and kiss you."
             signature = data.signature
             timestamp = data.timestamp
             nonce = data.nonce
@@ -74,9 +76,8 @@ class Handle(object):
                 return reply.Msg(toUser, fromUser).send()
             dealing_message.remove(webData)
         except Exception, Argment:
-            print 'Exception happened:', traceback.print_exc()
             logging.warn('Exception happened:%s' %
-                         traceback.print_exc(), exc_info=True, stack_info=True)
+                traceback.print_exc(), exc_info = True, stack_info = True)
             return Argment
 
     def __dealTextMessage__(self, recMsg):

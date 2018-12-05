@@ -24,7 +24,7 @@ from com.qcq.config.config import settings
 from com.qcq.const.message import email_default_signature
 
 
-def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=465):
+def send_mail(recv, title, content, attachments, mail_host = 'smtp.163.com', port = 465):
     username = settings.get(u'email section', u'email user')
     passwd = settings.get(u'email section', u'email password')
     content = '<h1>' + content + '</h1><p>' + email_default_signature + '.</p>'
@@ -43,7 +43,7 @@ def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=
         message.attach(attachment)
     try:
         logging.info('Begin Connect...')
-        smtp = smtplib.SMTP_SSL(mail_host, port=port)
+        smtp = smtplib.SMTP_SSL(mail_host, port = port)
         logging.info('Begin Login... %s' % (username))
         smtp.login(username, passwd)
         logging.info('Begin Send... to %s' % (':'.join(recv)))
@@ -51,6 +51,5 @@ def send_mail(recv, title, content, attachments, mail_host='smtp.163.com', port=
         smtp.quit()
         logging.info('email send success.')
     except Exception, exc:
-        print exc, traceback.print_exc()
-        logging.error(
-            'try to sent email with %s Failed need more check.' % (username))
+        logging.warn('Exception happened:%s' %
+            traceback.print_exc(), exc_info = True, stack_info = True)

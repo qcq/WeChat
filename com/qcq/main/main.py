@@ -25,15 +25,14 @@ from com.qcq.handles.index import Index, Delete
 import com.qcq.access_token as access_token
 import com.qcq.media.media as media
 
-
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FILE_NAME = r'/home/chuanqin/log.txt'
 
 
 def shutdown(signum, frame):
-    print 'You are in the process of shutting down the server.', signum, frame
-    logging.info('The system is going down by the ctrl+c signal.')
+    logging.info('The system is going down by the ctrl+c signal. %s/%s'
+        % (signum, frame))
     sys.exit()
 
 
@@ -81,4 +80,5 @@ if __name__ == '__main__':
 
         app.run()
     except Exception, exc:
-        print exc, traceback.print_exc()
+        logging.warn('Exception happened:%s' %
+            traceback.print_exc(), exc_info = True, stack_info = True)

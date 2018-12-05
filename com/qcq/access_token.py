@@ -26,8 +26,8 @@ class Token(threading.Thread):
     def __realGetAccessToken(self):
         appId = settings.get(u'wx', 'appId')
         appSecret = settings.get(u'wx', 'appSecret')
-        postUrl = (
-            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s" % (appId, appSecret))
+        postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type="
+            "client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(str(urlResp.read()))
         webconst.accessToken = urlResp['access_token']
@@ -41,13 +41,11 @@ class Token(threading.Thread):
             else:
                 rLock = threading.RLock()  # RLock对象
                 rLock.acquire()
-                print 'trying update the token:', webconst.accessToken, ' with time left:', self.__leftTime
                 logging.info('%s%s%s%s' % ('trying update the token:',
-                                           webconst.accessToken, ' with time left:', self.__leftTime))
+                    webconst.accessToken, ' with time left:', self.__leftTime))
                 self.__realGetAccessToken()
-                print 'update the token succeed:', webconst.accessToken, ' with time left:', self.__leftTime
                 logging.info('%s%s%s%s' % ('update the token succeed:',
-                                           webconst.accessToken, ' with time left:', self.__leftTime))
+                    webconst.accessToken, ' with time left:', self.__leftTime))
                 rLock.release()
 
 # Token().get_access_token()
