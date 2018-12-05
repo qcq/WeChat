@@ -69,8 +69,7 @@ class Media(threading.Thread):
                             'cause picture unavailable%s' % (pictureName, datetime.datetime.utcnow()))
                         result = json.loads(self.upload(webconst.accessToken, \
                             picture, u'image'), encoding = 'utf-8')
-                        webconst.db.update('pictures', where = "name=%s" % \
-                            (pictureName), media_id = result[u'media_id'], \
+                        webconst.db.update('pictures', where = "name=$name", vars = myvar, media_id = result[u'media_id'], \
                             created_at = result[u'created_at'], created = \
                             datetime.datetime.utcnow())
                     else:
