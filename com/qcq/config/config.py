@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 '''
-Created on 2018Äê12ÔÂ4ÈÕ
+Created on 2018ï¿½ï¿½12ï¿½ï¿½4ï¿½ï¿½
 
 @author: chuanqin
 '''
