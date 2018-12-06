@@ -53,7 +53,7 @@ def __setLogger():
     logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
     rootLogger = logging.getLogger()
     rootLogger.setLevel(logging.INFO)
-    fileHandler = logging.FileHandler(LOG_FILE_NAME)
+    fileHandler = logging.FileHandler(LOG_FILE_NAME, encoding = 'utf-8')
     fileHandler.setFormatter(logFormatter)
     rootLogger.addHandler(fileHandler)
     consoleHandler = logging.StreamHandler(sys.stdout)
