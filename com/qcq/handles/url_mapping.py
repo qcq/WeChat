@@ -15,6 +15,7 @@ from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import View as blogView
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index, Delete
+from com.qcq.handles.sessions import Login
 
 urls = (
     '/', 'Index',

@@ -13,7 +13,6 @@ import traceback
 
 import web
 
-from com.qcq.const import webconst
 from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
 import com.qcq.media.media as media
@@ -30,11 +29,6 @@ def shutdown(signum, frame):
 
 
 web.config.debug = False
-
-'''
-session = web.session.Session(app, webconst.store, initializer = {'uid': 0, 'username': '',
-    'current_page': 'index', 'user_role': 'invited', 'login': 0, 'privilege': 0})
-'''
 
 
 def __setLogger():
