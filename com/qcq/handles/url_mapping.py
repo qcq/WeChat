@@ -6,26 +6,30 @@ Created on 2018年12月6日
 @author: chuanqin
 '''
 import hashlib
+
 import web
 
 from com.qcq.const.webconst import render as defaultRender
 from com.qcq.const.webconst import store, db
-from com.qcq.handles.add import Add
 from com.qcq.handles.blog import Delete as blogDelete
 from com.qcq.handles.blog import Edit as blogEdit
 from com.qcq.handles.blog import Index as blogIndex
 from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import View as blogView
 from com.qcq.handles.handle import Handle
-from com.qcq.handles.index import Index, Delete
+from com.qcq.handles.index import Index
+from com.qcq.handles.todo import Add as todoAdd
+from com.qcq.handles.todo import Delete as todoDelete
+from com.qcq.handles.todo import ToDo as todoIndex
 
 web.config.debug = False
 
 urls = (
     '/', 'Index',
-    '/add', 'Add',
+    '/todo', 'ToDoIndex',
+    '/todo_add', 'ToDoAdd',
     '/wx', 'Handle',
-    '/del/(\d+)', 'Delete',
+    '/todo_del/(\d+)', 'ToDoDelete',
     '/blog', 'blogIndex',
     '/blog_view/(\d+)', 'blogView',
     '/blog_new', 'blogNew',
