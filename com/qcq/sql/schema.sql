@@ -26,19 +26,19 @@ CREATE TABLE entries (
 );
 
 # create the sessions
-CREATE TABLE sessions (
-     session_id CHARACTER(40) PRIMARY KEY,
-     atime TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     data TEXT
+create table sessions (
+    session_id char(128) UNIQUE NOT NULL,
+    atime timestamp NOT NULL default current_timestamp,
+    data text
 );
 
 # users
 CREATE TABLE users
 (
   id serial NOT NULL,
-  user character varying(80) NOT NULL,
+  name character varying(80) NOT NULL,
   pass character(40) NOT NULL,
   email character varying(100) NOT NULL,
   privilege integer NOT NULL DEFAULT 0,
   CONSTRAINT utilisateur_pkey PRIMARY KEY (id)
-)
+);
