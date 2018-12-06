@@ -11,8 +11,6 @@ import signal
 import sys
 import traceback
 
-import web
-
 from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
 import com.qcq.media.media as media
@@ -26,9 +24,6 @@ def shutdown(signum, frame):
     logging.info('The system is going down by the ctrl+c signal. %s/%s'
         % (signum, frame))
     sys.exit()
-
-
-web.config.debug = False
 
 
 def __setLogger():
