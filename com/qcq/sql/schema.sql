@@ -24,3 +24,21 @@ CREATE TABLE entries (
     content TEXT,
     posted_on timestamp default now()
 );
+
+# create the sessions
+CREATE TABLE sessions (
+     session_id CHARACTER(40) PRIMARY KEY,
+     atime TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     data TEXT
+);
+
+# users
+CREATE TABLE users
+(
+  id serial NOT NULL,
+  user character varying(80) NOT NULL,
+  pass character(40) NOT NULL,
+  email character varying(100) NOT NULL,
+  privilege integer NOT NULL DEFAULT 0,
+  CONSTRAINT utilisateur_pkey PRIMARY KEY (id)
+)

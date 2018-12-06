@@ -15,6 +15,7 @@ render = web.template.render(os.path.dirname(
 db = web.database(dbn = 'postgres', user = 'postgres',
     host = "172.17.0.2", pw = 'root', db = 'ebook')
 accessToken = ''
+store = web.session.DBStore(db, 'sessions')
 
 
 def get_todos():

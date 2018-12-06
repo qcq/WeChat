@@ -6,7 +6,6 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
-from logging import FileHandler
 import logging
 import signal
 import sys
@@ -14,14 +13,8 @@ import traceback
 
 import web
 
-from com.qcq.handles.add import Add
-from com.qcq.handles.blog import Delete as blogDelete
-from com.qcq.handles.blog import Edit as blogEdit
-from com.qcq.handles.blog import Index as blogIndex
-from com.qcq.handles.blog import New as blogNew
-from com.qcq.handles.blog import View as blogView
-from com.qcq.handles.handle import Handle
-from com.qcq.handles.index import Index, Delete
+from com.qcq.const import webconst
+from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
 import com.qcq.media.media as media
 
@@ -36,17 +29,12 @@ def shutdown(signum, frame):
     sys.exit()
 
 
-urls = (
-    '/', 'Index',
-    '/add', 'Add',
-    '/wx', 'Handle',
-    '/del/(\d+)', 'Delete',
-    '/blog', 'blogIndex',
-    '/blog_view/(\d+)', 'blogView',
-    '/blog_new', 'blogNew',
-    '/blog_delete/(\d+)', 'blogDelete',
-    '/blog_edit/(\d+)', 'blogEdit',
-)
+web.config.debug = False
+
+'''
+session = web.session.Session(app, webconst.store, initializer = {'uid': 0, 'username': '',
+    'current_page': 'index', 'user_role': 'invited', 'login': 0, 'privilege': 0})
+'''
 
 
 def __setLogger():
@@ -75,7 +63,6 @@ if __name__ == '__main__':
         uploadPicture.setDaemon(True)
         uploadPicture.start()
         logging.info("server is running to upload pictures to tencent.")
-        app = web.application(urls, globals())
         logging.info("server is ready to provide the service.")
 
         app.run()
