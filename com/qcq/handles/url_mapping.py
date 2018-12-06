@@ -37,6 +37,7 @@ urls = (
     '/blog_edit/(\d+)', 'blogEdit',
     '/login', 'Login',
     '/reset', 'Reset',
+    '/register', 'Register'
 )
 
 app = web.application(urls, globals())
@@ -97,4 +98,19 @@ class Login:
             session.privilege = 0
             render = create_render(session.privilege)
             return render.login_error()
+
+
+class Reset:
+
+    def GET(self):
+        session.login = 0
+        session.kill()
+        render = create_render(session.privilege)
+        return render.logout()
+
+
+class Register:
+
+    def GET(self):
+        pass
 
