@@ -83,11 +83,12 @@ class Login:
 
     def POST(self):
         name, passwd = web.input().name, web.input().passwd
-        ident = db.select('users', where = 'name=$name', vars = locals())
+        ident = list(webconst.getUserByName(name))
         if not ident:
             logging.info('user with name %s not exist, will direct to register page.' % name)
             raise web.seeother('/register')
         try:
+            ident = ident[0]
             if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['password']:
                 session.login = 1
                 session.privilege = ident['privilege']

@@ -70,5 +70,9 @@ def insertPicture(pictureName, path, media_id, created_at):
         created_at = created_at, created = datetime.datetime.utcnow())
 
 
+def getUserByName(name):
+    return db.select('users', where = 'name=$name', vars = locals())
+
+
 def insertUser(username, passwd, emailAddress):
     db.insert('users', name = username, password = passwd, email = emailAddress)

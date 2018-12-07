@@ -63,7 +63,6 @@ class Media(threading.Thread):
         for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
             pictureName = os.path.basename(picture).split('.')[0]
             with webconst.db.transaction():
-                myvar = dict(name = pictureName)
                 selectResult = list(webconst.getPictureByName(pictureName))
                 if selectResult:
                     timeLapses = datetime.datetime.utcnow() - \
