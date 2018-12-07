@@ -64,8 +64,7 @@ class Media(threading.Thread):
             pictureName = os.path.basename(picture).split('.')[0]
             with webconst.db.transaction():
                 myvar = dict(name = pictureName)
-                selectResult = list(webconst.db.select(
-                    'pictures', myvar, where = "name=$name"))
+                selectResult = list(webconst.getPictureByName(pictureName))
                 if selectResult:
                     timeLapses = datetime.datetime.utcnow() - \
                         selectResult[0]['created']
@@ -76,9 +75,7 @@ class Media(threading.Thread):
                             % (pictureName, datetime.datetime.utcnow()))
                         result = json.loads(self.upload(webconst.accessToken,
                             picture, u'image'), encoding = 'utf-8')
-                        webconst.db.update('pictures', where = "name=$name",
-                            vars = myvar, media_id = result[u'media_id'],
-                            created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                        webconst.updatePicture(pictureName, result[u'media_id'], result[u'created_at'])
                     else:
                         logging.info('database already has %s info, no need '
                             'to update the database. time Lapses %s/%s seconds.'
@@ -86,9 +83,7 @@ class Media(threading.Thread):
                 else:
                     result = json.loads(self.upload(webconst.accessToken,
                         picture, u'image'), encoding = 'utf-8')
-                    webconst.db.insert('pictures', name = pictureName,
-                        path = picture, media_id = result[u'media_id'],
-                            created_at = result[u'created_at'], created = datetime.datetime.utcnow())
+                    webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
                     logging.info('insert item %s in database in %s'
                         % (pictureName, datetime.datetime.utcnow()))
 

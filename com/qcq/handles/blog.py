@@ -11,8 +11,7 @@ import sys
 
 import web
 
-import com.qcq.const.model as model
-
+import com.qcq.const.webconst as webconst
 
 # ## Templates
 t_globals = {
@@ -20,14 +19,14 @@ t_globals = {
 }
 
 renderOfBlog = web.template.render(os.path.dirname(os.path.abspath(
-    sys.argv[0])) + '/../templates/', base='blog_base', globals=t_globals)
+    sys.argv[0])) + '/../templates/', base = 'blog_base', globals = t_globals)
 
 
 class Index:
 
     def GET(self):
         """ Show page """
-        posts = model.get_posts()
+        posts = webconst.getPosts()
         return renderOfBlog.blog_index(posts)
 
 
@@ -35,7 +34,7 @@ class View:
 
     def GET(self, id):
         """ View single post """
-        post = model.get_post(int(id))
+        post = webconst.getPost(int(id))
         return renderOfBlog.blog_view(post)
 
 
@@ -43,11 +42,11 @@ class New:
 
     form = web.form.Form(
         web.form.Textbox('title', web.form.notnull,
-                         size=30,
-                         description="Post title:"),
+                         size = 30,
+                         description = "Post title:"),
         web.form.Textarea('content', web.form.notnull,
-                          rows=30, cols=80,
-                          description="Post content:"),
+                          rows = 30, cols = 80,
+                          description = "Post content:"),
         web.form.Button('Post entry'),
     )
 
@@ -59,29 +58,29 @@ class New:
         form = self.form()
         if not form.validates():
             return renderOfBlog.blog_new(form)
-        model.new_post(form.d.title, form.d.content)
+        webconst.newPost(form.d.title, form.d.content)
         raise web.seeother('/blog')
 
 
 class Delete:
 
     def POST(self, id):
-        model.del_post(int(id))
+        webconst.delPost(int(id))
         raise web.seeother('/blog')
 
 
 class Edit:
 
     def GET(self, id):
-        post = model.get_post(int(id))
+        post = webconst.getPost(int(id))
         form = New.form()
         form.fill(post)
         return renderOfBlog.blog_edit(post, form)
 
     def POST(self, id):
         form = New.form()
-        post = model.get_post(int(id))
+        post = webconst.getPost(int(id))
         if not form.validates():
             return renderOfBlog.blog_edit(post, form)
-        model.update_post(int(id), form.d.title, form.d.content)
+        webconst.updatePost(int(id), form.d.title, form.d.content)
         raise web.seeother('/blog')

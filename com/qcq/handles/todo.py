@@ -21,7 +21,7 @@ class ToDo:
 
     def GET(self):
         """ Show page """
-        todos = webconst.get_todos()
+        todos = webconst.getTodos()
         form = self.form()
         return webconst.render.todo(todos, form)
 
@@ -29,9 +29,9 @@ class ToDo:
         """ Add new entry """
         form = self.form()
         if not form.validates():
-            todos = webconst.get_todos()
+            todos = webconst.getTodos()
             return webconst.render.todo(todos, form)
-        webconst.new_todo(form.d.title)
+        webconst.newTodo(form.d.title)
         raise web.seeother('/todo')
 
 
@@ -40,7 +40,7 @@ class Delete:
     def POST(self, id):
         """ Delete based on ID """
         id = int(id)
-        webconst.del_todo(id)
+        webconst.delTodo(id)
         raise web.seeother('/todo')
 
 

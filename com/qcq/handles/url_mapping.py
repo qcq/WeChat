@@ -6,9 +6,11 @@ Created on 2018年12月6日
 @author: chuanqin
 '''
 import hashlib
+import logging
 
 import web
 
+from com.qcq.const import webconst
 from com.qcq.const.webconst import render as defaultRender
 from com.qcq.const.webconst import store, db
 from com.qcq.handles.blog import Delete as blogDelete
@@ -81,13 +83,16 @@ class Login:
 
     def POST(self):
         name, passwd = web.input().name, web.input().passwd
-        ident = db.select('users', where = 'name=$name', vars = locals())[0]
+        ident = db.select('users', where = 'name=$name', vars = locals())
+        if not ident:
+            logging.info('user with name %s not exist, will direct to register page.' % name)
+            raise web.seeother('/register')
         try:
-            if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['pass']:
+            if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['password']:
                 session.login = 1
                 session.privilege = ident['privilege']
                 render = create_render(session.privilege)
-                return render.login_ok()
+                return render.todo()
             else:
                 session.login = 0
                 session.privilege = 0
@@ -109,8 +114,34 @@ class Reset:
         return render.logout()
 
 
+vpass = web.form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
+vemail = web.form.regexp(r".*@.*", "must be a valid email address")
+
+register_form = web.form.Form(
+    web.form.Textbox("username", description = "Username"),
+    web.form.Textbox("email", vemail, description = "E-Mail"),
+    web.form.Password("password", vpass, description = "Password"),
+    web.form.Password("password2", description = "Repeat password"),
+    web.form.Button("submit", type = "submit", description = "Register"),
+    validators = [
+        web.form.Validator("Passwords did't match", lambda i: i.password == i.password2)]
+
+)
+
+
 class Register:
 
     def GET(self):
-        pass
+        render = create_render(session.privilege)
+        f = register_form()
+        return render.register(f)
 
+    def POST(self):
+        render = create_render(session.privilege)
+        f = register_form()
+        if not f.validates():
+            return render.register(f)
+        data = web.input()
+        username, passwd, emailAddress = data.username, data.password, data.email
+        webconst.insertUser(username, passwd, emailAddress)
+        logging.info('inser user: %s into database' % username)
