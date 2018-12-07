@@ -102,7 +102,7 @@ class Login:
                 return render.login_error()
         except Exception, exc:
             logging.warn('Exception happened:%s' %
-                traceback.print_exc(), exc_info = True, stack_info = True)
+                traceback.print_exc(), exc_info = True)
             session.login = 0
             session.privilege = 0
             render = create_render(session.privilege)
