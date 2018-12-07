@@ -143,5 +143,5 @@ class Register:
             return render.register(f)
         data = web.input()
         username, passwd, emailAddress = data.username, data.password, data.email
-        webconst.insertUser(username, passwd, emailAddress)
+        webconst.insertUser(username, hashlib.sha1("sAlT754-" + passwd).hexdigest(), emailAddress)
         logging.info('inser user: %s into database' % username)
