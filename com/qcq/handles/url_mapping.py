@@ -88,21 +88,13 @@ class Login:
         if not ident:
             logging.info('user with name %s not exist, will direct to register page.' % name)
             raise web.seeother('/register')
-        try:
-            ident = ident[0]
-            if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['password']:
-                session.login = 1
-                session.privilege = ident['privilege']
-                render = create_render(session.privilege)
-                raise web.seeother('/todo')
-            else:
-                session.login = 0
-                session.privilege = 0
-                render = create_render(session.privilege)
-                return render.login_error()
-        except Exception, exc:
-            logging.warn('Exception happened:%s' %
-                traceback.print_exc(), exc_info = True)
+        ident = ident[0]
+        if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['password']:
+            session.login = 1
+            session.privilege = ident['privilege']
+            render = create_render(session.privilege)
+            raise web.seeother('/todo')
+        else:
             session.login = 0
             session.privilege = 0
             render = create_render(session.privilege)
