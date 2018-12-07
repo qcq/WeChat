@@ -47,5 +47,3 @@ class Token(threading.Thread):
                 logging.info('%s%s%s%s' % ('update the token succeed:',
                     webconst.accessToken, ' with time left:', self.__leftTime))
                 rLock.release()
-
-# Token().get_access_token()
