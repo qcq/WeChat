@@ -52,4 +52,4 @@ def send_mail(recv, title, content, attachments, mail_host = 'smtp.163.com', por
         logging.info('email send success.')
     except Exception, exc:
         logging.warn('Exception happened:%s' %
-            traceback.print_exc(), exc_info = True, stack_info = True)
+            traceback.print_exc(), exc_info = True)

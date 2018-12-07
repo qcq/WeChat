@@ -57,4 +57,4 @@ if __name__ == '__main__':
         app.run()
     except Exception, exc:
         logging.warn('Exception happened:%s' %
-            traceback.print_exc(), exc_info = True, stack_info = True)
+            traceback.print_exc(), exc_info = True)

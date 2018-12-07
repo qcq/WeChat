@@ -7,6 +7,7 @@ Created on 2018年12月6日
 '''
 import hashlib
 import logging
+import traceback
 
 import web
 
@@ -93,13 +94,15 @@ class Login:
                 session.login = 1
                 session.privilege = ident['privilege']
                 render = create_render(session.privilege)
-                return render.todo()
+                raise web.seeother('/todo')
             else:
                 session.login = 0
                 session.privilege = 0
                 render = create_render(session.privilege)
                 return render.login_error()
-        except:
+        except Exception, exc:
+            logging.warn('Exception happened:%s' %
+                traceback.print_exc(), exc_info = True, stack_info = True)
             session.login = 0
             session.privilege = 0
             render = create_render(session.privilege)
@@ -126,7 +129,6 @@ register_form = web.form.Form(
     web.form.Button("submit", type = "submit", description = "Register"),
     validators = [
         web.form.Validator("Passwords did't match", lambda i: i.password == i.password2)]
-
 )
 
 
