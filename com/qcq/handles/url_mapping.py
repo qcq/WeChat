@@ -138,6 +138,7 @@ class Register:
         username, passwd, emailAddress = data.username, data.password, data.email
         webconst.insertUser(username, hashlib.sha1("sAlT754-" + passwd).hexdigest(), emailAddress)
         logging.info('inser user: %s into database' % username)
+        raise web.seeother('/login')
 
 
 class ToDoIndex:
