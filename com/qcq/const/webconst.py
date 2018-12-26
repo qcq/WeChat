@@ -19,12 +19,12 @@ accessToken = ''
 store = web.session.DBStore(db, 'sessions')
 
 
-def getTodos():
-    return db.select('todo', order = 'id')
+def getTodos(name):
+    return db.select('todo', order = 'id', where = 'name=$name', vars = locals())
 
 
-def newTodo(text):
-    db.insert('todo', title = text)
+def newTodo(text, name):
+    db.insert('todo', title = text, name = name)
 
 
 def delTodo(id):

@@ -57,6 +57,21 @@ def countSourceCodeLine(files):
     print 'This project contains', source_file_code, 'line codes.'
 
 
+def unpack_this_session(session_id):
+    import base64, pickle, sys
+    sys.argv = []  # pickle needs sys.argv... workaround !
+    data = r''  # = plpy.execute("select data from sessions where session_id='%s'" % (session_id))[0]['data']
+
+    pickled = base64.decodestring(data)
+    session_instance = pickle.loads(pickled)
+
+    uid = session_instance['uid']
+    current_page = session_instance['current_page']
+    user_role = session_instance['user_role']
+
+    return (uid, current_page, user_role)
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print 'please input where do you want to copy these files.'
@@ -76,7 +91,7 @@ if __name__ == '__main__':
     picturePath = os.path.join(os.path.abspath(path), 'pictures')
     if os.path.exists(picturePath):
         print picturePath, 'exist, will delete it first.'
-        shutil.rmtree(picturePath, ignore_errors=True)
+        shutil.rmtree(picturePath, ignore_errors = True)
     os.mkdir(os.path.join(os.path.abspath(path), 'pictures'))
     print 'create folder', picturePath
     print 'will copy the files:', pictureFiles, " to ", os.path.abspath(picturePath)

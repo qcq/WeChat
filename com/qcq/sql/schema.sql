@@ -3,7 +3,8 @@ create database ebook;
 CREATE TABLE todo (
     id serial primary key,
     title TEXT,
-    created timestamp default now()
+    created timestamp default now(),
+    name character varying(80) NOT NULL
 );
 
 #create table used for store the pictures.

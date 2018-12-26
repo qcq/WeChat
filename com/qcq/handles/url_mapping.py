@@ -21,18 +21,15 @@ from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import View as blogView
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index
-from com.qcq.handles.todo import Add as todoAdd
-from com.qcq.handles.todo import Delete as todoDelete
-from com.qcq.handles.todo import ToDo as todoIndex
 
 web.config.debug = False
 
 urls = (
     '/', 'Index',
-    '/todo', 'todoIndex',
-    '/todo_add', 'todoAdd',
+    '/todo', 'TodoIndex',
+    '/todo_add', 'TodoAdd',
     '/wx', 'Handle',
-    '/todo_del/(\d+)', 'todoDelete',
+    '/todo_del/(\d+)', 'TodoDelete',
     '/blog', 'blogIndex',
     '/blog_view/(\d+)', 'blogView',
     '/blog_new', 'blogNew',
@@ -92,8 +89,9 @@ class Login:
         if hashlib.sha1("sAlT754-" + passwd).hexdigest() == ident['password']:
             session.login = 1
             session.privilege = ident['privilege']
+            session.username = name
             render = create_render(session.privilege)
-            raise web.seeother('/todo')
+            raise web.seeother('/todo?name=%s' % session.username)
         else:
             session.login = 0
             session.privilege = 0
@@ -140,3 +138,44 @@ class Register:
         username, passwd, emailAddress = data.username, data.password, data.email
         webconst.insertUser(username, hashlib.sha1("sAlT754-" + passwd).hexdigest(), emailAddress)
         logging.info('inser user: %s into database' % username)
+
+
+class ToDoIndex:
+
+    form = web.form.Form(
+        web.form.Textbox('title', web.form.notnull,
+                         description = "I need to:"),
+        web.form.Button('Add todo'),
+    )
+
+    def GET(self):
+        """ Show page """
+        todos = webconst.getTodos(session.username)
+        form = self.form()
+        return webconst.render.todo(todos, form)
+
+    def POST(self):
+        """ Add new entry """
+        form = self.form()
+        if not form.validates():
+            todos = webconst.getTodos(session.username)
+            return webconst.render.todo(todos, form)
+        webconst.newTodo(form.d.title)
+        raise web.seeother('/todo')
+
+
+class ToDoDelete:
+
+    def POST(self, id):
+        """ Delete based on ID """
+        id = int(id)
+        webconst.delTodo(id)
+        raise web.seeother('/todo')
+
+
+class ToDoAdd:
+
+    def POST(self):
+        i = web.input()
+        webconst.db.insert('todo', title = i.title, name = session.username)
+        raise web.seeother('/todo')
