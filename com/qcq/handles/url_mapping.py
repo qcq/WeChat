@@ -151,9 +151,12 @@ class ToDoIndex:
 
     def GET(self):
         """ Show page """
-        todos = webconst.getTodos(session.username)
-        form = self.form()
-        return webconst.render.todo(todos, form)
+        if logged():
+            todos = webconst.getTodos(session.username)
+            form = self.form()
+            return webconst.render.todo(todos, form)
+        else:
+            return '<h1>please login first!</h1>'
 
     def POST(self):
         """ Add new entry """
