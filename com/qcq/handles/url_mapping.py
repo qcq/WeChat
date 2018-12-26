@@ -156,7 +156,7 @@ class ToDoIndex:
             form = self.form()
             return webconst.render.todo(todos, form)
         else:
-            return '<h1>please login first!</h1>'
+            raise web.seeother('/login')
 
     def POST(self):
         """ Add new entry """
