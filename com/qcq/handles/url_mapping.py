@@ -91,7 +91,7 @@ class Login:
             session.privilege = ident['privilege']
             session.username = name
             render = create_render(session.privilege)
-            raise web.seeother('/todo?name=%s' % session.username)
+            raise web.seeother('/todo')
         else:
             session.login = 0
             session.privilege = 0
@@ -160,7 +160,7 @@ class ToDoIndex:
         if not form.validates():
             todos = webconst.getTodos(session.username)
             return webconst.render.todo(todos, form)
-        webconst.newTodo(form.d.title)
+        webconst.newTodo(form.d.title, session.username)
         raise web.seeother('/todo')
 
 
