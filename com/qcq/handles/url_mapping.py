@@ -26,10 +26,10 @@ web.config.debug = False
 
 urls = (
     '/', 'Index',
-    '/todo', 'TodoIndex',
-    '/todo_add', 'TodoAdd',
+    '/todo', 'ToDoIndex',
+    '/todo_add', 'ToDoAdd',
     '/wx', 'Handle',
-    '/todo_del/(\d+)', 'TodoDelete',
+    '/todo_del/(\d+)', 'ToDoDelete',
     '/blog', 'blogIndex',
     '/blog_view/(\d+)', 'blogView',
     '/blog_new', 'blogNew',
