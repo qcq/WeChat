@@ -112,7 +112,8 @@ vpass = web.form.regexp(r".{3,20}$", 'must be between 3 and 20 characters')
 vemail = web.form.regexp(r".*@.*", "must be a valid email address")
 
 register_form = web.form.Form(
-    web.form.Textbox("username", description = "Username"),
+    web.form.Textbox("username", web.form.Validator("user already exist, try another username",
+        lambda username: webconst.getUserByName(username)), description = "Username"),
     web.form.Textbox("email", vemail, description = "E-Mail"),
     web.form.Password("password", vpass, description = "Password"),
     web.form.Password("password2", description = "Repeat password"),
