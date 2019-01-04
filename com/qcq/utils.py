@@ -15,13 +15,15 @@ import shutil
 import sys
 
 
-def findFilesEndsWith(path, suffix):
+def findFilesEndsWith(path, *suffixs):
     sourceFiles = []
     for root, directory, files in os.walk(path):
         for fileName in files:
-            if fileName.upper().endswith(suffix):
-                sourceFiles.append(os.path.join(
-                    os.path.abspath(root), fileName))
+            for suffix in suffixs:
+                if fileName.upper().endswith(suffix):
+                    sourceFiles.append(os.path.join(
+                        os.path.abspath(root), fileName))
+                    break
     return sourceFiles
 
 

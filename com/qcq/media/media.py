@@ -60,7 +60,7 @@ class Media(threading.Thread):
             print "get successful"
 
     def __updateDatabase(self):
-        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG'):
+        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG', u'PNG'):
             pictureName = os.path.basename(picture).split('.')[0]
             with webconst.db.transaction():
                 selectResult = list(webconst.getPictureByName(pictureName))
