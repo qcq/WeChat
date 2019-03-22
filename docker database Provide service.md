@@ -58,6 +58,15 @@
       # start a postgres instance命令来自上述的链接，下边的命令意思是用docker运行了一个Postgres实例，容器的名字叫做some-postgres（可修改），密码是mysecretpassword（可修改），默认简历的数据库是postgres，默认的用户名是postgres，默认暴露的端口是127.0.0.1
       docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
       ```
+      
+      重新启动
+      
+      
+      
+      连接docker数据库
+      ```
+      docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres
+      ```
 
    7. 安装对应的python驱动。
 
