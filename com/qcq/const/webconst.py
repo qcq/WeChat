@@ -8,19 +8,23 @@ Created on Nov 23, 2018
 import datetime
 import os
 import sys
+default_encoding = 'utf-8'
+if sys.getdefaultencoding() != default_encoding:
+    reload(sys)
+    sys.setdefaultencoding(default_encoding)
 
 import web
 
 render = web.template.render(os.path.dirname(
     os.path.abspath(sys.argv[0])) + '/../templates/', base = 'base')
 db = web.database(dbn = 'postgres', user = 'postgres',
-    host = "172.17.0.2", pw = 'root', db = 'ebook')
+    host = "172.17.0.2", pw = 'root', db = 'ebook')#, charset='utf8')
 accessToken = ''
 store = web.session.DBStore(db, 'sessions')
 
 
 def getTodos(name):
-    return db.select('todo', order = 'id', where = 'name=$name', vars = locals())
+    return db.select('todo', order = 'id', where = u'name='%s''%name)#, vars = locals())
 
 
 def newTodo(text, name):
@@ -57,7 +61,7 @@ def updatePost(id, title, text):
 
 
 def getPictureByName(name):
-    return db.select('pictures', where = "name=$name", vars = locals())
+    return db.select('pictures', where = u"name='%s'" % name)
 
 
 def updatePicture(name, media_id, created_at):
