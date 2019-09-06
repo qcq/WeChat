@@ -8,10 +8,17 @@ Created on Nov 23, 2018
 import datetime
 import os
 import sys
+'''
+# found one issue, which the web.db print the sql statement in wrong format of
+# chinese, which first thought caused by the encoding of sys module, in final proves
+# its not this question, take the link: https://groups.google.com/forum/#!topic/python-cn/lm4I6Ti3SxA 
+# as reference. finally solved by replace where = "name=$name" with where = u"name = '%s'" % name.
+
 default_encoding = 'utf-8'
 if sys.getdefaultencoding() != default_encoding:
     reload(sys)
     sys.setdefaultencoding(default_encoding)
+'''
 
 import web
 
@@ -24,7 +31,7 @@ store = web.session.DBStore(db, 'sessions')
 
 
 def getTodos(name):
-    return db.select('todo', order = 'id', where = u'name='%s''%name)#, vars = locals())
+    return db.select('todo', order = 'id', where = u"name='%s'" % name)#, vars = locals())
 
 
 def newTodo(text, name):

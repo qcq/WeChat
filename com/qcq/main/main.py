@@ -7,6 +7,7 @@ Created on 2018年11月13日
 '''
 
 import logging
+import logging.handlers
 import signal
 import sys
 import traceback
@@ -17,7 +18,8 @@ import com.qcq.media.media as media
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
-LOG_FILE_NAME = r'/home/chuanqin/log.txt'
+LOG_FILE_NAME = r'/home/chuanqin/logs/single_log.log'
+ROTATE_LOG_FILE_NAME = r'/home/chuanqin/logs/rotate_log.log'
 
 
 def shutdown(signum, frame):
@@ -33,6 +35,10 @@ def __setLogger():
     fileHandler = logging.FileHandler(LOG_FILE_NAME)
     fileHandler.setFormatter(logFormatter)
     rootLogger.addHandler(fileHandler)
+    rotateHandler = logging.handlers.RotatingFileHandler(ROTATE_LOG_FILE_NAME, mode="w",
+        maxBytes=10000, backupCount=3, encoding="utf-8")
+    rotateHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(rotateHandler)
     consoleHandler = logging.StreamHandler(sys.stdout)
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
