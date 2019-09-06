@@ -31,6 +31,7 @@ class Media(threading.Thread):
         self.__leftTime = 0
         self.__picturesPath = u"%s%s" % (
             os.path.dirname(sys.argv[0]), u'../pictures/')
+        self.__DayInSeconds = 3 * 24 * 60 * 60
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
@@ -67,8 +68,8 @@ class Media(threading.Thread):
                 if selectResult:
                     timeLapses = datetime.datetime.utcnow() - \
                         selectResult[0]['created']
-                    timeLapses = timeLapses.days * 24 * 60 * 60 + timeLapses.seconds
-                    if timeLapses >= 3 * 24 * 60 * 60:
+                    timeLapses = timeLapses.days * self.__DayInSeconds + timeLapses.seconds
+                    if timeLapses >= 3 * self.__DayInSeconds:
                         logging.info('updating the %s because of 3 days will '
                             'cause picture unavailable%s'
                             % (pictureName, datetime.datetime.utcnow()))
@@ -78,10 +79,13 @@ class Media(threading.Thread):
                     else:
                         logging.info('database already has %s info, no need '
                             'to update the database. time Lapses %s/%s seconds.'
-                            % (pictureName, timeLapses, 3 * 24 * 60 * 60))
+                            % (pictureName, timeLapses, 3 * self.__DayInSeconds))
                 else:
                     result = json.loads(self.upload(webconst.accessToken,
                         picture, u'image'), encoding = 'utf-8')
+                    if 'errcode' in result:
+                        logging.warn('can not upload the %s to server with error %s' % (picture, result))
+                        continue
                     webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
                     logging.info('insert item %s in database in %s'
                         % (pictureName, datetime.datetime.utcnow()))
