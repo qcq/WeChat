@@ -52,7 +52,7 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            logging.info('%s%s' % ("Handle Post webdata is ", webData))
+            logging.info('%s%s' % ("Handle Post webdata is:\n", webData))
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
@@ -91,5 +91,8 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, u'我在这里一直等你来。')
         elif u'链接' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
+        elif u'牧羊人奇幻之旅' in receiveContent:
+            # should not put the hyper-link to source code, can put in database or config.ini as new sections.
+            return reply.TextMsg(toUser, fromUser, u'链接: https://pan.baidu.com/s/1tB6QQviesk4U9niGG5XRlw 提取码: u5na 复制这段内容后打开百度网盘手机App，操作更方便哦。')
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)

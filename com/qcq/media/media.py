@@ -92,6 +92,11 @@ class Media(threading.Thread):
 
     def run(self):
         while(True):
+            '''
+            here will take 60min as unit to check whether the picture need to update to tencent,
+            which has disadvantage —— can not upload new add picture as new service,  and may be
+            cause some old picture unavailable, here need to improve.
+            '''
             if webconst.accessToken:
                 if self.__leftTime > 0:
                     time.sleep(60)

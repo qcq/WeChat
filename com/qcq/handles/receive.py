@@ -6,11 +6,12 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
+import logging
 import xml.etree.ElementTree as ET
-
 
 def parse_xml(web_data):
     if len(web_data) == 0:
+        logging.warn('receive the none message.')
         return None
     xmlData = ET.fromstring(web_data)
     msg_type = xmlData.find('MsgType').text

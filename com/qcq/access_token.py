@@ -35,9 +35,14 @@ class Token(threading.Thread):
 
     def run(self):
         while(True):
-            if self.__leftTime > 10:
-                time.sleep(2)
-                self.__leftTime -= 2
+            '''
+            https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_access_token.html
+            according the reference, when the access token change, tencent make sure the old and new
+            access token effect in 5 mins.
+            '''
+            if self.__leftTime > 0:
+                time.sleep(self.__leftTime)
+                self.__leftTime = 0
             else:
                 rLock = threading.RLock()  # RLock对象
                 rLock.acquire()
