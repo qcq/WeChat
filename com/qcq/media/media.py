@@ -86,6 +86,10 @@ class Media(threading.Thread):
                     if 'errcode' in result:
                         logging.warn('can not upload the %s to server with error %s' % (picture, result))
                         continue
+                    '''
+                    https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
+                    reference the link, temporary material has time < 3-days limit, size <=2M.
+                    '''
                     webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
                     logging.info('insert item %s in database in %s'
                         % (pictureName, datetime.datetime.utcnow()))
