@@ -52,7 +52,7 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            logging.info('%s%s' % ("Handle Post webdata is:\n", webData))
+            logging.info("Handle Post webdata is:\n%s" % webData)
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
