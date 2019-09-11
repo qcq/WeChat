@@ -1,11 +1,10 @@
 # here describe what needed of python third module
-web
+web.py
 datetime
-json
-urllib
-urllib2
 poster
 logging
-hashlib
-traceback
+#hashlib
+#traceback
 configparser
+watchdog
+psycopg2-binary

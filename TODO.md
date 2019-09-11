@@ -9,8 +9,10 @@
     **may be can fixed by below way:**
 
     1. with the watchdog moudle https://pypi.org/project/watchdog/, get three kinds event:
-        * when has new file created, then added it to database.
-        * when file update, then updated to database.
+        * when has new file created, upload to tencent, then added it to database with media id.
+        * when file update, upload to tencent, then updated to database with media id.
         * when file delete, then delete it from database.
     2. another thread query the whole table of databse, get the olddest time file which closest to 3 days, then sleep (currenttime - timestamp of the file), also can consider sleep little than currenttime - timestamp, to make sure the file always avaliable, then update this file.
     3. thread in 2) query the whole database again, cycle all this setp.
+
+    note: **add the eventbus like java, to decouple PicturePathHandler with Media**
