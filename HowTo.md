@@ -9,13 +9,20 @@
     tmux attach -t  # attach到某一个控制台
     详细其他命令请参阅如下链接：
     https://www.cnblogs.com/liuguanglin/p/9290345.html
-5. 启动主程序
-    python /home/chuanqin/WeChat/com/qcq/main/main.py 80
-6. 创建postgresql的docker容器
+5. 创建postgresql的docker容器
     docker run --name postgres -e POSTGRES_PASSWORD=root -d postgres
-7. 连接postgres数据库，进行相应的数据操作，比如数据库创建，表创建，表删除等等命令。代码提供相应的sql语句。
+6. 连接postgres数据库，进行相应的数据操作，比如数据库创建，表创建，表删除等等命令。代码提供相应的sql语句。
     docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres
     password root
+7. 启动主程序
+
+    1. change path to /home/user/
+    2. virtualenv wx
+    3. source wx/bin/activate
+    4. pip install -r ../WeChat requirsments.txt
+    5. change path to /home/user/WeChat/com/qcq/main/
+    6. sudo python main.py 80
+
 8. 切换数据库（postgresql数据库的相关命令），具体的命令请查阅下边连接：
     https://www.cnblogs.com/liyasen/p/6611020.html
     \c ebook
