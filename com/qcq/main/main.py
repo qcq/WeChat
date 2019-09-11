@@ -51,6 +51,8 @@ if __name__ == '__main__':
     __setLogger()
     token = access_token.Token()
     uploadPicture = media.Media()
+    # below code to take pyeventbus work
+    uploadPicture.register(uploadPicture)
     observer = Observer()
     try:
         signal.signal(signal.SIGINT, shutdown)
@@ -63,6 +65,8 @@ if __name__ == '__main__':
         logging.info("server is running to upload pictures to tencent.")
         pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'*.JPG', r'*.PNG'],
             ignore_patterns=[r'*.swap'], ignore_directories=True, case_sensitive=True)
+        # below code to take pyeventbus work
+        pictureMonitor.register(pictureMonitor)
         watch = observer.schedule(pictureMonitor, path='..//pictures', recursive=True)
         observer.add_handler_for_watch(LoggingEventHandler(), watch)
         observer.start()

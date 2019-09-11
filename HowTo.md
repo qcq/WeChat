@@ -14,6 +14,8 @@
 6. 连接postgres数据库，进行相应的数据操作，比如数据库创建，表创建，表删除等等命令。代码提供相应的sql语句。
     docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres
     password root
+7. 如果不是第一次启动服务，比如服务器重启之后，相应的docker镜像还在，只需要执行如下命令即可：
+    sudo docker start postgres(docker images的名字)
 7. 启动主程序
 
     1. change path to /home/user/

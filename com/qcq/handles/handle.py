@@ -89,9 +89,11 @@ class Handle(object):
             return reply.ImageMsg(toUser, fromUser, media_id_temp[0][u'media_id'])
         elif u'在吗' in receiveContent:
             return reply.TextMsg(toUser, fromUser, u'我在这里一直等你来。')
-        elif u'链接' in receiveContent:
-            return reply.TextMsg(toUser, fromUser, message.hyeper_link_content % (toUser))
-        elif u'牧羊人奇幻之旅' in receiveContent:
+        elif u'待办事项' in receiveContent:
+            return reply.TextMsg(toUser, fromUser, message.to_do_list_login)
+        elif u'博客' in receiveContent:
+            return reply.TextMsg(toUser, fromUser, message.blog)
+        elif u'牧羊少年奇幻之旅' in receiveContent:
             # should not put the hyper-link to source code, can put in database or config.ini as new sections.
             return reply.TextMsg(toUser, fromUser, u'链接: https://pan.baidu.com/s/1tB6QQviesk4U9niGG5XRlw 提取码: u5na 复制这段内容后打开百度网盘手机App，操作更方便哦。')
         else:

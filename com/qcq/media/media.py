@@ -15,12 +15,14 @@ import sys
 import threading
 import time
 import urllib2
+from pyeventbus import *
 
 from poster.streaminghttp import register_openers
 import poster.encode
 
 import com.qcq.const.webconst as webconst
 import com.qcq.utils as utils
+from com.qcq.events.file_event import *
 
 
 class Media(threading.Thread):
@@ -59,6 +61,13 @@ class Media(threading.Thread):
             mediaFile = file("test_media.jpg", "wb")
             mediaFile.write(mediaBuffer)
             print "get successful"
+
+    def register(self, bInstance):
+        PyBus.Instance().register(bInstance, self.__class__.__name__)
+
+    @subscribe(threadMode=Mode.BACKGROUND, onEvent=FileEvent)
+    def readEventFromA(self, event):
+        print 'qcq is here', event._event_type, event._src
 
     def __updateDatabase(self):
         for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG', u'PNG'):
