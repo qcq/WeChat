@@ -15,6 +15,7 @@ import sys
 import threading
 import time
 import urllib2
+import traceback
 from pyeventbus import *
 
 from poster.streaminghttp import register_openers
@@ -78,21 +79,25 @@ class Media(threading.Thread):
             logging.warn('not defined file event happened.')
 
     def __newPictureFound__(self, picture):
+        # need to add limit, judge the filesize should less than 2M, if not delete it.
         pictureName = os.path.basename(picture).split('.')[0]
         with webconst.db.transaction():
             if not webconst.getPictureByName(pictureName):
-                result = json.loads(self.upload(webconst.accessToken, picture,
-                    u'image'), encoding='utf-8')
-                if 'errcode' in result:
-                    logging.warn('can not upload the %s to server with error %s' % (picture, result))
-                    return
-                '''
-                https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
-                reference the link, temporary material has time < 3-days limit, size <=2M.
-                '''
-                webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
-                logging.info('insert item %s in database in %s'
-                    % (pictureName, datetime.datetime.utcnow()))
+                try:
+                    result = json.loads(self.upload(webconst.accessToken, picture,
+                        u'image'), encoding='utf-8')
+                    if 'errcode' in result:
+                        logging.warn('can not upload the %s to server with error %s' % (picture, result))
+                        return
+                    '''
+                    https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
+                    reference the link, temporary material has time < 3-days limit, size <=2M.
+                    '''
+                    webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
+                    logging.info('insert item %s in database in %s'
+                        % (pictureName, datetime.datetime.utcnow()))
+                except Exception, exc:
+                    logging.warn('Exception happened:%s' % traceback.print_exc(), exc_info=True)
 
     def __pictureNameChaned__(self, src, dst):
         self.__pictureDelete__(src)

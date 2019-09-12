@@ -31,7 +31,7 @@ store = web.session.DBStore(db, 'sessions')
 
 
 def getTodos(name):
-    return db.select('todo', order = 'id', where = u"name='%s'" % name)#, vars = locals())
+    return db.select('todo', order = 'id', where = "name='%s'" % name)#, vars = locals())
 
 
 def newTodo(text, name):
@@ -70,8 +70,9 @@ def updatePost(id, title, text):
 def getOldestPictureCreatedTime():
     return db.select('pictures', order='created', limit=1)
 
+
 def getPictureByName(name):
-    return db.select('pictures', where = u"name='%s'" % name)
+    return db.select('pictures', where = "name='%s'" % name)
 
 
 def updatePicture(name, media_id, created_at):
