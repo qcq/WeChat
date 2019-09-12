@@ -67,6 +67,9 @@ def updatePost(id, title, text):
                        title = title, content = text)
 
 
+def getOldestPictureCreatedTime():
+    return db.select('pictures', order='created', limit=1)
+
 def getPictureByName(name):
     return db.select('pictures', where = u"name='%s'" % name)
 

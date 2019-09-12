@@ -30,10 +30,9 @@ class Media(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         register_openers()
-        self.__leftTime = 0
-        self.__picturesPath = u"%s%s" % (
-            os.path.dirname(sys.argv[0]), u'../pictures/')
-        self.__DayInSeconds = 3 * 24 * 60 * 60
+        self._left_time = 0
+
+        self._DayInSeconds = 3 * 24 * 60 * 60
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
@@ -81,7 +80,7 @@ class Media(threading.Thread):
     def __newPictureFound__(self, picture):
         pictureName = os.path.basename(picture).split('.')[0]
         with webconst.db.transaction():
-            if not list(webconst.getPictureByName(pictureName)):
+            if not webconst.getPictureByName(pictureName):
                 result = json.loads(self.upload(webconst.accessToken, picture,
                     u'image'), encoding='utf-8')
                 if 'errcode' in result:
@@ -103,28 +102,40 @@ class Media(threading.Thread):
         pictureName = os.path.basename(picture).split('.')[0]
         webconst.deletePicture(pictureName)
 
-    def __updateDatabase(self):
-        for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG', u'PNG'):
-            pictureName = os.path.basename(picture).split('.')[0]
-            with webconst.db.transaction():
-                selectResult = list(webconst.getPictureByName(pictureName))
-                if selectResult:
-                    timeLapses = datetime.datetime.utcnow() - \
-                        selectResult[0]['created']
-                    timeLapses = timeLapses.days * self.__DayInSeconds + timeLapses.seconds
-                    if timeLapses >= 3 * self.__DayInSeconds:
-                        logging.info('updating the %s because of 3 days will '
+    def __updateDatabase__(self):
+        '''
+        This function will update to:
+        '''
+        search_result = webconst.getOldestPictureCreatedTime()
+        if search_result:
+            created_time = search_result[0].created
+            time_lapses = datetime.datetime.utcnow() - created_time
+            time_lapses_in_seconds = time_lapses.days * \
+                self._DayInSeconds + time_lapses.seconds
+            if time_lapses_in_seconds > 3 * self._DayInSeconds:
+                logging.info('updating the %s because of 3 days will '
                             'cause picture unavailable%s'
-                            % (pictureName, datetime.datetime.utcnow()))
-                        result = json.loads(self.upload(webconst.accessToken,
-                            picture, u'image'), encoding = 'utf-8')
-                        webconst.updatePicture(pictureName, result[u'media_id'], result[u'created_at'])
-                    else:
-                        logging.info('database already has %s info, no need '
-                            'to update the database. time Lapses %s/%s seconds.'
-                            % (pictureName, timeLapses, 3 * self.__DayInSeconds))
+                             % (search_result[0].name, datetime.datetime.utcnow()))
+                if os.path.exists(search_result[0].path):
+                    result = json.loads(self.upload(webconst.accessToken,
+                        search_result[0].path, u'image'), encoding='utf-8')
+                    webconst.updatePicture(
+                        search_result[0].name, result[u'media_id'], result[u'created_at'])
                 else:
-                    self.__newPictureFound__(picture)
+                    # if the picture non-exist any more, delete from database.
+                    self.__pictureDelete__(search_result[0].name)
+                self.__updateDatabase__()
+            else :
+                self._left_time = 3 * self._DayInSeconds - time_lapses_in_seconds - 60
+                logging.info('no file need to update. take thread sleep %s' % self._left_time)
+        else:
+            '''
+            if has nothing in database, can sleep 3 days, because, only add new picture
+            can trigger database has item, one item avaliable in 3 days, so, sleep 3
+            days is fine.
+            '''
+            self._left_time = 3 * self._DayInSeconds - 60
+            logging.info('current has no items in database, take sleep %s.' % self._left_time)
 
     def run(self):
         while(True):
@@ -132,13 +143,13 @@ class Media(threading.Thread):
             here will take 60min as unit to check whether the picture need to update to tencent,
             which has disadvantage —— can not upload new add picture as new service,  and may be
             cause some old picture unavailable, here need to improve.
+            improved
             '''
             if webconst.accessToken:
-                if self.__leftTime > 0:
-                    time.sleep(60)
-                    self.__leftTime -= 60
+                if self._left_time > 0:
+                    time.sleep(self._left_time)
+                    self._left_time = 0
                 else:
-                    self.__updateDatabase()
-                    self.__leftTime = 60 * 60
+                    self.__updateDatabase__()
             else:
                 time.sleep(5)
