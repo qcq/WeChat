@@ -73,5 +73,5 @@ becasue not wrapped the project with **setuptools**. so want to import the modul
 3. [Postgres](https://hub.docker.com/_/postgres/)
 4. [micro-service](https://linux.cn/article-7584-1.html)
 5. [watchdog](https://pypi.org/project/watchdog/)
-6. [pyeventbus](https://github.com/n89nanda/pyeventbus)
+6. [pyeventbus](https://github.com/n89nanda/pyeventbus)[other](https://pypi.org/project/pyeventbus/0.5/)
 7. [tmux](https://segmentfault.com/a/1190000007427965)

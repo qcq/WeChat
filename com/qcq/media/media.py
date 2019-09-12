@@ -67,7 +67,41 @@ class Media(threading.Thread):
 
     @subscribe(threadMode=Mode.BACKGROUND, onEvent=FileEvent)
     def readEventFromA(self, event):
-        print 'qcq is here', event._event_type, event._src
+        logging.info('received event type:%s, src: %s, dst: %s' %
+                     (event._event_type, event._src, event._dst))
+        if event._event_type == FileEventType.CREATE:
+            self.__newPictureFound__(event._src)
+        elif event._event_type == FileEventType.MOVE:
+            self.__pictureNameChaned__(event._src, event._dst)
+        elif event._event_type == FileEventType.DELETE:
+            self.__pictureDelete__(event._src)
+        else:
+            logging.warn('not defined file event happened.')
+
+    def __newPictureFound__(self, picture):
+        pictureName = os.path.basename(picture).split('.')[0]
+        with webconst.db.transaction():
+            if not list(webconst.getPictureByName(pictureName)):
+                result = json.loads(self.upload(webconst.accessToken, picture,
+                    u'image'), encoding='utf-8')
+                if 'errcode' in result:
+                    logging.warn('can not upload the %s to server with error %s' % (picture, result))
+                    return
+                '''
+                https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
+                reference the link, temporary material has time < 3-days limit, size <=2M.
+                '''
+                webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
+                logging.info('insert item %s in database in %s'
+                    % (pictureName, datetime.datetime.utcnow()))
+
+    def __pictureNameChaned__(self, src, dst):
+        self.__pictureDelete__(src)
+        self.__newPictureFound__(dst)
+
+    def __pictureDelete__(self, picture):
+        pictureName = os.path.basename(picture).split('.')[0]
+        webconst.deletePicture(pictureName)
 
     def __updateDatabase(self):
         for picture in utils.findFilesEndsWith(self.__picturesPath, u'JPG', u'PNG'):
@@ -90,18 +124,7 @@ class Media(threading.Thread):
                             'to update the database. time Lapses %s/%s seconds.'
                             % (pictureName, timeLapses, 3 * self.__DayInSeconds))
                 else:
-                    result = json.loads(self.upload(webconst.accessToken,
-                        picture, u'image'), encoding = 'utf-8')
-                    if 'errcode' in result:
-                        logging.warn('can not upload the %s to server with error %s' % (picture, result))
-                        continue
-                    '''
-                    https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
-                    reference the link, temporary material has time < 3-days limit, size <=2M.
-                    '''
-                    webconst.insertPicture(pictureName, picture, result[u'media_id'], result[u'created_at'])
-                    logging.info('insert item %s in database in %s'
-                        % (pictureName, datetime.datetime.utcnow()))
+                    self.__newPictureFound__(picture)
 
     def run(self):
         while(True):

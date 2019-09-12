@@ -9,27 +9,29 @@ class PicturePathHandler(PatternMatchingEventHandler):
         super(PicturePathHandler, self).__init__(patterns=patterns, ignore_patterns=ignore_patterns,
             ignore_directories = ignore_directories, case_sensitive = case_sensitive)
 
-    def on_modified(self, event):
-        print 'qcq is here with modify'
-
     def on_created(self, event):
         '''
         here will get the event when new file created under pictures path.
         when receive this event, will upload this picture to tencent, and
         insert corresponding media id into database.
         '''
-        if event.src_path:
-            logging.info('file %s created.' % event.src_path)
         print 'qcq is here with created', event.src_path
         PyBus.Instance().post(FileEvent(FileEventType.CREATE,
-                                        os.path.abspath(event.src_path), None))
-        print 'qcq sent out the message'
+            os.path.abspath(event.src_path), None))
+        logging.info('file %s created. sent out event' % event.src_path)
+
 
     def on_deleted(self, event):
-        print 'qcq is here with delete'
+        '''
+        '''
+        PyBus.Instance().post(FileEvent(FileEventType.DELETE,
+            os.path.abspath(event.src_path), None))
+        logging.info("%s deleted. sent out event" % event.src_path)
 
     def on_moved(self, event):
-        print 'qcq is here moved'
+        PyBus.Instance().post(FileEvent(FileEventType.MOVE, os.path.abspath(event.src_path),
+            os.path.abspath(event.dest_path)))
+        logging.info("%s renamed to %s. sent out event" % (event.src_path, event.dest_path))
 
     def register(self, aInstance):
             PyBus.Instance().register(aInstance, self.__class__.__name__)

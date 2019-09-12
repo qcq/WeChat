@@ -11,7 +11,7 @@ import sys
 '''
 # found one issue, which the web.db print the sql statement in wrong format of
 # chinese, which first thought caused by the encoding of sys module, in final proves
-# its not this question, take the link: https://groups.google.com/forum/#!topic/python-cn/lm4I6Ti3SxA 
+# its not this question, take the link: https://groups.google.com/forum/#!topic/python-cn/lm4I6Ti3SxA
 # as reference. finally solved by replace where = "name=$name" with where = u"name = '%s'" % name.
 
 default_encoding = 'utf-8'
@@ -79,6 +79,10 @@ def updatePicture(name, media_id, created_at):
 def insertPicture(pictureName, path, media_id, created_at):
     db.insert('pictures', name = pictureName, path = path, media_id = media_id,
         created_at = created_at, created = datetime.datetime.utcnow())
+
+
+def deletePicture(pictureName):
+    db.delete('pictures', where = "name='%s'" % pictureName)
 
 
 def getUserByName(name):
