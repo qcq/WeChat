@@ -66,7 +66,7 @@ class Media(threading.Thread):
         PyBus.Instance().register(bInstance, self.__class__.__name__)
 
     @subscribe(threadMode=Mode.BACKGROUND, onEvent=FileEvent)
-    def readEventFromA(self, event):
+    def readEventFromPicturePathHandler(self, event):
         logging.info('received event type:%s, src: %s, dst: %s' %
                      (event._event_type, event._src, event._dst))
         if event._event_type == FileEventType.CREATE:
@@ -106,6 +106,7 @@ class Media(threading.Thread):
     def __pictureDelete__(self, picture):
         pictureName = os.path.basename(picture).split('.')[0]
         webconst.deletePicture(pictureName)
+        self._left_time = 0
 
     def __updateDatabase__(self):
         '''
@@ -152,8 +153,8 @@ class Media(threading.Thread):
             '''
             if webconst.accessToken:
                 if self._left_time > 0:
-                    time.sleep(self._left_time)
-                    self._left_time = 0
+                    time.sleep(60)
+                    self._left_time = self._left_time - 60
                 else:
                     self.__updateDatabase__()
             else:
