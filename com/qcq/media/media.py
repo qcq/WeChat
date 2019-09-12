@@ -106,30 +106,33 @@ class Media(threading.Thread):
     def __pictureDelete__(self, picture):
         pictureName = os.path.basename(picture).split('.')[0]
         webconst.deletePicture(pictureName)
-        self._left_time = 0
+        rLock = threading.RLock()  # RLock对象
+        rLock.acquire()
+        self.__updateDatabase__()
+        rLock.release()
 
     def __updateDatabase__(self):
         '''
         This function will update to:
         '''
-        search_result = webconst.getOldestPictureCreatedTime()
+        search_result = list(webconst.getOldestPictureCreatedTime())
         if search_result:
-            created_time = search_result[0].created
+            created_time = search_result[0]['created']
             time_lapses = datetime.datetime.utcnow() - created_time
             time_lapses_in_seconds = time_lapses.days * \
                 self._DayInSeconds + time_lapses.seconds
             if time_lapses_in_seconds > 3 * self._DayInSeconds:
                 logging.info('updating the %s because of 3 days will '
                             'cause picture unavailable%s'
-                             % (search_result[0].name, datetime.datetime.utcnow()))
-                if os.path.exists(search_result[0].path):
+                             % (search_result[0]['name'], datetime.datetime.utcnow()))
+                if os.path.exists(search_result[0]['path']):
                     result = json.loads(self.upload(webconst.accessToken,
-                        search_result[0].path, u'image'), encoding='utf-8')
+                        search_result[0]['path'], u'image'), encoding='utf-8')
                     webconst.updatePicture(
-                        search_result[0].name, result[u'media_id'], result[u'created_at'])
+                        search_result[0]['name'], result[u'media_id'], result[u'created_at'])
                 else:
                     # if the picture non-exist any more, delete from database.
-                    self.__pictureDelete__(search_result[0].name)
+                    self.__pictureDelete__(search_result[0]['name'])
                 self.__updateDatabase__()
             else :
                 self._left_time = 3 * self._DayInSeconds - time_lapses_in_seconds - 60
@@ -153,9 +156,12 @@ class Media(threading.Thread):
             '''
             if webconst.accessToken:
                 if self._left_time > 0:
-                    time.sleep(60)
-                    self._left_time = self._left_time - 60
+                    time.sleep(self._left_time)
+                    self._left_time = 0
                 else:
+                    rLock = threading.RLock()  # RLock对象
+                    rLock.acquire()
                     self.__updateDatabase__()
+                    rLock.release()
             else:
                 time.sleep(5)
