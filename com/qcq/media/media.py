@@ -106,10 +106,6 @@ class Media(threading.Thread):
     def __pictureDelete__(self, picture):
         pictureName = os.path.basename(picture).split('.')[0]
         webconst.deletePicture(pictureName)
-        rLock = threading.RLock()  # RLock对象
-        rLock.acquire()
-        self.__updateDatabase__()
-        rLock.release()
 
     def __updateDatabase__(self):
         '''
