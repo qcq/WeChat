@@ -21,6 +21,7 @@ from com.qcq.handles.blog import New as blogNew
 from com.qcq.handles.blog import View as blogView
 from com.qcq.handles.handle import Handle
 from com.qcq.handles.index import Index
+from com.qcq.handles.baidu import BaiDu
 
 web.config.debug = False
 
@@ -37,7 +38,8 @@ urls = (
     '/blog_edit/(\d+)', 'blogEdit',
     '/login', 'Login',
     '/reset', 'Reset',
-    '/register', 'Register'
+    '/register', 'Register',
+    '/baidu', 'BaiDu'
 )
 
 app = web.application(urls, globals())

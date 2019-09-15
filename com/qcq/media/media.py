@@ -33,7 +33,7 @@ class Media(threading.Thread):
         register_openers()
         self._left_time = 0
 
-        self._DayInSeconds = 3 * 24 * 60 * 60
+        self._DayInSeconds = 24 * 60 * 60
 
     def upload(self, accessToken, filePath, mediaType):
         openFile = open(filePath, "rb")
@@ -111,24 +111,23 @@ class Media(threading.Thread):
         '''
         This function will update to:
         '''
-        search_result = list(webconst.getOldestPictureCreatedTime())
+        search_result = webconst.getOldestPictureCreatedTime()
         if search_result:
-            created_time = search_result[0]['created']
+            for item in search_result:
+                created_time, name, path = item.created, item.name, item.path
             time_lapses = datetime.datetime.utcnow() - created_time
             time_lapses_in_seconds = time_lapses.days * \
                 self._DayInSeconds + time_lapses.seconds
-            if time_lapses_in_seconds > 3 * self._DayInSeconds:
-                logging.info('updating the %s because of 3 days will '
-                            'cause picture unavailable%s'
-                             % (search_result[0]['name'], datetime.datetime.utcnow()))
-                if os.path.exists(search_result[0]['path']):
-                    result = json.loads(self.upload(webconst.accessToken,
-                        search_result[0]['path'], u'image'), encoding='utf-8')
-                    webconst.updatePicture(
-                        search_result[0]['name'], result[u'media_id'], result[u'created_at'])
+            if time_lapses_in_seconds >= 3 * self._DayInSeconds:
+                logging.info('updating the %s because of 3 days will cause picture unavailable%s/%s'
+                             % (name, created_time, datetime.datetime.utcnow()))
+                if os.path.exists(path):
+                    result = json.loads(self.upload(webconst.accessToken, path,
+                        u'image'), encoding='utf-8')
+                    webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
                 else:
                     # if the picture non-exist any more, delete from database.
-                    self.__pictureDelete__(search_result[0]['name'])
+                    self.__pictureDelete__(name)
                 self.__updateDatabase__()
             else :
                 self._left_time = 3 * self._DayInSeconds - time_lapses_in_seconds - 60

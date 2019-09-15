@@ -15,7 +15,6 @@ class PicturePathHandler(PatternMatchingEventHandler):
         when receive this event, will upload this picture to tencent, and
         insert corresponding media id into database.
         '''
-        print 'qcq is here with created', event.src_path
         PyBus.Instance().post(FileEvent(FileEventType.CREATE,
             os.path.abspath(event.src_path), None))
         logging.info('file %s created. sent out event' % event.src_path)
