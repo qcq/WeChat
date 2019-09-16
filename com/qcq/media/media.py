@@ -115,7 +115,7 @@ class Media(threading.Thread):
         if search_result:
             for item in search_result:
                 created_at, created_time, name, path = item.created_at, item.created, item.name, item.path
-            time_lapses = time.time() - created_at  # int(time.mktime(now.timetuple()))
+            time_lapses = time.time() - int(created_at)  # int(time.mktime(now.timetuple()))
             if time_lapses >= 3 * self._DayInSeconds:
                 logging.info('updating the %s because of 3 days will cause picture unavailable:%s/%s-%s/%s'
                     % (name, created_time, time.time(), datetime.datetime.fromtimestamp(created_at), datetime.datetime.utcnow()))
@@ -128,7 +128,7 @@ class Media(threading.Thread):
                     self.__pictureDelete__(name)
                 self.__updateDatabase__()
             else :
-                self._left_time = 3 * self._DayInSeconds - time_lapses_in_seconds - 60
+                self._left_time = 3 * self._DayInSeconds - time_lapses - 60
                 logging.info('no file need to update. take thread sleep %s' % self._left_time)
         else:
             '''
