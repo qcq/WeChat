@@ -114,13 +114,11 @@ class Media(threading.Thread):
         search_result = webconst.getOldestPictureCreatedTime()
         if search_result:
             for item in search_result:
-                created_time, name, path = item.created, item.name, item.path
-            time_lapses = datetime.datetime.utcnow() - created_time
-            time_lapses_in_seconds = time_lapses.days * \
-                self._DayInSeconds + time_lapses.seconds
-            if time_lapses_in_seconds >= 3 * self._DayInSeconds:
-                logging.info('updating the %s because of 3 days will cause picture unavailable%s/%s'
-                             % (name, created_time, datetime.datetime.utcnow()))
+                created_at, created_time, name, path = item.created_at, item.created, item.name, item.path
+            time_lapses = time.time() - created_at  # int(time.mktime(now.timetuple()))
+            if time_lapses >= 3 * self._DayInSeconds:
+                logging.info('updating the %s because of 3 days will cause picture unavailable:%s/%s-%s/%s'
+                    % (name, created_time, time.time(), datetime.datetime.fromtimestamp(created_at), datetime.datetime.utcnow()))
                 if os.path.exists(path):
                     result = json.loads(self.upload(webconst.accessToken, path,
                         u'image'), encoding='utf-8')

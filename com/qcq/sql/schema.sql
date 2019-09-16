@@ -43,3 +43,12 @@ CREATE TABLE users
   privilege integer NOT NULL DEFAULT 0,
   CONSTRAINT utilisateur_pkey PRIMARY KEY (id)
 );
+
+# baidu
+CREATE TABLE baidu
+(
+  id serial primary key,
+  access_token text
+  refresh_token text
+  expires_in text
+);
