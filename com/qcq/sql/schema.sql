@@ -48,7 +48,9 @@ CREATE TABLE users
 CREATE TABLE baidu
 (
   id serial primary key,
-  access_token text
-  refresh_token text
-  expires_in text
+  name text,
+  access_token text,
+  refresh_token text,
+  expires_in text,
+  created_at text,
 );

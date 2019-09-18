@@ -95,3 +95,18 @@ def getUserByName(name):
 
 def insertUser(username, passwd, emailAddress):
     db.insert('users', name = username, password = passwd, email = emailAddress)
+
+
+## operation of baidu
+def getAccessToken(name):
+    return db.select('baidu', where="name='%s'" % name)
+
+
+def inserAccessToken(name, access_token, refresh_token, expires_in, created_at):
+    db.insert('baidu', name=name, access_token=access_token,
+              refresh_token=refresh_token, expires_in=expires_in, created_at=created_at)
+
+
+def updateAccessToken(name, access_token, refresh_token, expires_in, created_at):
+    db.update('baidu', where="name='name'"%name, access_token=access_token,
+              refresh_token=refresh_token, expires_in=expires_in, created_at=created_at)

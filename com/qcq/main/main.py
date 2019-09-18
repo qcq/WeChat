@@ -17,6 +17,7 @@ from watchdog.events import LoggingEventHandler
 from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
 import com.qcq.media.media as media
+import com.qcq.handles.baidu as baidu
 from com.qcq.monitoring.picture_path_handler import PicturePathHandler
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
@@ -51,6 +52,7 @@ if __name__ == '__main__':
     __setLogger()
     token = access_token.Token()
     uploadPicture = media.Media()
+    netDisk = baidu.BaiDu()
     # below code to take pyeventbus work
     uploadPicture.register(uploadPicture)
     observer = Observer()
@@ -63,6 +65,9 @@ if __name__ == '__main__':
         uploadPicture.setDaemon(True)
         uploadPicture.start()
         logging.info("server is running to upload pictures to tencent.")
+        netDisk.setDaemon(True)
+        netDisk.start()
+        logging.info("server is running to providing service to baidu netdisk.")
         pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'*.JPG', r'*.PNG'],
             ignore_patterns=[r'*.swap'], ignore_directories=True, case_sensitive=True)
         # below code to take pyeventbus work
