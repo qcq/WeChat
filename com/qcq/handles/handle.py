@@ -10,6 +10,7 @@ import logging
 import traceback
 
 import web
+import urllib
 import urllib2
 import json
 
@@ -91,10 +92,15 @@ class Handle(object):
             # here will query the database get the access_token, then to baidu query fs_id
             search_result = webconst.getAccessToken('baidu')
             if not search_result:
-                return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
+                return reply.TextMsg(toUser, fromUser, u'不能和百度网盘通信。')
             access_token = search_result[0].access_token
             result = self.__getFsId__(access_token, receiveContent.split(' ')[-1].strip())
-            return reply.TextMsg(toUser, fromUser, result['list'][0]['fs_id'])
+            if not result['list']:
+                return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
+            result = self.__shareBook__(access_token, result['list'][0]['fs_id'])
+            if not result['link']:
+                return reply.TextMsg(toUser, fromUser, u'创建分享链接失败。')
+            return reply.TextMsg(toUser, fromUser, u'share link:%s with password: 1234' % result['link'])
         media_id_temp = webconst.getPictureByName(receiveContent)
         if media_id_temp:
             return reply.ImageMsg(toUser, fromUser, media_id_temp[0][u'media_id'])
@@ -104,18 +110,24 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, message.to_do_list_login)
         elif u'博客' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.blog)
-        elif u'牧羊少年奇幻之旅' in receiveContent:
-            # should not put the hyper-link to source code, can put in database or config.ini as new sections.
-            return reply.TextMsg(toUser, fromUser, u'链接: https://pan.baidu.com/s/1tB6QQviesk4U9niGG5XRlw 提取码: u5na 复制这段内容后打开百度网盘手机App，操作更方便哦。')
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
 
-
     def __getFsId__(self, access_token, name):
-            url = ("https://pan.baidu.com/rest/2.0/xpan/file?method=search&access_token=%s&key=%s&recursion=1&web=1" % (
-                access_token, name))
-            logging.debug('search the file:%s with url %s' % (name, url))
-            url = url.encode('utf-8')
-            result = json.loads(urllib2.urlopen(url).read())
-            logging.debug('get the reponse from baidu %s' % result)
-            return result
+        url = ("https://pan.baidu.com/rest/2.0/xpan/file?method=search&access_token=%s&key=%s&recursion=1&web=1" % (
+            access_token, name))
+        logging.debug('search the file:%s with url %s' % (name, url))
+        url = url.encode('utf-8')
+        result = json.loads(urllib2.urlopen(url).read())
+        logging.debug('get the fs_id from baidu %s' % result)
+        return result
+
+    def __shareBook__(self, access_token, fs_id):
+        postUrl = 'https://pan.baidu.com/share/set?access_token=%s' % access_token
+        data = {'fid_list': '[%s]' % fs_id, 'schannel': '4',
+                'channel_list': '[]', 'pwd': '1234', 'period': '7'}
+        data = urllib.urlencode(data)
+        req = urllib2.Request(postUrl, data)
+        result = json.loads(urllib2.urlopen(req).read())
+        logging.debug('get the share link from baidu %s' % result)
+        return result

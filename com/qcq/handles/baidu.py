@@ -94,7 +94,7 @@ class BaiDu(threading.Thread):
                 self._left_time = 0
             else:
                 self._left_time = int(expires_in) - int(time.time() - int(created_at)) - 60
-                logging.info('taking into sleep%s'%self._left_time)
+                logging.info('taking into sleep:%s'%self._left_time)
 
 
     def run(self):
