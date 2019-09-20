@@ -10,11 +10,14 @@ import logging
 import traceback
 
 import web
+import urllib2
+import json
 
 import com.qcq.const.message as message
 import com.qcq.const.webconst as webconst
 import com.qcq.handles.receive as receive
 import com.qcq.handles.reply as reply
+from com.qcq.config.config import settings
 
 dealing_message = []
 
@@ -84,6 +87,14 @@ class Handle(object):
         toUser = recMsg.FromUserName
         fromUser = recMsg.ToUserName
         receiveContent = recMsg.Content
+        if u'搜书 ' in receiveContent:
+            # here will query the database get the access_token, then to baidu query fs_id
+            search_result = webconst.getAccessToken('baidu')
+            if not search_result:
+                return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
+            access_token = search_result[0].access_token
+            result = self.__getFsId__(access_token, receiveContent.split(' ')[-1].strip())
+            return reply.TextMsg(toUser, fromUser, result['list'][0]['fs_id'])
         media_id_temp = webconst.getPictureByName(receiveContent)
         if media_id_temp:
             return reply.ImageMsg(toUser, fromUser, media_id_temp[0][u'media_id'])
@@ -98,3 +109,13 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, u'链接: https://pan.baidu.com/s/1tB6QQviesk4U9niGG5XRlw 提取码: u5na 复制这段内容后打开百度网盘手机App，操作更方便哦。')
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
+
+
+    def __getFsId__(self, access_token, name):
+            url = ("https://pan.baidu.com/rest/2.0/xpan/file?method=search&access_token=%s&key=%s&recursion=1&web=1" % (
+                access_token, name))
+            logging.debug('search the file:%s with url %s' % (name, url))
+            url = url.encode('utf-8')
+            result = json.loads(urllib2.urlopen(url).read())
+            logging.debug('get the reponse from baidu %s' % result)
+            return result

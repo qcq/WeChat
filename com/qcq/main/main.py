@@ -35,12 +35,12 @@ def shutdown(signum, frame):
 def __setLogger():
     logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
     rootLogger = logging.getLogger()
-    rootLogger.setLevel(logging.INFO)
+    rootLogger.setLevel(logging.DEBUG)
     fileHandler = logging.FileHandler(LOG_FILE_NAME)
     fileHandler.setFormatter(logFormatter)
     rootLogger.addHandler(fileHandler)
     rotateHandler = logging.handlers.RotatingFileHandler(ROTATE_LOG_FILE_NAME, mode="w",
-        maxBytes=10000, backupCount=3)
+        maxBytes=10000, backupCount=3, encoding='utf-8')
     rotateHandler.setFormatter(logFormatter)
     rootLogger.addHandler(rotateHandler)
     consoleHandler = logging.StreamHandler(sys.stdout)
