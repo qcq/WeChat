@@ -65,7 +65,6 @@ class BaiDu(threading.Thread):
                         logging.info('will insert the access token, refresh token in databse.')
                         webconst.inserAccessToken('baidu', result['access_token'],
                             result['refresh_token'], result['expires_in'], int(time.time()))
-                        self._left_time = result['expires_in']
                     else:
                         logging.info('will update the access token, refresh token in databse.')
                         webconst.updateAccessToken('baidu', result['access_token'],
