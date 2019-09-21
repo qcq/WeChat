@@ -46,8 +46,10 @@ class BaiDu(threading.Thread):
         if len(data) != 0:
             if data.code:
                 display_str = 'get code %s' % data.code
-                url = r'https://openapi.baidu.com/oauth/2.0/token?grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s' % (
-                    data.code, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'), settings.get('baidu', 'redirect_uri'))
+                url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='\
+                    'authorization_code&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s' % (
+                    data.code, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'),
+                    settings.get('baidu', 'redirect_uri'))
 
                 display_str = display_str + url
                 reponse = urllib2.urlopen(url)
@@ -64,6 +66,10 @@ class BaiDu(threading.Thread):
                         webconst.inserAccessToken('baidu', result['access_token'],
                             result['refresh_token'], result['expires_in'], int(time.time()))
                         self._left_time = result['expires_in']
+                    else:
+                        logging.info('will update the access token, refresh token in databse.')
+                        webconst.updateAccessToken('baidu', result['access_token'],
+                            result['refresh_token'], result['expires_in'], int(time.time()))
 
         return display_str
 
@@ -85,7 +91,8 @@ class BaiDu(threading.Thread):
             if int(time.time()) - int(created_at) >= int(expires_in) - 60:
                 # here will retrieve the new access_token with refresh_token
                 # reference link: https://developer.baidu.com/newwiki/dev-wiki/kai-fa-wen-dang.html?t=1557733846879
-                url = r'https://openapi.baidu.com/oauth/2.0/token?grant_type=refresh_token&refresh_token=%s&client_id=%s&client_secret=%s' % (
+                url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='\
+                    'refresh_token&refresh_token=%s&client_id=%s&client_secret=%s' % (
                     refresh_token, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'))
 
                 result = json.loads(urllib2.urlopen(url).read(), encoding='utf-8')

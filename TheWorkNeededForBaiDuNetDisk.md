@@ -13,6 +13,8 @@
 ## need to do
 1. because the authorize code need to operate on web, so has a way to store the access token, which effect 30 days,**done**
 2. also need to store the refresh token, which needed when to refresh the access token. **done**
+3. search if exist the file which user typed, then create the share link to user, then sent back to user. **done**
+4. may be exist many files, should thought one way to display them all, or do something others.
 
 
 ## solution
@@ -33,7 +35,7 @@ user request one book, type in the book, will happen below:
 
 **NOTE:**
 1. exist one problem, search if exist the file then get the dlink will cost too long, which will cause wx timeout, and the zaTan123 can not direct sent the message to user in time. so, has to split the producre to 2 step, first tell the user has or has not, then tell the user how to get this.
-2. another solution, when search out the file with fsid, then create one share, with possword. which will also cause time cost too long, may be will be fine, the time cost
+2. another solution, when search out the file with fsid, then create one share, with possword. which will also cause time cost too long, may be will be fine. This method proved works fine.
 3. query all the file, has limitaion, create one thread to create share in backgroud, but has limit, which cause everyday can only create 10000 share, so has create share with forever, but create all the share may take very long.
 ```
 https://pan.baidu.com/union/document/openLink#创建外链

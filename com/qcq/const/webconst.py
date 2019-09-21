@@ -108,5 +108,5 @@ def inserAccessToken(name, access_token, refresh_token, expires_in, created_at):
 
 
 def updateAccessToken(name, access_token, refresh_token, expires_in, created_at):
-    db.update('baidu', where="name='name'"%name, access_token=access_token,
+    db.update('baidu', where="name='%s'"%name, access_token=access_token,
               refresh_token=refresh_token, expires_in=expires_in, created_at=created_at)

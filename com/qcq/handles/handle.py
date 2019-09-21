@@ -5,6 +5,11 @@ Created on 2018年11月13日
 
 @author: chuanqin
 '''
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+#reference https://www.jianshu.com/p/5017d8342dd2
 import hashlib
 import logging
 import traceback
@@ -81,7 +86,7 @@ class Handle(object):
             dealing_message.remove(webData)
         except Exception, Argment:
             logging.warn('Exception happened:%s' %
-                traceback.print_exc(), exc_info = True, stack_info = True)
+                traceback.print_exc(), exc_info = True)
             return Argment
 
     def __dealTextMessage__(self, recMsg):
@@ -94,9 +99,12 @@ class Handle(object):
             if not search_result:
                 return reply.TextMsg(toUser, fromUser, u'不能和百度网盘通信。')
             access_token = search_result[0].access_token
-            result = self.__getFsId__(access_token, receiveContent.split(' ')[-1].strip())
+            file_name = self.__parseFileNameFromUserTypes__(receiveContent)
+            result = self.__getFsId__(access_token, file_name)
             if not result['list']:
                 return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
+            # right now can only return the first book, which searched out,
+            #  next will fixed with all the books which searched out.
             result = self.__shareBook__(access_token, result['list'][0]['fs_id'])
             if not result['link']:
                 return reply.TextMsg(toUser, fromUser, u'创建分享链接失败。')
@@ -114,10 +122,9 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, message.default_content)
 
     def __getFsId__(self, access_token, name):
-        url = ("https://pan.baidu.com/rest/2.0/xpan/file?method=search&access_token=%s&key=%s&recursion=1&web=1" % (
-            access_token, name))
+        url = "https://pan.baidu.com/rest/2.0/xpan/file?method=search&access_tok"\
+            "en=%s&dir=/书籍&key=%s&recursion=1&web=1" % (access_token, name)
         logging.debug('search the file:%s with url %s' % (name, url))
-        url = url.encode('utf-8')
         result = json.loads(urllib2.urlopen(url).read())
         logging.debug('get the fs_id from baidu %s' % result)
         return result
@@ -131,3 +138,6 @@ class Handle(object):
         result = json.loads(urllib2.urlopen(req).read())
         logging.debug('get the share link from baidu %s' % result)
         return result
+
+    def __parseFileNameFromUserTypes__(self, receiveContent):
+        return receiveContent.replace(u'搜书 ', '').strip()
