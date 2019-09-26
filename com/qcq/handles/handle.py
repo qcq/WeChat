@@ -103,9 +103,8 @@ class Handle(object):
             result = self.__getFsId__(access_token, file_name)
             if not result['list']:
                 return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
-            # right now can only return the first book, which searched out,
-            #  next will fixed with all the books which searched out.
-            result = self.__shareBook__(access_token, result['list'][0]['fs_id'])
+            fs_ids = self.__filterOutAllFsId__(result['list'])
+            result = self.__shareBook__(access_token, fs_ids)
             if not result['link']:
                 return reply.TextMsg(toUser, fromUser, u'创建分享链接失败。')
             return reply.TextMsg(toUser, fromUser, u'share link:%s with password: 1234' % result['link'])
@@ -126,17 +125,27 @@ class Handle(object):
             "en=%s&dir=/书籍&key=%s&recursion=1&web=1" % (access_token, name)
         logging.debug('search the file:%s with url %s' % (name, url))
         result = json.loads(urllib2.urlopen(url).read())
-        logging.debug('get the fs_id from baidu %s' % result)
+        logging.debug('get the fs_id from baidu %s' % json.dumps(result))
         return result
 
-    def __shareBook__(self, access_token, fs_id):
+    def __filterOutAllFsId__(self, search_result_of_file):
+        # https://pan.baidu.com/union/document/openLink#创建外链
+        # fid_list should less than 1000!
+        # here define filter, get the file which is not folder, and has the suffix mobi, epub, azw3,
+        # and limit to 1000
+        return [str(item['fs_id']) for item in search_result_of_file\
+            if item['isdir'] == 0 and item['path'].endswith(('.mobi', '.azw3', '.epub'))][0:1000]
+
+    def __shareBook__(self, access_token, fs_ids):
+        fs_id_str = ','.join(fs_ids)
         postUrl = 'https://pan.baidu.com/share/set?access_token=%s' % access_token
-        data = {'fid_list': '[%s]' % fs_id, 'schannel': '4',
+        data = {'fid_list': '[%s]' % fs_id_str, 'schannel': '4',
                 'channel_list': '[]', 'pwd': '1234', 'period': '7'}
+        logging.debug('request the file [%s] to url %s' % (fs_id_str, postUrl))
         data = urllib.urlencode(data)
         req = urllib2.Request(postUrl, data)
         result = json.loads(urllib2.urlopen(req).read())
-        logging.debug('get the share link from baidu %s' % result)
+        logging.debug('get the share link from baidu %s' % json.dumps(result))
         return result
 
     def __parseFileNameFromUserTypes__(self, receiveContent):

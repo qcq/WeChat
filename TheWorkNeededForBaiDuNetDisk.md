@@ -14,12 +14,27 @@
 1. because the authorize code need to operate on web, so has a way to store the access token, which effect 30 days,**done**
 2. also need to store the refresh token, which needed when to refresh the access token. **done**
 3. search if exist the file which user typed, then create the share link to user, then sent back to user. **done**
-4. may be exist many files, should thought one way to display them all, or do something others.
+4. may be exist many files, should thought one way to display them all, or do something others. **done**
+5. should add code to deal with error reponse from wx and baidu.
+
 
 
 ## solution
 1. need to created one table of database or just store in redis
 2. or take the way like the way to access code of wechat.
+
+actual: store the info into postgresql of one table.
+
+3. for point 4 has a solution below *draft*:
+define prioritiy like below: take below as algorithm as the draft.
+    a. first try to find the file which complete match the search words, which include filename + suffix, if found this kind of file, just return the result. if has no search result return null.
+    b. if has no suffix, order the result with the shorter at the before.
+    c. if the order is same, take the order ['azw3, mobi, pdf, txt'].
+    d. return the list of the first one, or let the user input the para to define how many result can return.
+
+check the baidu net disk api, which seems can share more files together, so no need to fliter files.
+
+actual: share all the file(not include the folder) with filter for mobi, azw3, epub and limit to 1000.
 
 
 ----

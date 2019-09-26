@@ -1,7 +1,7 @@
 # WeChat Official Account Development
 ## Introduction
 
-This is my own **Official Account** for server side program. which main purpose is to learn how to develop one functional and beautiful official Account which can provide below service in plan.
+This is my own **Official Account** for server side program. which main purpose is to learn how to develop one functional and beautiful official Account which can provide below service in plan. I give it a name **ZaTan123**.
 
 ## The feature may be inclued
 

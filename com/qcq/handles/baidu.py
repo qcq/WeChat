@@ -55,7 +55,7 @@ class BaiDu(threading.Thread):
                 reponse = urllib2.urlopen(url)
                 reponse_str = reponse.read()
                 result = json.loads(reponse_str, encoding='utf-8')
-                print result
+                logging.info('recoding the request the grant to baidu api with reponse:%s' % json.dumps(result))
 
                 display_str = display_str + '\nexpires_in: %s, refresh_token: %s, access_token: %s' % (
                     result['expires_in'], result['refresh_token'], result['access_token']

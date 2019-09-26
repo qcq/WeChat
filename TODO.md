@@ -16,3 +16,4 @@
     3. thread in 2) query the whole database again, cycle all this setp.
 
     note: **add the eventbus like java, to decouple PicturePathHandler with Media**
+3. code has no error deal, sepcifial for the reponse from BaiDu API
