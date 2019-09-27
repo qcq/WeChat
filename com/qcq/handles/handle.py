@@ -104,6 +104,9 @@ class Handle(object):
             if not result['list']:
                 return reply.TextMsg(toUser, fromUser, u'找不到这本书。')
             fs_ids = self.__filterOutAllFsId__(result['list'])
+            if not fs_ids:
+                return reply.TextMsg(toUser, fromUser, u"没有收录这本书的mobi、"\
+                    u"azw3、epub版本，如有需要请联系楼主添加资源。")
             result = self.__shareBook__(access_token, fs_ids)
             if not result['link']:
                 return reply.TextMsg(toUser, fromUser, u'创建分享链接失败。')
@@ -131,10 +134,11 @@ class Handle(object):
     def __filterOutAllFsId__(self, search_result_of_file):
         # https://pan.baidu.com/union/document/openLink#创建外链
         # fid_list should less than 1000!
-        # here define filter, get the file which is not folder, and has the suffix mobi, epub, azw3,
-        # and limit to 1000
+        # here define filter, get the file which is not folder, and has the suffix
+        # mobi, epub, azw3, and limit to 1000
         return [str(item['fs_id']) for item in search_result_of_file\
-            if item['isdir'] == 0 and item['path'].endswith(('.mobi', '.azw3', '.epub'))][0:1000]
+            if item['isdir'] == 0 and item['path'].lower().endswith(('.mobi', \
+            '.azw3', '.epub'))][0:1000]
 
     def __shareBook__(self, access_token, fs_ids):
         fs_id_str = ','.join(fs_ids)

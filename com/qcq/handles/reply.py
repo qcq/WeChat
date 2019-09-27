@@ -7,6 +7,7 @@ Created on 2018年11月13日
 '''
 
 import time
+import logging
 
 
 class Msg(object):
@@ -26,6 +27,7 @@ class TextMsg(Msg):
     def __init__(self, toUserName, fromUserName, content):
         Msg.__init__(self, toUserName, fromUserName)
         self.dict['Content'] = content
+        logging.info('reply text message: %s' % content)
 
     def send(self):
         XmlForm = u"""
@@ -45,6 +47,7 @@ class ImageMsg(Msg):
     def __init__(self, toUserName, fromUserName, mediaId):
         Msg.__init__(self, toUserName, fromUserName)
         self.dict['MediaId'] = mediaId
+        logging.info('reply the image media id: %s' % mediaId)
 
     def send(self):
         XmlForm = u"""
