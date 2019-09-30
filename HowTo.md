@@ -23,7 +23,9 @@
     3. source wx/bin/activate
     4. pip install -r ../WeChat requirsments.txt
     5. change path to /home/user/WeChat/com/qcq/main/
-    6. sudo python main.py 80
+    6. sudo ~/wx/bin/python main.py 80
+        1. the reason for *sudo* seems because, only root can create socket
+        2. the reason for replacing *python* with *~/wx/bin/python*, becuase the python is not same under usual and root state.
 
 8. 切换数据库（postgresql数据库的相关命令），具体的命令请查阅下边连接：
     https://www.cnblogs.com/liyasen/p/6611020.html

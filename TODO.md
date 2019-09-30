@@ -17,3 +17,5 @@
 
     note: **add the eventbus like java, to decouple PicturePathHandler with Media**
 3. code has no error deal, sepcifial for the reponse from BaiDu API
+
+4. should add service which support indicate the system info, like uptime, cpu usage .etc, also can email the compressed logs to administer with email or others way.

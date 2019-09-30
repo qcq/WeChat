@@ -11,6 +11,7 @@ import logging.handlers
 import signal
 import sys
 import traceback
+import datetime
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 
@@ -19,6 +20,7 @@ import com.qcq.access_token as access_token
 import com.qcq.media.media as media
 import com.qcq.handles.baidu as baidu
 from com.qcq.monitoring.picture_path_handler import PicturePathHandler
+from com.qcq.const import system_info
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
@@ -27,6 +29,11 @@ ROTATE_LOG_FILE_NAME = r'/home/chuanqin/logs/rotate_log.log'
 
 
 def shutdown(signum, frame):
+    system_info.time_end = datetime.datetime.now()
+    system_info.running_time = system_info.time_end - system_info.time_start
+    logging.info("the system stopped at %s, runninged %sdays, %ss, %sms"
+                 % (system_info.time_end.ctime(), system_info.running_time.days,
+                 system_info.running_time.seconds, system_info.running_time.microseconds))
     logging.info('The system is going down by the ctrl+c signal. %s/%s'
         % (signum, frame))
     sys.exit()
@@ -49,7 +56,9 @@ def __setLogger():
 
 
 if __name__ == '__main__':
+    system_info.time_start = datetime.datetime.now()
     __setLogger()
+    logging.info("the system started at %s" % system_info.time_start.ctime())
     token = access_token.Token()
     uploadPicture = media.Media()
     netDisk = baidu.BaiDu()
