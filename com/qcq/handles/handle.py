@@ -6,6 +6,7 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
+from com.qcq.const import system_info
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -13,6 +14,7 @@ sys.setdefaultencoding('utf-8')
 import hashlib
 import logging
 import traceback
+import datetime
 
 import web
 import urllib
@@ -120,6 +122,10 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, message.to_do_list_login)
         elif u'博客' in receiveContent:
             return reply.TextMsg(toUser, fromUser, message.blog)
+        elif 'uptime' in receiveContent:
+            delta = datetime.datetime.now() - system_info.time_start
+            return reply.TextMsg(toUser, fromUser, "runninged %sdays, %ss, %sms"
+                                 % (delta.days, delta.seconds, delta.microseconds))
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
 
