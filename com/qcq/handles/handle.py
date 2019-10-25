@@ -124,8 +124,7 @@ class Handle(object):
             return reply.TextMsg(toUser, fromUser, message.blog)
         elif 'uptime' in receiveContent:
             delta = datetime.datetime.now() - system_info.time_start
-            return reply.TextMsg(toUser, fromUser, "runninged %sdays, %ss, %sms"
-                                 % (delta.days, delta.seconds, delta.microseconds))
+            return reply.TextMsg(toUser, fromUser, "runninged %s" % delta)
         else:
             return reply.TextMsg(toUser, fromUser, message.default_content)
 

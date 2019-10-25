@@ -45,7 +45,7 @@ class BaiDu(threading.Thread):
         display_str = ''
         if len(data) != 0:
             if data.code:
-                display_str = 'get code %s' % data.code
+                display_str = 'get code %s, ' % data.code
                 url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='\
                     'authorization_code&code=%s&client_id=%s&client_secret=%s&redirect_uri=%s' % (
                     data.code, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'),
@@ -54,7 +54,7 @@ class BaiDu(threading.Thread):
                 display_str = display_str + url
                 reponse = urllib2.urlopen(url)
                 reponse_str = reponse.read()
-                result = json.loads(reponse_str, encoding='utf-8')
+                result = json.loads(reponse_str)
                 logging.info('recoding the request the grant to baidu api with reponse:%s' % json.dumps(result))
 
                 display_str = display_str + '\nexpires_in: %s, refresh_token: %s, access_token: %s' % (
@@ -84,6 +84,7 @@ class BaiDu(threading.Thread):
                 logging.warn('please authorize the right first manual.')
                 self._left_time = 60 * 60
                 return
+            refresh_token = ''
             for item in result:
                 access_token, refresh_token, expires_in, created_at = item.access_token, \
                     item.refresh_token, item.expires_in, item.created_at
@@ -94,7 +95,9 @@ class BaiDu(threading.Thread):
                     'refresh_token&refresh_token=%s&client_id=%s&client_secret=%s' % (
                     refresh_token, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'))
 
-                result = json.loads(urllib2.urlopen(url).read(), encoding='utf-8')
+                reponse = urllib2.urlopen(url)
+                reponse_str = reponse.read()
+                result = json.loads(reponse_str)
                 webconst.update('baidu', result.access_token, result.refresh_token,
                     result.expires_in, time.time())
                 self._left_time = 0

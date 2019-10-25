@@ -22,7 +22,6 @@ from poster.streaminghttp import register_openers
 import poster.encode
 
 import com.qcq.const.webconst as webconst
-import com.qcq.utils as utils
 from com.qcq.events.file_event import *
 
 

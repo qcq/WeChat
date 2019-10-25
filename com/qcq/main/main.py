@@ -31,9 +31,8 @@ ROTATE_LOG_FILE_NAME = r'/home/chuanqin/logs/rotate_log.log'
 def shutdown(signum, frame):
     system_info.time_end = datetime.datetime.now()
     system_info.running_time = system_info.time_end - system_info.time_start
-    logging.info("the system stopped at %s, runninged %sdays, %ss, %sms"
-                 % (system_info.time_end.ctime(), system_info.running_time.days,
-                 system_info.running_time.seconds, system_info.running_time.microseconds))
+    logging.info("the system stopped at %s, runninged %s."
+                 % (system_info.time_end.ctime(), system_info.running_time))
     logging.info('The system is going down by the ctrl+c signal. %s/%s'
         % (signum, frame))
     sys.exit()
