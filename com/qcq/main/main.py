@@ -46,7 +46,7 @@ def __setLogger():
     fileHandler.setFormatter(logFormatter)
     rootLogger.addHandler(fileHandler)
     rotateHandler = logging.handlers.RotatingFileHandler(ROTATE_LOG_FILE_NAME, mode="w",
-        maxBytes=10000, backupCount=3, encoding='utf-8')
+        maxBytes=1000000, backupCount=100, encoding='utf-8')
     rotateHandler.setFormatter(logFormatter)
     rootLogger.addHandler(rotateHandler)
     consoleHandler = logging.StreamHandler(sys.stdout)

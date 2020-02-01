@@ -98,8 +98,7 @@ class BaiDu(threading.Thread):
                 reponse = urllib2.urlopen(url)
                 reponse_str = reponse.read()
                 result = json.loads(reponse_str)
-                webconst.update('baidu', result.access_token, result.refresh_token,
-                    result.expires_in, time.time())
+                webconst.update('baidu', result.access_token, result.refresh_token, result.expires_in, time.time())
                 self._left_time = 0
             else:
                 self._left_time = int(expires_in) - int(time.time() - int(created_at)) - 60

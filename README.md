@@ -1,4 +1,5 @@
 # WeChat Official Account Development
+
 ## Introduction
 
 This is my own **Official Account** for server side program. which main purpose is to learn how to develop one functional and beautiful official Account which can provide below service in plan. I give it a name **ZaTan123**.
@@ -21,6 +22,7 @@ This is my own **Official Account** for server side program. which main purpose 
 6. in final stage, I am considering packge whole project in one docker image, which can listening incoming message and reponse with outside, behind it exist others container service like database service .etc which can evolute to micro-service platform.
 
 ## Encountered Problem
+
 1. because Tencent need the account to be verified to get more privilege to use more professional API(need money, I hate it), which limit the function of this official account. take upload media as example, with privilege can upload matrials in forever mode, without this feature the uploaded media can only 3 days available.
 
    *solution operation:*
@@ -66,7 +68,7 @@ becasue not wrapped the project with **setuptools**. so want to import the modul
    https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1472017492_58YV5
 2. if you really interested in my account**杂感123**, please follow it, and take an eye on this site's change.
 
-# Reference
+## Reference
 
 1. [微信公众平台，入门指引](https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1472017492_58YV5)
 2. [web.py](http://webpy.org/)

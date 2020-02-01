@@ -1,4 +1,4 @@
-## 怎样启动这个客户端服务
+# 怎样启动这个客户端服务
 
 1. 首先安装docker，请参照对应的docker官方文档
 2. 安装python以及对应的第三方包
@@ -16,7 +16,7 @@
     password root
 7. 如果不是第一次启动服务，比如服务器重启之后，相应的docker镜像还在，只需要执行如下命令即可：
     sudo docker start postgres(docker images的名字)
-7. 启动主程序
+8. 启动主程序
 
     1. change path to /home/user/
     2. virtualenv wx
@@ -27,7 +27,7 @@
         1. the reason for *sudo* seems because, only root can create socket
         2. the reason for replacing *python* with *~/wx/bin/python*, becuase the python is not same under usual and root state.
 
-8. 切换数据库（postgresql数据库的相关命令），具体的命令请查阅下边连接：
+9. 切换数据库（postgresql数据库的相关命令），具体的命令请查阅下边连接：
     https://www.cnblogs.com/liyasen/p/6611020.html
     \c ebook
     select * from pictures;     query the full picture

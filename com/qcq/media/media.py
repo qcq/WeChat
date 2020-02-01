@@ -112,6 +112,10 @@ class Media(threading.Thread):
         '''
         search_result = webconst.getOldestPictureCreatedTime()
         if search_result:
+            created_at = time.time()
+            created_time = time.time()
+            name = None
+            path = None
             for item in search_result:
                 created_at, created_time, name, path = item.created_at, item.created, item.name, item.path
             time_lapses = int(time.time()) - int(created_at)  # int(time.mktime(now.timetuple()))
@@ -122,7 +126,12 @@ class Media(threading.Thread):
                 if os.path.exists(path):
                     result = json.loads(self.upload(webconst.accessToken, path,
                         u'image'), encoding='utf-8')
-                    webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
+                    logging.info("trying update %s" % (name))
+                    try:
+                        # added a try catch, which missed one bug. may be catch it in future.
+                        webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
+                    except Exception, exc:
+                        logging.warn('Exception happened:%s' % traceback.print_exc(), exc_info=True)
                 else:
                     # if the picture non-exist any more, delete from database.
                     self.__pictureDelete__(name)

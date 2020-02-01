@@ -1,5 +1,4 @@
 
-
 # 连接在docker中运行的PostgreSQL数据库
 
 ## 背景描述
@@ -34,7 +33,7 @@
 
    2. 安装python2.7(服务器默认安装)。
 
-      ```
+      ```shell
       yum install python***(Google)
       ```
 
@@ -54,17 +53,17 @@
 
    6. 安装docker版本的[Postgres](https://hub.docker.com/_/postgres/)读一读doc，直接安装。
 
-      ```
+      ```shell
       # start a postgres instance命令来自上述的链接，下边的命令意思是用docker运行了一个Postgres实例，容器的名字叫做some-postgres（可修改），密码是mysecretpassword（可修改），默认简历的数据库是postgres，默认的用户名是postgres，默认暴露的端口是127.0.0.1
       docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
       ```
-      
+
       重新启动
-      
-      
-      
+
+
       连接docker数据库
-      ```
+
+      ```shell
       docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres
       ```
 
@@ -84,11 +83,11 @@
                                         host = "127.0.0.1",
                                         port = "5432",
                                         database = "postgres")
-      
+
           cursor = connection.cursor()
           # Print PostgreSQL Connection properties
           print ( connection.get_dsn_parameters(),"\n")
-      
+
           # Print PostgreSQL version
           cursor.execute("SELECT version();")
           record = cursor.fetchone()
@@ -103,11 +102,11 @@
                   print("PostgreSQL connection is closed")
       ```
 
-   ## 问题诊断
+## 问题诊断
 
    用上述的脚本运行，得到结果如下：
 
-   ```
+   ```shell
    python sql.py
    ```
 
@@ -121,7 +120,7 @@
    NameError: name 'connection' is not defined
    ```
 
-    前半部分的psycopg2-binary可以不予以关注，只是告诉我们这个驱动以后可能不叫这个名字了，我们暂且不管，毕竟现在可以用。
+   前半部分的psycopg2-binary可以不予以关注，只是告诉我们这个驱动以后可能不叫这个名字了，我们暂且不管，毕竟现在可以用。
 
    后边逐渐诊断，发现问题在于，postgres的IP不是localhost，而是docker分配的某一个IP。
 
@@ -140,7 +139,7 @@
 
    需要查看一下这个容器实例的信息：
 
-   ```
+   ```shell
    docker inspect postgres
    ```
 
@@ -195,6 +194,4 @@
    PostgreSQL connection is closed
    ```
 
-    可以注意到，python脚本链接docker的postgres成功。
-
-
+   可以注意到，python脚本链接docker的postgres成功。

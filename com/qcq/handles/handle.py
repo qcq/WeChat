@@ -146,6 +146,11 @@ class Handle(object):
             '.azw3', '.epub'))][0:1000]
 
     def __shareBook__(self, access_token, fs_ids):
+        '''
+        this function need improved, if the previous alreay shared, should reply the result,
+        if not then share it, this need to add the function of cache, may be here
+        can consider the redis as cache.
+        '''
         fs_id_str = ','.join(fs_ids)
         postUrl = 'https://pan.baidu.com/share/set?access_token=%s' % access_token
         data = {'fid_list': '[%s]' % fs_id_str, 'schannel': '4',
