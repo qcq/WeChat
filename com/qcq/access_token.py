@@ -30,6 +30,10 @@ class Token(threading.Thread):
             "client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(str(urlResp.read()))
+        if 'errcode' in urlResp :
+            logging.error('error happened when get access token with %s with retry in 60 second' % urlResp)
+            self.__leftTime = 60
+            return
         webconst.accessToken = urlResp['access_token']
         self.__leftTime = urlResp['expires_in']
 

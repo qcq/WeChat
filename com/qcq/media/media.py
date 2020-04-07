@@ -43,7 +43,12 @@ class Media(threading.Thread):
             accessToken, mediaType)
         request = urllib2.Request(postUrl, postData, postHeaders)
         urlResp = urllib2.urlopen(request)
-        return urlResp.read()
+        urlResp = json.loads(str(urlResp.read()))
+        if 'errcode' in urlResp:
+            logging.error('error happened when upload material %s. will retry in 60s' % urlResp)
+            self._left_time = 60
+            return None
+        return urlResp
 
     def get(self, accessToken, mediaId):
         postUrl = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s" % (
@@ -83,10 +88,9 @@ class Media(threading.Thread):
         with webconst.db.transaction():
             if not webconst.getPictureByName(pictureName):
                 try:
-                    result = json.loads(self.upload(webconst.accessToken, picture,
-                        u'image'), encoding='utf-8')
-                    if 'errcode' in result:
-                        logging.warn('can not upload the %s to server with error %s' % (picture, result))
+                    result = self.upload(webconst.accessToken, picture, u'image')
+                    if not result:
+                        logging.error('when update new founded picture into server failed.')
                         return
                     '''
                     https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
@@ -96,7 +100,7 @@ class Media(threading.Thread):
                     logging.info('insert item %s in database in %s'
                         % (pictureName, datetime.datetime.utcnow()))
                 except Exception, exc:
-                    logging.warn('Exception happened:%s' % traceback.print_exc(), exc_info=True)
+                    logging.warn('Exception happened:%s with result %s' % (traceback.print_exc(), result), exc_info=True)
 
     def __pictureNameChaned__(self, src, dst):
         self.__pictureDelete__(src)
@@ -124,14 +128,16 @@ class Media(threading.Thread):
                     % (name, created_time, time.time(), datetime.datetime.fromtimestamp(float(created_at)),
                     datetime.datetime.utcnow()))
                 if os.path.exists(path):
-                    result = json.loads(self.upload(webconst.accessToken, path,
-                        u'image'), encoding='utf-8')
+                    result = self.upload(webconst.accessToken, path, u'image')
+                    if not result :
+                        logging.error('when update the %s failed, because of failed to upload to server.')
+                        return
                     logging.info("trying update %s" % (name))
                     try:
                         # added a try catch, which missed one bug. may be catch it in future.
                         webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
                     except Exception, exc:
-                        logging.warn('Exception happened:%s' % traceback.print_exc(), exc_info=True)
+                        logging.warn('Exception happened:%s with result %s' % (traceback.print_exc(), result), exc_info=True)
                 else:
                     # if the picture non-exist any more, delete from database.
                     self.__pictureDelete__(name)

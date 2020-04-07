@@ -60,7 +60,7 @@ if __name__ == '__main__':
     logging.info("the system started at %s" % system_info.time_start.ctime())
     token = access_token.Token()
     uploadPicture = media.Media()
-    netDisk = baidu.BaiDu()
+    #netDisk = baidu.BaiDu()
     # below code to take pyeventbus work
     uploadPicture.register(uploadPicture)
     observer = Observer()
@@ -73,10 +73,10 @@ if __name__ == '__main__':
         uploadPicture.setDaemon(True)
         uploadPicture.start()
         logging.info("server is running to upload pictures to tencent.")
-        netDisk.setDaemon(True)
-        netDisk.start()
+        #netDisk.setDaemon(True)
+        #netDisk.start()
         logging.info("server is running to providing service to baidu netdisk.")
-        pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'*.JPG', r'*.PNG'],
+        pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'jpeg', r'gif', r'*.JPG', r'*.PNG', r'JPEG', r'GIF'],
             ignore_patterns=[r'*.swap'], ignore_directories=True, case_sensitive=True)
         # below code to take pyeventbus work
         pictureMonitor.register(pictureMonitor)
