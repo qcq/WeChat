@@ -143,6 +143,8 @@ class Media(threading.Thread):
                     self.__pictureDelete__(name)
                 self.__updateDatabase__()
             else :
+                logging.debug('the nearest item is %s, time:%s/%s' % (name,
+                    datetime.datetime.fromtimestamp(float(created_at)), datetime.datetime.utcnow()))
                 self._left_time = 3 * self._DayInSeconds - time_lapses
                 logging.info('no file need to update. take thread sleep %s' % self._left_time)
         else:

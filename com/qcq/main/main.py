@@ -76,7 +76,7 @@ if __name__ == '__main__':
         #netDisk.setDaemon(True)
         #netDisk.start()
         logging.info("server is running to providing service to baidu netdisk.")
-        pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'jpeg', r'gif', r'*.JPG', r'*.PNG', r'JPEG', r'GIF'],
+        pictureMonitor = PicturePathHandler(patterns=[r'*.jpg', r'*.png', r'*.jpeg', r'*.gif', r'*.JPG', r'*.PNG', r'*.JPEG', r'*.GIF'],
             ignore_patterns=[r'*.swap'], ignore_directories=True, case_sensitive=True)
         # below code to take pyeventbus work
         pictureMonitor.register(pictureMonitor)
