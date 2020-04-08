@@ -14,6 +14,7 @@ import traceback
 import datetime
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
+from wsgilog import WsgiLog
 
 from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
@@ -25,6 +26,7 @@ from com.qcq.const import system_info
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 LOG_FILE_NAME = r'/home/chuanqin/logs/single_log.log'
+WEB_LOG_FILE_NAME = r'/home/chuanqin/logs/web_log.log'
 ROTATE_LOG_FILE_NAME = r'/home/chuanqin/logs/rotate_log.log'
 
 
@@ -37,6 +39,19 @@ def shutdown(signum, frame):
         % (signum, frame))
     sys.exit()
 
+
+class Log(WsgiLog):
+    def __init__(self, application):
+        WsgiLog.__init__(
+            self,
+            application,
+            logformat='%(message)s',
+            tofile=True,
+            toprint=True,
+            file=WEB_LOG_FILE_NAME,
+            interval='d',
+            backups='3'
+        )
 
 def __setLogger():
     logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
@@ -52,6 +67,7 @@ def __setLogger():
     consoleHandler = logging.StreamHandler(sys.stdout)
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
+    # here consider add the email handler to report the error in time.
 
 
 if __name__ == '__main__':
@@ -86,7 +102,7 @@ if __name__ == '__main__':
         logging.info("start to monitor the path of picture.")
         logging.info("server is ready to provide the service.")
 
-        app.run()
+        app.run(Log)
     except KeyboardInterrupt:
         observer.stop()
     except Exception, exc:

@@ -45,6 +45,8 @@ class Media(threading.Thread):
         urlResp = urllib2.urlopen(request)
         urlResp = json.loads(str(urlResp.read()))
         if 'errcode' in urlResp:
+            # https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Global_Return_Code.html
+            # to check the error code corresponding description
             logging.error('error happened when upload material %s. will retry in 60s' % urlResp)
             self._left_time = 60
             return None

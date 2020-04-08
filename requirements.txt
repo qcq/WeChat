@@ -9,3 +9,4 @@ configparser
 watchdog
 psycopg2-binary
 pyeventbus==0.5
+wsgilog
