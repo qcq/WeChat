@@ -94,11 +94,15 @@ class BaiDu(threading.Thread):
                 url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='\
                     'refresh_token&refresh_token=%s&client_id=%s&client_secret=%s' % (
                     refresh_token, settings.get('baidu', 'apiKey'), settings.get('baidu', 'secretKey'))
-
-                reponse = urllib2.urlopen(url)
-                reponse_str = reponse.read()
-                result = json.loads(reponse_str)
-                webconst.update('baidu', result.access_token, result.refresh_token, result.expires_in, time.time())
+                logging.info('baidu url request %s' % url)
+                result = json.loads(urllib2.urlopen(url).read())
+                if 'error' in result:
+                    logging.error('when request to baidu, error happened %s will retry in 60s' % result)
+                    self._left_time = 60
+                    return
+                logging.info('current info of baidu %s'%result)
+                webconst.updateAccessToken(
+                    'baidu', result['access_token'], result['refresh_token'], result['expires_in'], time.time())
                 self._left_time = 0
             else:
                 self._left_time = int(expires_in) - int(time.time() - int(created_at)) - 60
