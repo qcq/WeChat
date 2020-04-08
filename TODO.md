@@ -24,3 +24,5 @@
 5. should find one way to log the web.py log to standard logging file.
 
 6. add the error deal code, should not let one error cause the whole project failed. like timeout operation.
+
+7. should consider migrate from python2 to python3.
