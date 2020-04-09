@@ -6,6 +6,7 @@ Created on 2018年11月13日
 @author: chuanqin
 '''
 
+import os
 import logging
 import logging.handlers
 import signal
@@ -15,6 +16,7 @@ import datetime
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 from wsgilog import WsgiLog
+import argparse
 
 from com.qcq.handles.url_mapping import app
 import com.qcq.access_token as access_token
@@ -25,9 +27,9 @@ from com.qcq.const import system_info
 
 LOG_FORMAT = "%(asctime)s:%(levelname)s:%(filename)s-%(funcName)s:%(lineno)d:%(message)s"
 DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
-LOG_FILE_NAME = r'/home/chuanqin/logs/single_log.log'
-WEB_LOG_FILE_NAME = r'/home/chuanqin/logs/web_log.log'
-ROTATE_LOG_FILE_NAME = r'/home/chuanqin/logs/rotate_log.log'
+LOG_FILE_NAME = r'/home/chuanqin/WeChat/com/qcq/main/static/single_log.log'
+WEB_LOG_FILE_NAME = r'/home/chuanqin/WeChat/com/qcq/main/static/web_log.log'
+ROTATE_LOG_FILE_NAME = r'/home/chuanqin/WeChat/com/qcq/main/static/rotate_log.log'
 
 
 def shutdown(signum, frame):
@@ -45,7 +47,7 @@ class Log(WsgiLog):
         WsgiLog.__init__(
             self,
             application,
-            logformat='%(message)s',
+            logformat=LOG_FORMAT,
             tofile=True,
             toprint=True,
             file=WEB_LOG_FILE_NAME,
@@ -53,7 +55,7 @@ class Log(WsgiLog):
             backups='3'
         )
 
-def __setLogger():
+def __setLogger__():
     logFormatter = logging.Formatter(LOG_FORMAT, DATE_FORMAT)
     rootLogger = logging.getLogger()
     rootLogger.setLevel(logging.DEBUG)
@@ -70,9 +72,20 @@ def __setLogger():
     # here consider add the email handler to report the error in time.
 
 
+def __parser_command_line__():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("port", type=int, help='input the http port of web.py', default=80)
+    parser.add_argument("-d", "--deletelog", help="delete the previous log", action="store_true", default=True)
+    args = parser.parse_args()
+    if args.deletelog:
+        os.remove(LOG_FILE_NAME)
+        os.remove(WEB_LOG_FILE_NAME)
+        os.remove(ROTATE_LOG_FILE_NAME)
+
 if __name__ == '__main__':
     system_info.time_start = datetime.datetime.now()
-    __setLogger()
+    __parser_command_line__()
+    __setLogger__()
     logging.info("the system started at %s" % system_info.time_start.ctime())
     token = access_token.Token()
     uploadPicture = media.Media()
