@@ -134,10 +134,10 @@ class Media(threading.Thread):
                     if not result :
                         logging.error('when update the %s failed, because of failed to upload to server.')
                         return
-                    logging.info("trying update %s" % (name))
                     try:
                         # added a try catch, which missed one bug. may be catch it in future.
                         webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
+                        logging.info("update %s succeed." % (name))
                     except Exception, exc:
                         logging.warn('Exception happened:%s with result %s' % (traceback.print_exc(), result), exc_info=True)
                 else:
