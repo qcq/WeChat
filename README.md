@@ -36,7 +36,7 @@ This is my own **Official Account** for server side program. which main purpose 
 
 2. try to use the containered database **postgres**, [this ariticle reference](./docker database Provide service.md) By contrast to traditional way to install independent database installer, such as mysql, redis, postgresql, which will take much more time to install and configure them, with the container can take more effect. such as extensible、scalable、flexible .etc
 
-3. when load web.py application under linux in un-root user, which will occur: [socket.error: No socket could be created](https://stackoverflow.com/questions/8115330/why-wont-web-py-let-me-run-a-server-on-port-80), stack over flow, suggest with sudo, in sudo will print ImportError: No module named com.qcq.handles.url_mapping, which becasue the sudo can not take the corresponding env from original user.
+3. when load web.py application under linux in un-root user, which will occur: [socket.error: No socket could be created](https://stackoverflow.com/questions/8115330/why-wont-web-py-let-me-run-a-server-on-port-80), stack over flow, suggest with sudo, **The reason may be because 80 is the system port which can not used like 5989 port in usual way.** in sudo will print ImportError: No module named com.qcq.handles.url_mapping, which becasue the sudo can not take the corresponding env from original user.
 becasue not wrapped the project with **setuptools**. so want to import the module, according to the python doc, should set PYTHONPATH environment variable, [slove this question](http://ghoulich.xninja.org/2017/05/09/how-to-find-env-variables-when-exec-sudo-commands/),
 
     1. edit /etc/profile, add **export PYTHONPATH=/home/user/WeChat**
