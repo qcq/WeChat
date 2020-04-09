@@ -26,3 +26,5 @@
 6. add the error deal code, should not let one error cause the whole project failed. like timeout operation.
 
 7. should consider migrate from python2 to python3.
+
+8. may be also add one udp client which broadcast the info like logs out, do not care whether others listening, which can add another udp server which sited in third pc(as server), then re-direct the log to the tcp server, then others pc can connect to this server to get the same logs.
