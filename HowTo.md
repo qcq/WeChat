@@ -31,3 +31,4 @@
     https://www.cnblogs.com/liyasen/p/6611020.html
     \c ebook
     select * from pictures;     query the full picture
+    select * from pg_tables where schemaname = 'public';      show all available tables in current database.
