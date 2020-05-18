@@ -77,10 +77,14 @@ def __parser_command_line__():
     parser.add_argument("port", type=int, help='input the http port of web.py', default=80)
     parser.add_argument("-d", "--deletelog", help="delete the previous log", action="store_true", default=True)
     args = parser.parse_args()
-    if args.deletelog:
-        os.remove(LOG_FILE_NAME)
-        os.remove(WEB_LOG_FILE_NAME)
-        os.remove(ROTATE_LOG_FILE_NAME)
+    try:
+        if args.deletelog:
+            os.remove(LOG_FILE_NAME)
+            os.remove(WEB_LOG_FILE_NAME)
+            os.remove(ROTATE_LOG_FILE_NAME)
+    except Exception, exc:
+        logging.warn('Exception happened:%s' %
+                     traceback.print_exc(), exc_info=True)
 
 if __name__ == '__main__':
     system_info.time_start = datetime.datetime.now()
