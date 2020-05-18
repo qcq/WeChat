@@ -88,7 +88,7 @@ class BaiDu(threading.Thread):
             for item in result:
                 access_token, refresh_token, expires_in, created_at = item.access_token, \
                     item.refresh_token, item.expires_in, item.created_at
-            if int(time.time()) - int(created_at) >= int(expires_in) - 60:
+            if time.time() - float(created_at) >= float(expires_in) - 60:
                 # here will retrieve the new access_token with refresh_token
                 # reference link: https://developer.baidu.com/newwiki/dev-wiki/kai-fa-wen-dang.html?t=1557733846879
                 url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='\
@@ -105,7 +105,7 @@ class BaiDu(threading.Thread):
                     'baidu', result['access_token'], result['refresh_token'], result['expires_in'], time.time())
                 self._left_time = 0
             else:
-                self._left_time = int(expires_in) - int(time.time() - int(created_at)) - 60
+                self._left_time = int(float(expires_in)) - int(time.time() - int(float(created_at))) - 60
                 logging.info('taking into sleep:%s'%self._left_time)
 
 
