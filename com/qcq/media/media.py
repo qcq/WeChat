@@ -129,7 +129,7 @@ class Media(threading.Thread):
                 created_at, created_time, name, path = item.created_at, item.created, item.name, item.path
             time_lapses = int(time.time()) - int(created_at)  # int(time.mktime(now.timetuple()))
             print created_at, created_time, name, path
-            if time_lapses < 3 * self._DayInSeconds:
+            if time_lapses >= 3 * self._DayInSeconds:
                 logging.info('updating the %s because of 3 days will cause picture unavailable:%s/%s-%s/%s'
                     % (name, created_time, time.time(), datetime.datetime.fromtimestamp(float(created_at)),
                     datetime.datetime.utcnow()))
