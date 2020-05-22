@@ -9,13 +9,26 @@
     tmux attach -t  # attach到某一个控制台
     详细其他命令请参阅如下链接：
     https://www.cnblogs.com/liuguanglin/p/9290345.html
+
 5. 创建postgresql的docker容器
+
+    ``` shell
     docker run --name postgres -e POSTGRES_PASSWORD=root -d postgres
+    ```
+
 6. 连接postgres数据库，进行相应的数据操作，比如数据库创建，表创建，表删除等等命令。代码提供相应的sql语句。
+
+    ```shell
     docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres
     password root
+    ```
+
 7. 如果不是第一次启动服务，比如服务器重启之后，相应的docker镜像还在，只需要执行如下命令即可：
+
+    ```shell
     sudo docker start postgres(docker images的名字)
+    ```
+
 8. 启动主程序
 
     1. change path to /home/user/
@@ -29,6 +42,10 @@
 
 9. 切换数据库（postgresql数据库的相关命令），具体的命令请查阅下边连接：
     https://www.cnblogs.com/liyasen/p/6611020.html
+
+    ``` postgres
+    \l 列出所有数据库
     \c ebook
     select * from pictures;     query the full picture
     select * from pg_tables where schemaname = 'public';      show all available tables in current database.
+    ```

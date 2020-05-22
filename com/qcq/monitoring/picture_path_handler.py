@@ -17,7 +17,7 @@ class PicturePathHandler(PatternMatchingEventHandler):
         '''
         PyBus.Instance().post(FileEvent(FileEventType.CREATE,
             os.path.abspath(event.src_path), None))
-        logging.info('file %s created. sent out event' % event.src_path)
+        logging.info(u'file %s created. sent out event' % event.src_path)
 
 
     def on_deleted(self, event):

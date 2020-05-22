@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+
 '''
 Created on 2018年11月13日
 
 @author: chuanqin
 '''
+
+
 from __future__ import with_statement
 
 import datetime
@@ -125,24 +128,28 @@ class Media(threading.Thread):
             for item in search_result:
                 created_at, created_time, name, path = item.created_at, item.created, item.name, item.path
             time_lapses = int(time.time()) - int(created_at)  # int(time.mktime(now.timetuple()))
-            if time_lapses >= 3 * self._DayInSeconds:
+            print created_at, created_time, name, path
+            if time_lapses < 3 * self._DayInSeconds:
                 logging.info('updating the %s because of 3 days will cause picture unavailable:%s/%s-%s/%s'
                     % (name, created_time, time.time(), datetime.datetime.fromtimestamp(float(created_at)),
                     datetime.datetime.utcnow()))
-                if os.path.exists(path):
-                    result = self.upload(webconst.accessToken, path, u'image')
-                    if not result :
-                        logging.error('when update the %s failed, because of failed to upload to server.')
-                        return
-                    try:
+                try:
+                    if os.path.exists(path):
+                        result = self.upload(webconst.accessToken, path, u'image')
+                        if not result :
+                            logging.error('when update the %s failed, because of failed to upload to server.')
+                            return
+
                         # added a try catch, which missed one bug. may be catch it in future.
                         webconst.updatePicture(name, result[u'media_id'], result[u'created_at'])
                         logging.info("update %s succeed." % (name))
-                    except Exception, exc:
-                        logging.warn('Exception happened:%s with result %s' % (traceback.print_exc(), result), exc_info=True)
-                else:
-                    # if the picture non-exist any more, delete from database.
-                    self.__pictureDelete__(name)
+                    else:
+                        # if the picture non-exist any more, delete from database.
+                        self.__pictureDelete__(name)
+                except Exception, exc:
+                    logging.warn('Exception happened:%s' % (exc), exc_info=True)
+                    self._left_time = 30
+                    return
                 self.__updateDatabase__()
             else :
                 logging.debug('the nearest item is %s, time:%s/%s, will update in %s' % (name,
@@ -178,3 +185,7 @@ class Media(threading.Thread):
                     rLock.release()
             else:
                 time.sleep(5)
+
+
+media = Media()
+media.__updateDatabase__()

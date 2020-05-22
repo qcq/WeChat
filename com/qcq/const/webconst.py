@@ -72,11 +72,11 @@ def getOldestPictureCreatedTime():
 
 
 def getPictureByName(name):
-    return db.select('pictures', where = "name='%s'" % name)
+    return db.select('pictures', where = u"name='%s'" % name)
 
 
 def updatePicture(name, media_id, created_at):
-    db.update('pictures', where = "name=$name", vars = locals(), media_id = media_id,
+    db.update('pictures', where = u"name=$name", vars = locals(), media_id = media_id,
          created_at = created_at, created = datetime.datetime.utcnow())
 
 
