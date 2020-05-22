@@ -44,16 +44,21 @@ class Media(threading.Thread):
 
         postUrl = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s" % (
             accessToken, mediaType)
-        request = urllib2.Request(postUrl, postData, postHeaders)
-        urlResp = urllib2.urlopen(request)
-        urlResp = json.loads(str(urlResp.read()))
-        if 'errcode' in urlResp:
-            # https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Global_Return_Code.html
-            # to check the error code corresponding description
-            logging.error('error happened when upload material %s. will retry in 60s' % urlResp)
-            self._left_time = 60
+        try:
+            request = urllib2.Request(postUrl, postData, postHeaders)
+            urlResp = urllib2.urlopen(request)
+            urlResp = json.loads(str(urlResp.read()))
+            if 'errcode' in urlResp:
+                # https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Global_Return_Code.html
+                # to check the error code corresponding description
+                logging.error('error happened when upload material %s. will retry in 60s' % urlResp)
+                self._left_time = 60
+                return None
+            return urlResp
+        except Exception, exc:
+            logging.warn('Exception happened:%s with result' %
+                         (traceback.print_exc()), exc_info=True)
             return None
-        return urlResp
 
     def get(self, accessToken, mediaId):
         postUrl = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s" % (
@@ -95,7 +100,8 @@ class Media(threading.Thread):
                 try:
                     result = self.upload(webconst.accessToken, picture, u'image')
                     if not result:
-                        logging.error('when update new founded picture into server failed.')
+                        logging.error(
+                            'when update new founded picture %s into server failed.' % pictureName)
                         return
                     '''
                     https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html
@@ -105,7 +111,7 @@ class Media(threading.Thread):
                     logging.info('insert item %s in database in %s'
                         % (pictureName, datetime.datetime.utcnow()))
                 except Exception, exc:
-                    logging.warn('Exception happened:%s with result %s' % (traceback.print_exc(), result), exc_info=True)
+                    logging.warn('Exception happened:%s with result' % (traceback.print_exc()), exc_info=True)
 
     def __pictureNameChaned__(self, src, dst):
         self.__pictureDelete__(src)
@@ -114,6 +120,8 @@ class Media(threading.Thread):
     def __pictureDelete__(self, picture):
         pictureName = os.path.basename(picture).split('.')[0]
         webconst.deletePicture(pictureName)
+        logging.info('delete item %s in database in %s'
+                     % (pictureName, datetime.datetime.utcnow()))
 
     def __updateDatabase__(self):
         '''
@@ -137,7 +145,7 @@ class Media(threading.Thread):
                     if os.path.exists(path):
                         result = self.upload(webconst.accessToken, path, u'image')
                         if not result :
-                            logging.error('when update the %s failed, because of failed to upload to server.')
+                            logging.error('when update the %s failed, because of failed to upload to server.' % path)
                             return
 
                         # added a try catch, which missed one bug. may be catch it in future.
@@ -187,5 +195,5 @@ class Media(threading.Thread):
                 time.sleep(5)
 
 
-media = Media()
-media.__updateDatabase__()
+#media = Media()
+#media.__updateDatabase__()

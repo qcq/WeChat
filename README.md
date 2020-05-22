@@ -42,6 +42,12 @@ becasue not wrapped the project with **setuptools**. so want to import the modul
     1. edit /etc/profile, add **export PYTHONPATH=/home/user/WeChat**
     2. edit the /etc/sudoers, add **Defaults env_keep+="PYTHONPATH"**
 
+4. when os.path.exists()， always throw encode of ascii exception, but when exectue this file alone, the problem non-exist. googleed much, finally may be caused by locale.
+the defaute one is en_US.UTF-8, may be this encode not exist, so stay back to ascii,
+so have to change it manual, /etc/locale.conf with below which should be list in locale -a | grep zh
+LANG=zh_CN.utf8
+LC_ALL=zh_CN.utf8
+
 ## The work under doing
 
 1. set get_access_token as one single thread, which as single service to supply the **access_token**. *Done*
